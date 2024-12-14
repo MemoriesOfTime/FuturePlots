@@ -1,0 +1,8 @@
+name: FuturePlots
+main: ovis.futureplots.FuturePlots
+api: 2.0.0
+authors:
+  - OvisDevelopment
+  - tim03we
+version: ${pom.version}
+description: A Nukkit based plot plugin

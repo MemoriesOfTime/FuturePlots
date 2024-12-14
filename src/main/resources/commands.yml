@@ -1,0 +1,186 @@
+---
+version: "1.1.1"
+
+plot:
+  parameters:
+    subcommand: "subcommand"
+    player: "player"
+  name: "plot"
+  usage: "/plot <subcommand>"
+  description: "FuturePlots Main command for everything"
+  alias: ["plots", "p"]
+  add:
+    name: "add"
+    usage: "/plot add <player>"
+    description: "Add a helper of the plot"
+    alias: ["addh", "addhelper"]
+    enable: true
+  auto:
+    name: "auto"
+    usage: "/plot auto"
+    description: "Find a free plot"
+    alias: ["a"]
+    enable: true
+  border:
+    name: "border"
+    usage: "/plot border"
+    description: "Border command"
+    alias: []
+    enable: true
+  claim:
+    name: "claim"
+    usage: "/plot claim"
+    description: "Claim a plot"
+    alias: ["c"]
+    enable: true
+  clear:
+    name: "clear"
+    usage: "/plot clear"
+    description: "Empty the desired plot"
+    alias: []
+    enable: true
+  deletehome:
+    name: "deletehome"
+    usage: "/plot deletehome"
+    description: "."
+    alias: ["delhome"]
+    enable: true
+  deny:
+    name: "deny"
+    usage: "/plot deny <player>"
+    description: "Ban a player from the plot"
+    alias: []
+    enable: true
+  reset:
+    name: "reset"
+    usage: "/plot reset"
+    description: "Reset the desired plot to claim"
+    alias: [ "r" ]
+    enable: true
+  generate:
+    name: "generate"
+    usage: "/plot generate <name>"
+    description: "Generate a plot world"
+    alias: ["gen"]
+    enable: true
+  help:
+    name: "help"
+    usage: "/plot help [page]"
+    description: "List all commands on"
+    alias: [ ]
+    enable: true
+  home:
+    name: "home"
+    usage: "/plot home [number] [world]"
+    description: "Go to your plots"
+    alias: ["h"]
+    enable: true
+  homes:
+    name: "homes"
+    usage: "/plot homes"
+    description: "List your plots on"
+    alias: ["list"]
+    enable: true
+  info:
+    name: "info"
+    usage: "/plot info"
+    description: "Display plot information"
+    alias: ["i"]
+    enable: true
+  kick:
+    name: "kick"
+    usage: "/plot kick <player>"
+    description: "Throw a player off the plot"
+    alias: ["k"]
+    enable: true
+  merge:
+    name: "merge"
+    usage: "/plot merge"
+    description: "Merge your plot"
+    alias: []
+    enable: true
+  middle:
+    name: "middle"
+    usage: "/plot middle"
+    description: "Teleport in middle"
+    alias: []
+    enable: true
+  regenallroads:
+    name: "regenallroads"
+    usage: "/plot regenallroads"
+    description: "."
+    alias: []
+    enable: true
+  regenroad:
+    name: "regenroad"
+    usage: "/plot regenroad"
+    description: "."
+    alias: []
+    enable: true
+  reload:
+    name: "reload"
+    usage: "/plot reload"
+    description: "."
+    alias: ["rel"]
+    enable: true
+  remove:
+    name: "remove"
+    usage: "/plot remove <player>"
+    description: "Remove a helper or trusted player"
+    alias: []
+    enable: true
+  sethome:
+    name: "sethome"
+    usage: "/plot sethome"
+    description: "Set the home of the plot"
+    alias: []
+    enable: true
+  setowner:
+    name: "setowner"
+    usage: "/plot setowner <player>"
+    description: "Give the plot to someone else"
+    alias: ["give"]
+    enable: true
+  setroads:
+    name: "setroads"
+    usage: "/plot setroads"
+    description: "."
+    alias: []
+    enable: true
+  flag:
+    name: "flag"
+    usage: "/plot flag"
+    description: "."
+    alias: ["flags"]
+    enable: true
+  teleport:
+    name: "teleport"
+    usage: "/plot tp <player> [number] [world]"
+    description: "Teleports to a plot, claimed by the specified player."
+    alias: ["tp"]
+    enable: true
+  undeny:
+    name: "undeny"
+    usage: "/plot undeny <player>"
+    description: "Pardon a player from the plot"
+    alias: []
+    enable: true
+  unlink:
+    name: "unlink"
+    usage: "/plot unlink"
+    description: "."
+    alias: []
+    enable: true
+  wall:
+    name: "wall"
+    usage: "/plot wall"
+    description: "Wall command"
+    alias: []
+    enable: true
+  warp:
+    name: "warp"
+    usage: "/plot warp"
+    description: "."
+    alias: []
+    enable: true
+...

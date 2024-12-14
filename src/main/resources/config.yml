@@ -1,0 +1,43 @@
+---
+# Version of the config.yml.
+# Do not modify! Changing the version will cause your configurations to be lost.
+version: "2.0.0"
+
+# Default language of the plugin.
+# Available languages: en_US, de_DE
+default_language: "en_US"
+
+# Should we apply the client's language from the player, if available?
+# The prerequisite for this is that FuturePlots supports this language. If not, the "default_language" value will be used by default.
+enable_player_language: true
+
+# TODO:
+metrics: true
+
+# Please select your preferred provider where we should store the data.
+# We offer the following providers: sqlite, mysql, mongodb
+provider: "sqlite"
+
+# MySQL connection data
+mysql:
+  host: "127.0.0.1"
+  port: "3306"
+  user: "root"
+  password: "ThisIsMyStrongPassword"
+  database: "futureplots"
+
+# MongoDB connection data
+mongodb:
+  uri: ""
+  database: ""
+
+# Determine if you should be teleported to the plot border when the plot is claimed
+teleport-on-claim: true
+
+# How many plots a default player without permissions can own
+max-plots: 2
+
+# This is used for troubleshooting.
+# Enable it when contacting the developer to receive more detailed error messages and debug information.
+debug: false
+...
