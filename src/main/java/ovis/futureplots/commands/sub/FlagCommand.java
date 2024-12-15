@@ -38,6 +38,7 @@ import ovis.futureplots.components.util.Plot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @modified Tim tim03we, Ovis Development (2024)
@@ -53,25 +54,25 @@ public class FlagCommand extends SubCommand {
         this.playerOnly();
         this.setPermissions("plots.flag", "plots.perm.basic");
 
-        String[] flags = FlagRegistry.getFlags().stream().map(Flag::getSaveName).toList().toArray(new String[0]);
         this.addSubParameter("_set",
                 new CommandParameter[]{
                         CommandParameter.newEnum("set", new String[]{"set"}),
-                        CommandParameter.newEnum("flag", false, new CommandEnum("flag", flags)),
+                        CommandParameter.newEnum("flag", false, new CommandEnum("set", getAsArray(FlagType.STRING, FlagType.BOOLEAN, FlagType.INTEGER, FlagType.DOUBLE))),
                         CommandParameter.newType("value", CommandParamType.STRING)
                 }
         );
+        System.out.println(Arrays.toString(getAsArray(FlagType.BLOCK_TYPE_LIST)));
         this.addSubParameter("_add",
                 new CommandParameter[]{
                         CommandParameter.newEnum("add", new String[]{"add"}),
-                        CommandParameter.newEnum("flag", false, new CommandEnum("flag", flags)),
+                        CommandParameter.newEnum("flag", false, new CommandEnum("add", getAsArray(FlagType.BLOCK_TYPE_LIST))),
                         CommandParameter.newType("value", CommandParamType.STRING)
                 }
         );
         this.addSubParameter("_remove",
                 new CommandParameter[]{
                         CommandParameter.newEnum("remove", new String[]{"remove"}),
-                        CommandParameter.newEnum("flag", false, new CommandEnum("flag", flags)),
+                        CommandParameter.newEnum("flag", false, new CommandEnum("remove", getAsArray(null))),
                         CommandParameter.newType("value", true, CommandParamType.STRING)
                 }
         );
@@ -81,14 +82,31 @@ public class FlagCommand extends SubCommand {
 
                 }
         );
+        /* TODO
         this.addSubParameter("_info",
                 new CommandParameter[]{
                         CommandParameter.newEnum("flag", new String[]{"flag"}),
                         CommandParameter.newEnum("info", new String[]{"info"}),
-                        CommandParameter.newEnum("flag", false, new CommandEnum("flag", flags))
+                        CommandParameter.newEnum("flag", false, new CommandEnum("flag", getAsArray(null)))
 
                 }
         );
+         */
+    }
+
+    private String[] getAsArray(FlagType... flagTypes) {
+        if(flagTypes == null || flagTypes.length == 0) {
+            return FlagRegistry.getFlags().stream().map(Flag::getSaveName).toList().toArray(new String[0]);
+        }
+        List<String> result = new ArrayList<>();
+        for (FlagType flagType : flagTypes) {
+            result.addAll(
+                    FlagRegistry.getFlags(flagType).stream()
+                            .map(Flag::getSaveName)
+                            .toList()
+            );
+        }
+        return result.toArray(new String[0]);
     }
 
     @Override
@@ -107,74 +125,108 @@ public class FlagCommand extends SubCommand {
             case "set" -> {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
-                    player.sendMessage("§cFlag existiert nicht.");
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
+                    return;
+                }
+                if(flag.getType() == FlagType.BLOCK_TYPE_LIST) {
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
                     return;
                 }
                 Object set = flag.update(plot, value);
-                player.sendMessage("§aFlag changed to: " + set);
-                break;
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_SET_CHANGED, flag.getSaveName(), set));
             }
             case "add" -> {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
-                    player.sendMessage("§cFlag existiert nicht.");
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
                     return;
                 }
                 if(flag.getType() != FlagType.BLOCK_TYPE_LIST) {
-                    player.sendMessage("Diese Flag unterstützt den §cadd §fParameter nicht.");
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
                     return;
                 }
                 if(value == null) {
-                    player.sendMessage("Gebe einen Block an.");
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_SPECIFY_MATERIAL));
                     return;
                 }
                 String blockName = value.toLowerCase();
                 final Block block = Registries.BLOCK.get(blockName);
                 if(block == null) {
-                    player.sendMessage("Dieser Block existiert nicht.");
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_MATERIAL_NOT_EXIST));
                     return;
                 }
-                final BlockState blockState = block.getBlockState();
-                player.sendMessage("Block: " + blockState.getIdentifier());
                 List<String> plotFlags = plot.getFlagValue(flagName) == null ? new ArrayList<>() : (List<String>) plot.getFlagValue(flagName);
                 if(plotFlags.contains(blockName)) {
-                    player.sendMessage("§cDieser Block existiert bereits.");
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_MATERIAL_EXIST));
                     return;
                 }
                 plotFlags.add(blockName);
                 plot.setFlagValue(flagName, plotFlags);
-                player.sendMessage("§aDie Flags für das Plot wurden geupdated.");
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_MATERIAL_ADDED, blockName, flagName));
             }
             case "remove" -> {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
-                    player.sendMessage("§cFlag existiert nicht.");
-                    return;
-                }
-                if(args.length < 1) {
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
                     return;
                 }
                 if(args.length > 2) { // Remove Flag Value
-
+                    if(flag.getType() != FlagType.BLOCK_TYPE_LIST) {
+                        player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
+                        return;
+                    }
+                    List<String> valueList = (List<String>) plot.getFlagValue(flagName);
+                    if(value == null) {
+                        player.sendMessage(this.translate(player, TranslationKey.FLAG_VALUE_NULL));
+                        return;
+                    }
+                    if(!valueList.contains(value)) {
+                        player.sendMessage(this.translate(player, TranslationKey.FLAG_VALUE_NOT_CONTAINS, value));
+                        return;
+                    }
+                    boolean removed = valueList.remove(value);
+                    if(!removed) {
+                        player.sendMessage(this.translate(player, TranslationKey.FLAG_VALUE_NOT_REMOVED));
+                        return;
+                    }
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_REMOVED_VALUE, flagName));
                 } else { // Remove Flag
                     plot.removeFlag(flagName);
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_REMOVED, flagName));
                 }
-                break;
             }
             case "list" -> {
+                StringBuilder blockTypeListBuilder = new StringBuilder();
+                StringBuilder booleanBuilder = new StringBuilder();
+                StringBuilder doubleBuilder = new StringBuilder();
+                StringBuilder integerBuilder = new StringBuilder();
                 StringBuilder stringBuilder = new StringBuilder();
                 for (Flag flag : FlagRegistry.getFlags()) {
-                    stringBuilder.append(flag.getSaveName()).append(", ");
+                    switch (flag.getType()) {
+                        case BLOCK_TYPE_LIST -> blockTypeListBuilder.append(flag.getSaveName()).append(", ");
+                        case BOOLEAN -> booleanBuilder.append(flag.getSaveName()).append(", ");
+                        case DOUBLE -> doubleBuilder.append(flag.getSaveName()).append(", ");
+                        case INTEGER -> integerBuilder.append(flag.getSaveName()).append(", ");
+                        case STRING -> stringBuilder.append(flag.getSaveName()).append(", ");
+                    }
                 }
-                String flags = stringBuilder.substring(0, stringBuilder.length() - 2);
-                player.sendMessage("Flags:");
-                player.sendMessage(flags);
-                break;
-            }
-            case "info" -> {
+                String blockTypeListFlags = blockTypeListBuilder.length() >= 2 ? blockTypeListBuilder.substring(0, blockTypeListBuilder.length() - 2) : "§c-----";
+                String booleanFlags = booleanBuilder.length() >= 2 ? booleanBuilder.substring(0, booleanBuilder.length() - 2) : "§c-----";
+                String doubleFlags = doubleBuilder.length() >= 2 ? doubleBuilder.substring(0, doubleBuilder.length() - 2) : "§c-----";
+                String integerFlags = integerBuilder.length() >= 2 ? integerBuilder.substring(0, integerBuilder.length() - 2) : "§c-----";
+                String stringFlags = stringBuilder.length() >= 2 ? stringBuilder.substring(0, stringBuilder.length() - 2) : "§c-----";
 
-                break;
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_LIST_TITLE));
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_LIST_TYPE_BLOCKTYPELIST, blockTypeListFlags));
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_LIST_TYPE_BOOLEAN, booleanFlags));
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_LIST_TYPE_DOUBLE, doubleFlags));
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_LIST_TYPE_INTEGER, integerFlags));
+                player.sendMessage(this.translate(player, TranslationKey.FLAG_LIST_TYPE_STRING, stringFlags));
             }
+            /*case "info" -> {
+                TODO
+                break;
+            }*/
             default -> {
                 player.sendMessage("§cUngültiger Parameter.");
             }
