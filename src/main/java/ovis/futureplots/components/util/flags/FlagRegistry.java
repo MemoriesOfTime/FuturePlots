@@ -18,6 +18,7 @@
 package ovis.futureplots.components.util.flags;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Tim tim03we, Ovis Development (2024)
@@ -27,16 +28,23 @@ public class FlagRegistry {
     private static final Map<String, Flag> REGISTERED_FLAGS = new HashMap<>();
 
     static {
-        registerFlag(new Flag("break", null, FlagType.BLOCK_TYPE_LIST));
-        registerFlag(new Flag("place", null, FlagType.BLOCK_TYPE_LIST));
-        registerFlag(new Flag("use", null, FlagType.BLOCK_TYPE_LIST));
+        registerFlag(new Flag("break", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST));
+        registerFlag(new Flag("place", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST));
+        // TODO: registerFlag(new Flag("use", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST));
 
         registerFlag(new Flag("pvp", false, FlagType.BOOLEAN));
         registerFlag(new Flag("pve", false, FlagType.BOOLEAN));
+        registerFlag(new Flag("damage", false, FlagType.BOOLEAN));
     }
 
     public static Set<Flag> getFlags() {
         return new HashSet<>(REGISTERED_FLAGS.values());
+    }
+
+    public static Set<Flag> getFlags(FlagType flagType) {
+        return REGISTERED_FLAGS.values().stream()
+                .filter(flag -> flag.getType().equals(flagType))
+                .collect(Collectors.toSet());
     }
 
     public static void registerFlag(Flag flag) {
@@ -44,6 +52,9 @@ public class FlagRegistry {
     }
 
     public static Flag getFlagByName(String name) {
+        if(name == null) {
+            return null;
+        }
         return REGISTERED_FLAGS.get(name.toLowerCase());
     }
 
