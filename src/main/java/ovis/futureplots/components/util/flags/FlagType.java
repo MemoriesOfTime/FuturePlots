@@ -25,8 +25,6 @@ public enum FlagType {
     BLOCK_TYPE_LIST,
     BOOLEAN,
     DOUBLE,
-    ENUM,
     INTEGER,
-    MISCELLANEOUS,
     STRING
 }
