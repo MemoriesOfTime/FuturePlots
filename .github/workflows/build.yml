@@ -31,5 +31,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Futureplots-${{ env.PROJECT_VERSION }}
-          path: target/Futureplots-${{ env.PROJECT_VERSION }}.jar
+          name: FuturePlots-${{ env.PROJECT_VERSION }}
+          path: target/FuturePlots-${{ env.PROJECT_VERSION }}.jar
