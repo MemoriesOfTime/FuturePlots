@@ -29,19 +29,69 @@
    </a>
 </p>
 
-## JetBrains
-This project was made with the help of JetBrains amazing tools. You can visit JetBrains here.
-
-# FuturePlots
-FuturePlots is a plot plugin that will be further developed in the future. This Plot Plugin should be an alternative to PlotSquared for Nukkit, because from Nukkit 2.0 on FastAsyncWorldEdit and PlotSquared will not work anymore.
-
-# More details coming soon
-Coming soon...
 
 ----------------
 
-## Contributing to FuturePlots
+# FuturePlots
 
+FuturePlots is an innovative and versatile plugin specifically designed for Minecraft servers to provide advanced plot management capabilities. Whether you're running a small private server or a large multiplayer community, FuturePlots offers all the tools you need to create an organized and user-friendly world.
+
+
+----------------
+
+## 🌟 Features
+### User-Friendly Plot Management
+Players can easily create, manage, and customize their plots with simple commands.
+
+### Access Restrictions and Permissions
+Precisely control who can enter, build on, or modify plots.
+
+### Automatic Plot Assignment
+Plots can be automatically assigned to players—eliminating the need for manual management.
+
+### Extensive Configuration Options
+Customize the plugin to fit your server’s specific requirements, including plot size, custom roads, and more.
+
+### Seamless Integration
+Works smoothly with other plugins and is fully compatible with bStats for tracking server statistics.
+
+
+----------------
+
+## 🚀 Why FuturePlots?
+FuturePlots stands out for its stability, efficiency, and user-friendly design, setting it apart from other plot management plugins. It is built with a focus on performance and scalability, ensuring that even large servers with thousands of players can be supported effortlessly. Thanks to its carefully optimized architecture, you can trust that FuturePlots won’t consume unnecessary resources, keeping your server running smoothly.
+
+
+----------------
+
+## 📜 Documentation
+Find all commands, permissions, developer usage and configuration options in our official [documentation](https://github.com/ovisdevelopment/FuturePlots/wiki).
+
+----------------
+
+## 📊 Statistics
+We use bStats to gain insights into how our plugin is being used. This anonymized data helps us continually improve FuturePlots and develop new features. Here's a snapshot of the current usage of our plugin:
+
+![bStats](https://bstats.org/signatures/bukkit/FuturePlots.svg)
+
+
+----------------
+
+## JetBrains
+This project was made with the help of JetBrains' amazing tools. ✨🚀💻  
+You can visit [JetBrains here](https://www.jetbrains.com).
+
+
+
+----------------
+
+## 🤝 Contributing to FuturePlots
+FuturePlots is an open-source project and welcomes contributions! You can help by:
+
+- Reporting bugs
+- Suggesting new features
+- Contributing code
+<br><br><br>
 <a href="https://github.com/ovisdevelopment/FuturePlots/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ovisdevelopment/FuturePlots" />
 </a>
