@@ -1,4 +1,4 @@
-name: Build with Maven
+name: Build and Upload Artifacts
 
 on:
   push:
@@ -13,14 +13,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Schritt 1: Code auschecken
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Schritt 2: Setze JDK 21 mit Temurin
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'temurin'  # Verwende 'temurin' statt 'adoptopenjdk'
+          distribution: 'temurin'
 
+      # Schritt 3: Führe den Build-Prozess mit Maven aus
       - name: Build with Maven
         run: mvn clean package
+
+      # Schritt 4: Erstelle und benenne das JAR-Artifact (optional, falls notwendig)
+      - name: Rename JAR file
+        run: |
+          cd target
+          mv futureplots-*.jar futureplots.jar  # Wenn du den Namen des JARs anpassen möchtest
+
+      # Schritt 5: Lade das JAR-Artifact hoch
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: futureplots-jar
+          path: target/futureplots.jar  # Pfad zum JAR-File
+
+      # Optional: Berechne Checksummen und lade sie hoch
+      - name: Calculate checksums (SHA-256, MD5)
+        run: |
+          cd target
+          sha256sum futureplots.jar > futureplots.jar.sha256
+          md5sum futureplots.jar > futureplots.jar.md5
+
+      - name: Upload checksums as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: futureplots-checksums
+          path: target/*.sha256
+
+      # Optional: Weitere Artefakte hochladen, falls du mehrere brauchst
+      # - name: Upload additional artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: additional-artifact
+      #     path: path/to/other/files
