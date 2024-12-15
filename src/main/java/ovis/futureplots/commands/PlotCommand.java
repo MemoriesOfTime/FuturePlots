@@ -81,22 +81,31 @@ public class PlotCommand extends Command {
             }
         }
 
-        for(SubCommand subCommand : subCommands) {
+        for (SubCommand subCommand : subCommands) {
             final Set<CommandParameter> parameterSet = subCommand.getParameters();
+            final HashMap<String, CommandParameter[]> subMap = subCommand.getSubParameters();
 
-            for(String alias : subCommand.getAliases()) {
-                final CommandParameter[] parameters = new CommandParameter[parameterSet.size() + 1];
-                parameters[0] = CommandParameter.newEnum("subcommand", false, new CommandEnum("PlotSubcommand" + alias, alias));
+            for (String alias : subCommand.getAliases()) {
+                CommandParameter aliasParam = CommandParameter.newEnum("subcommand", false, new CommandEnum("PlotSubcommand" + alias, alias));
 
-                int i = 1;
-                for(CommandParameter parameter : parameterSet) {
-                    parameters[i++] = parameter;
-                }
-                this.commandParameters.put(alias, parameters);
-                for (HashMap<String, CommandParameter[]> subMap : subCommand.getSubParameters()) {
-                    for (String key : subMap.keySet()) {
-                        this.commandParameters.put(subCommand.getName() + key, subMap.get(key));
+                if (subMap.isEmpty()) {
+                    final CommandParameter[] parameters = new CommandParameter[parameterSet.size() + 1];
+                    parameters[0] = aliasParam;
+
+                    if (!parameterSet.isEmpty()) {
+                        int i = 1;
+                        for (CommandParameter parameter : parameterSet) {
+                            parameters[i++] = parameter;
+                        }
                     }
+                    this.commandParameters.put(alias, parameters);
+                } else {
+                    subMap.forEach((key, subParams) -> {
+                        final CommandParameter[] parameters = new CommandParameter[subParams.length + 1];
+                        parameters[0] = aliasParam;
+                        System.arraycopy(subParams, 0, parameters, 1, subParams.length);
+                        this.commandParameters.put(alias + key, parameters);
+                    });
                 }
             }
         }

@@ -48,7 +48,7 @@ public abstract class SubCommand {
     private boolean enabled;
 
     private final Set<CommandParameter> parameters;
-    private final Set<HashMap<String, CommandParameter[]>> subParameters;
+    private final HashMap<String, CommandParameter[]> subParameters;
 
     public SubCommand(FuturePlots plugin, String name) {
         this.plugin = plugin;
@@ -60,7 +60,7 @@ public abstract class SubCommand {
         this.aliases = new LinkedHashSet<>();
         this.aliases.add(this.name);
         this.parameters = new LinkedHashSet<>();
-        this.subParameters = new LinkedHashSet<>();
+        this.subParameters = new HashMap<>();
     }
 
     public SubCommand(FuturePlots plugin, String name, @Nullable String description) {
@@ -73,7 +73,7 @@ public abstract class SubCommand {
         this.aliases = new LinkedHashSet<>();
         this.aliases.add(this.name);
         this.parameters = new LinkedHashSet<>();
-        this.subParameters = new LinkedHashSet<>();
+        this.subParameters = new HashMap<>();
     }
 
 
@@ -87,7 +87,7 @@ public abstract class SubCommand {
         this.aliases = new LinkedHashSet<>();
         this.aliases.add(this.name);
         this.parameters = new LinkedHashSet<>();
-        this.subParameters = new LinkedHashSet<>();
+        this.subParameters = new HashMap<>();
     }
 
     public void execute(CommandSender sender, String command, String[] args) {
@@ -126,7 +126,7 @@ public abstract class SubCommand {
     }
 
     public void addSubParameter(String name, CommandParameter[] parameter) {
-        this.subParameters.add(new HashMap<>(){{put(name, parameter);}});
+        this.subParameters.put(name, parameter);
     }
 
     public void setPermissions(String... permissions) {

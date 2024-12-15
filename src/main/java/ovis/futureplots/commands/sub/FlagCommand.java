@@ -56,7 +56,6 @@ public class FlagCommand extends SubCommand {
         String[] flags = FlagRegistry.getFlags().stream().map(Flag::getSaveName).toList().toArray(new String[0]);
         this.addSubParameter("_set",
                 new CommandParameter[]{
-                        CommandParameter.newEnum("flag", new String[]{"flag"}),
                         CommandParameter.newEnum("set", new String[]{"set"}),
                         CommandParameter.newEnum("flag", false, new CommandEnum("flag", flags)),
                         CommandParameter.newType("value", CommandParamType.STRING)
@@ -64,7 +63,6 @@ public class FlagCommand extends SubCommand {
         );
         this.addSubParameter("_add",
                 new CommandParameter[]{
-                        CommandParameter.newEnum("flag", new String[]{"flag"}),
                         CommandParameter.newEnum("add", new String[]{"add"}),
                         CommandParameter.newEnum("flag", false, new CommandEnum("flag", flags)),
                         CommandParameter.newType("value", CommandParamType.STRING)
@@ -72,7 +70,6 @@ public class FlagCommand extends SubCommand {
         );
         this.addSubParameter("_remove",
                 new CommandParameter[]{
-                        CommandParameter.newEnum("flag", new String[]{"flag"}),
                         CommandParameter.newEnum("remove", new String[]{"remove"}),
                         CommandParameter.newEnum("flag", false, new CommandEnum("flag", flags)),
                         CommandParameter.newType("value", true, CommandParamType.STRING)
@@ -80,7 +77,6 @@ public class FlagCommand extends SubCommand {
         );
         this.addSubParameter("_list",
                 new CommandParameter[]{
-                        CommandParameter.newEnum("flag", new String[]{"flag"}),
                         CommandParameter.newEnum("list", new String[]{"list"})
 
                 }
