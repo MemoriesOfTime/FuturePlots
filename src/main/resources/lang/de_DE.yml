@@ -1,3 +1,4 @@
+---
 version: "2.0.0"
 
 activated: "§aAktiviert"
@@ -67,11 +68,9 @@ home.failure: "§8[§6F§eP§8] §r§cDer Spieler §r§6%1§r§c besitzt kein Gr
 info.title: "§7§6Grundstücks-Info"
 info.id: "§7ID: §6%1"
 info.owner: "§7Besitzer: §6%1"
+info.trusted: "§7Vertraute: §6%1"
 info.helpers: "§7Helfer: §6%1"
 info.denied: "§7Verboten: §6%1"
-info.damage: "§7Schaden: §6%1"
-info.pve: "§7Spieler vs Mobs: §6%1"
-info.pvp: "§7Spieler vs Spieler: §6%1"
 info.end: "§6Grundstücks-Info"
 info.failure: "§8[§6F§eP§8] §r§cDieses Grundstück gehört niemandem."
 removed.helper: "§8[§6F§eP§8] §r§6%1§r§a ist nun kein Helfer mehr!"
@@ -161,4 +160,24 @@ wall.success: "§8[§6F§eP§8] §r§aDu hast die §6%1 Wand §r§aerfolgreich g
 
 info.flags: "§7Flags: %1"
 info.flags.value: "§6%1 §7(§c%2§7), "
+
+flag.not.exist: "§8[§6F§eP§8] §cEs wurde keine Flag angegeben oder die angegebene Flag ist nicht vorhanden."
+flag.not.support.parameter: "§8[§6F§eP§8] §cDer angegebene Parameter wird von der Flag nicht unterstützt."
+flag.specify.material: "§8[§6F§eP§8] §cGib einen gültigen Block an. §7(§6Beispiel: minecraft:stone§7)"
+flag.material.not.exist: "§8[§6F§eP§8] §cDieser Block existiert nicht."
+flag.material.exist: "§8[§6F§eP§8] §cDieser Block wurde bereits der Flag hinzugefügt."
+flag.material.added: "§8[§6F§eP§8] §7Der Block §c%1 §7wurde der Flag §6%2 §7hinzugefügt."
+flag.removed: "§8[§6F§eP§8] §7Die Flag §6%1 §7wurde entfernt."
+flag.removed.value: "§8[§6F§eP§8] §7Der Block §c%1 §7wurde aus der Liste der Flag §6%2 §7entfernt."
+flag.value.null: "§8[§6F§eP§8] §cDer angegebene Wert ist nicht in der Liste der Flag §6%1 §centhalten."
+flag.value.not.removed: "§8[§6F§eP§8] §cDer Wert konnte aufgrund eines unbekannten Fehlers nicht aus der Liste entfernt werden."
+flag.value.not.contains: "§8[§6F§eP§8] §cDer angegebene Wert ist nicht in der Liste der Flag §6%6 §cvorhanden."
+flag.set.changed: "§8[§6F§eP§8] §7Der Wert der Flag §6%1 §7wurde auf §c%2 §7gesetzt."
+
+flag.list.title: "§8[§6F§eP§8] §7Hier sind alle Flags aufgelistet, die hinzugefügt wurden:"
+flag.list.type.blocktypelist: "§6Material Flags: §7%1"
+flag.list.type.boolean: "§6Boolean Flags: §7%1"
+flag.list.type.double: "§6Double Flags: §7%1"
+flag.list.type.integer: "§6Integer Flags: §7%1"
+flag.list.type.string: "§6String Flags: §7%1"
 ...
