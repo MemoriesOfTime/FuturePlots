@@ -49,7 +49,7 @@ public class EntityDamageByEntity implements Listener {
             damager = damager instanceof EntityProjectile && ((EntityProjectile) damager).shootingEntity != null ? ((EntityProjectile) damager).shootingEntity : damager;
 
             if(plot != null) {
-                if(!((damager instanceof Player && (((Player) damager).hasPermission("plot.admin.damage")) || (entity instanceof Player ? ((boolean) PlotConfig.ConfigEnum.PVP.getConfig().get(plot)) : ((boolean) PlotConfig.ConfigEnum.PVE.getConfig().get(plot))) || (!(entity instanceof Player) && damager instanceof Player && plot.isOwner(damager.getUniqueId())))))
+                if(!((damager instanceof Player && (((Player) damager).hasPermission("plot.admin.damage")) || (entity instanceof Player ? ((boolean) plot.getFlagValue("pvp")) : ((boolean) plot.getFlagValue("pve"))) || (!(entity instanceof Player) && damager instanceof Player && plot.isOwner(damager.getUniqueId())))))
                     event.setCancelled(true);
             } else if(!(damager instanceof Player) || !((Player) damager).hasPermission("plot.admin.damage"))
                 event.setCancelled(true);
