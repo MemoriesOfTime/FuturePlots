@@ -110,7 +110,7 @@ public class BorderCommand extends SubCommand {
 
                 if(entry.isDefault()) {
                     for(Plot mergedPlot : plotManager.getConnectedPlots(plot))
-                        plotManager.changeBorder(mergedPlot, plotManager.getLevelSettings().getClaimPlotState());
+                        plotManager.changeBorder(mergedPlot, (plot.hasOwner() ? plotManager.getLevelSettings().getClaimPlotState() : plotManager.getLevelSettings().getWallPlotState()));
                     player.sendMessage(this.translate(player, TranslationKey.BORDER_RESET_TO_DEFAULT_SUCCESS));
                 } else {
                     for(Plot mergedPlot : plotManager.getConnectedPlots(plot))
