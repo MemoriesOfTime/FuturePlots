@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.Plot;
-import ovis.futureplots.components.util.PlotConfig;
 
 /**
  * @modified Tim tim03we, Ovis Development (2024)
@@ -48,7 +47,7 @@ public class EntityDamage implements Listener {
         if(plotManager != null) {
             Plot plot = plotManager.getMergedPlot(entity.getFloorX(), entity.getFloorZ());
             if(plot != null) {
-                if(!((boolean) PlotConfig.ConfigEnum.DAMAGE.getConfig().get(plot)))
+                if(!((boolean) plot.getFlagValue("damage")))
                     event.setCancelled(true);
             } else
                 event.setCancelled(true);
