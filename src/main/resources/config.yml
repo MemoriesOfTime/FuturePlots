@@ -11,7 +11,10 @@ default_language: "en_US"
 # The prerequisite for this is that FuturePlots supports this language. If not, the "default_language" value will be used by default.
 enable_player_language: true
 
-# TODO:
+# Enables or disables anonymous usage statistics collection via bStats.
+# If set to true, the plugin will send basic information about your server
+# (e.g., player count, plugin version, etc.) to help the developers improve the plugin.
+# If you prefer not to share any data, set this to false.
 metrics: true
 
 # Please select your preferred provider where we should store the data.

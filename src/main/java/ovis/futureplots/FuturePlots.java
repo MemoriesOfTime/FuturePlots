@@ -31,6 +31,7 @@ import cn.nukkit.utils.Config;
 import lombok.Getter;
 import lombok.Setter;
 import ovis.futureplots.commands.PlotCommand;
+import ovis.futureplots.components.bstats.Metrics;
 import ovis.futureplots.components.provider.Provider;
 import ovis.futureplots.components.util.*;
 import ovis.futureplots.listener.plot.*;
@@ -192,6 +193,14 @@ public class FuturePlots extends PluginBase {
                     plotManager.savePlots();
                 }
             }, 6000);
+
+            if(getSettings().isMetricsEnabled()) {
+                int pluginId = 16194;
+                Metrics metrics = new Metrics(this, pluginId);
+                if(metrics.isEnabled()) {
+                    getLogger().info("Metrics are enabled. Anonymous usage data about the plugin is being sent to bStats. If you'd like to opt-out, you can disable this in the config.yml file.");
+                }
+            }
         }
     }
 

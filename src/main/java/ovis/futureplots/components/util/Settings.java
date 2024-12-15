@@ -30,6 +30,7 @@ public class Settings {
     private String language;
     private String provider;
     private boolean debugEnabled;
+    private boolean metricsEnabled;
     private String sqliteDatabase;
     private String mongodbUri;
     private String mongoDbDatabase;
@@ -47,6 +48,7 @@ public class Settings {
         language = config.getString("default_language");
         provider = config.getString("provider");
         debugEnabled = config.getBoolean("debug");
+        metricsEnabled = config.getBoolean("metrics");
 
         sqliteDatabase = config.getString("sqlite.database");
         mongodbUri = config.getString("mongodb.uri");
