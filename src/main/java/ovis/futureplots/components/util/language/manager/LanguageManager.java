@@ -24,6 +24,8 @@ import ovis.futureplots.components.util.language.provider.LanguageProvider;
 import ovis.futureplots.components.util.language.handler.MainHandler;
 import ovis.futureplots.components.util.language.TranslationKey;
 
+import java.util.UUID;
+
 /**
  * @author  Tim tim03we, Ovis Development (2024)
  */
@@ -46,14 +48,28 @@ public class LanguageManager {
         this.locale = locale;
     }
 
+    /*
+    *
+    * The UUID only has a use for custom handlers to customize the player language
+    *
+     */
+
     public String message(TranslationKey translationKey, Object... replacements) {
-        return message(translationKey.getKey(), replacements);
+        return message(null, translationKey.getKey(), replacements);
     }
 
     public String message(String key, Object... replacements) {
+        return message(null, key, replacements);
+    }
+
+    public String message(UUID uuid, TranslationKey translationKey, Object... replacements) {
+        return message(uuid, translationKey.getKey(), replacements);
+    }
+
+    public String message(UUID uuid, String key, Object... replacements) {
         if(FuturePlots.getSettings().isDefaultLangEnabled()) {
             this.locale = FuturePlots.getSettings().getDefaultLanguage();
         }
-        return handler.message(this.locale, key, replacements);
+        return handler.message(uuid, this.locale, key, replacements);
     }
 }

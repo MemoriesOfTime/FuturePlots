@@ -17,6 +17,9 @@
 
 package ovis.futureplots.components.util.language.provider;
 
+import javax.annotation.Nullable;
+import java.util.UUID;
+
 /**
  * @author  Tim tim03we, Ovis Development (2024)
  */
@@ -24,6 +27,6 @@ public interface LanguageProvider {
 
     void init();
 
-    String message(String locale, String key, Object... replacements);
+    String message(@Nullable UUID uuid, String locale, String key, Object... replacements);
 }
 

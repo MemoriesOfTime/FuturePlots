@@ -137,14 +137,15 @@ public abstract class SubCommand {
         return this.permissions == null || this.permissions.stream().anyMatch(player::hasPermission);
     }
 
-    protected String translate(CommandSender sender, String key, Object... replacements) {
-        if(sender instanceof Player) {
-            return new LanguageManager(((Player) sender).getLoginChainData().getLanguageCode()).message(key, replacements);
-        }
-        return new LanguageManager(FuturePlots.getSettings().getDefaultLanguage()).message(key, replacements);
-    }
-
     protected String translate(CommandSender sender, TranslationKey key, Object... replacements) {
         return translate(sender, key.getKey(), replacements);
+    }
+
+    protected String translate(CommandSender sender, String key, Object... replacements) {
+        if(sender instanceof Player) {
+            Player player = (Player) sender;
+            return new LanguageManager(player.getLoginChainData().getLanguageCode()).message(player.getUniqueId(), key, replacements);
+        }
+        return new LanguageManager(FuturePlots.getSettings().getDefaultLanguage()).message(null, key, replacements);
     }
 }

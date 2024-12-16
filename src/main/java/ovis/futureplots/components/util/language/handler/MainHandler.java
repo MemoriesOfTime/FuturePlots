@@ -24,6 +24,7 @@ import ovis.futureplots.components.util.language.provider.LanguageProvider;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author  Tim tim03we, Ovis Development (2024)
@@ -74,7 +75,7 @@ public class MainHandler implements LanguageProvider {
     }
 
     @Override
-    public String message(String locale, String key, Object... replacements) {
+    public String message(UUID uuid, String locale, String key, Object... replacements) {
         String message = messages.getOrDefault(locale, new HashMap<>()).getOrDefault(key, "null");
         if (replacements == null)
             return message;
