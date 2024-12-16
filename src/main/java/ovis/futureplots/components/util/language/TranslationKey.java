@@ -117,6 +117,7 @@ public enum TranslationKey {
     INFO_DAMAGE,
     INFO_DENIED,
     INFO_END,
+    INFO_LIST,
     INFO_FAILURE,
     INFO_TRUSTED,
     INFO_HELPERS,

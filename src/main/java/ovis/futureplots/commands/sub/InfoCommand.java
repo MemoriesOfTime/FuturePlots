@@ -20,7 +20,6 @@ package ovis.futureplots.commands.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.utils.TextFormat;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.components.util.flags.FlagRegistry;
@@ -63,16 +62,13 @@ public class InfoCommand extends SubCommand {
         final String plotOwner = this.plugin.getCorrectName(plot.getOwner());
 
         final StringBuilder trusted = new StringBuilder();
-        final String trustedLastColors = TextFormat.getLastColors(this.translate(player, TranslationKey.INFO_TRUSTED));
-        plot.getTrusted().forEach(helper -> trusted.append(this.plugin.getCorrectName(helper)).append("§r§7, ").append(trustedLastColors));
+        plot.getTrusted().forEach(trust -> trusted.append(this.translate(player, TranslationKey.INFO_LIST, this.plugin.getCorrectName(trust))));
 
         final StringBuilder helpers = new StringBuilder();
-        final String helpersLastColors = TextFormat.getLastColors(this.translate(player, TranslationKey.INFO_HELPERS, ""));
-        plot.getHelpers().forEach(helper -> helpers.append(this.plugin.getCorrectName(helper)).append("§r§7, ").append(helpersLastColors));
+        plot.getHelpers().forEach(helper -> helpers.append(this.translate(player, TranslationKey.INFO_LIST, this.plugin.getCorrectName(helper))));
 
         final StringBuilder denied = new StringBuilder();
-        final String deniedLastColors = TextFormat.getLastColors(this.translate(player, TranslationKey.INFO_DENIED, ""));
-        plot.getDeniedPlayers().forEach(deniedPlayer -> denied.append(this.plugin.getCorrectName(deniedPlayer)).append("§r§7, ").append(deniedLastColors));
+        plot.getDeniedPlayers().forEach(deniedPlayer -> denied.append(this.translate(player, TranslationKey.INFO_LIST, this.plugin.getCorrectName(deniedPlayer))));
 
         StringBuilder flags = new StringBuilder();
         for (String flagKey : plot.getFlags().keySet()) {
@@ -97,13 +93,12 @@ public class InfoCommand extends SubCommand {
 
         player.sendMessage(this.translate(player, TranslationKey.INFO_ID, plot.getOriginId()));
         player.sendMessage(this.translate(player, TranslationKey.INFO_OWNER, plotOwner));
-        player.sendMessage(this.translate(player, TranslationKey.INFO_TRUSTED, (trusted.length() > 0 ? trusted.substring(0, trusted.length() - 2 - trustedLastColors.length()) : "§c-----")));
-        player.sendMessage(this.translate(player, TranslationKey.INFO_HELPERS, (helpers.length() > 0 ? helpers.substring(0, helpers.length() - 2 - helpersLastColors.length()) : "§c-----")));
-        player.sendMessage(this.translate(player, TranslationKey.INFO_DENIED, (denied.length() > 0 ? denied.substring(0, denied.length() - 2 - deniedLastColors.length()) : "§c-----")));
+        player.sendMessage(this.translate(player, TranslationKey.INFO_TRUSTED, (trusted.length() >= 2 ? trusted.substring(0, trusted.length() - 2) : "§c-----")));
+        player.sendMessage(this.translate(player, TranslationKey.INFO_HELPERS, (helpers.length() >= 2 ? helpers.substring(0, helpers.length() - 2) : "§c-----")));
+        player.sendMessage(this.translate(player, TranslationKey.INFO_DENIED, (denied.length() >= 2 ? denied.substring(0, denied.length() - 2) : "§c-----")));
         player.sendMessage(this.translate(player, TranslationKey.INFO_FLAGS, flagsBuilderString));
 
         player.sendMessage(this.translate(player, TranslationKey.INFO_END));
-        return;
     }
 
 }
