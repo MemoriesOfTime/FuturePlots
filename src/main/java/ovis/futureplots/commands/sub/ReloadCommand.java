@@ -22,7 +22,6 @@ import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
-import ovis.futureplots.components.util.language.Language;
 import ovis.futureplots.components.util.language.TranslationKey;
 
 /**
@@ -42,7 +41,7 @@ public class ReloadCommand extends SubCommand {
     @Override
     public void execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
-        Language.init();
+        FuturePlots.getLanguageProvider().init();
 
         player.sendMessage(this.translate(player, TranslationKey.RELOAD_SUCCESS));
     }

@@ -24,13 +24,13 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import lombok.RequiredArgsConstructor;
 import ovis.futureplots.FuturePlots;
+import ovis.futureplots.components.util.language.manager.LanguageManager;
 import ovis.futureplots.event.PlotEnterEvent;
 import ovis.futureplots.event.PlotLeaveEvent;
 import ovis.futureplots.components.util.language.TranslationKey;
 import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.Plot;
 import ovis.futureplots.components.util.Utils;
-import ovis.futureplots.components.util.language.Language;
 
 /**
  * @modified Tim tim03we, Ovis Development (2024)
@@ -62,7 +62,7 @@ public class PlayerMove implements Listener {
                         event.setCancelled(true);
                         return;
                     }
-                    Language language = new Language(player.getLoginChainData().getLanguageCode());
+                    LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
                     if(!plotTo.hasOwner())
                         player.sendActionBar(language.message(TranslationKey.PLOT_POPUP_NO_OWNER, plotTo.getId().toString()));
                     else

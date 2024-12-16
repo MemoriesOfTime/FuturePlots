@@ -20,7 +20,6 @@ package ovis.futureplots.commands.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockState;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandEnum;
 import cn.nukkit.command.data.CommandParamType;
@@ -38,7 +37,6 @@ import ovis.futureplots.components.util.Plot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @modified Tim tim03we, Ovis Development (2024)

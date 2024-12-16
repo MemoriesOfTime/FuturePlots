@@ -23,8 +23,8 @@ import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.Config;
 import lombok.Getter;
 import ovis.futureplots.FuturePlots;
+import ovis.futureplots.components.util.language.manager.LanguageManager;
 import ovis.futureplots.components.util.language.TranslationKey;
-import ovis.futureplots.components.util.language.Language;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -139,9 +139,9 @@ public abstract class SubCommand {
 
     protected String translate(CommandSender sender, String key, Object... replacements) {
         if(sender instanceof Player) {
-            return new Language(((Player) sender).getLoginChainData().getLanguageCode()).message(key, replacements);
+            return new LanguageManager(((Player) sender).getLoginChainData().getLanguageCode()).message(key, replacements);
         }
-        return new Language(FuturePlots.getSettings().getLanguage()).message(key, replacements);
+        return new LanguageManager(FuturePlots.getSettings().getDefaultLanguage()).message(key, replacements);
     }
 
     protected String translate(CommandSender sender, TranslationKey key, Object... replacements) {

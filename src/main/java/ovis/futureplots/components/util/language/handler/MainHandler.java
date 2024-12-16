@@ -15,26 +15,27 @@
  *
  */
 
-package ovis.futureplots.components.util.language;
+package ovis.futureplots.components.util.language.handler;
 
 import cn.nukkit.utils.Config;
 import ovis.futureplots.FuturePlots;
+import ovis.futureplots.components.util.language.provider.LanguageProvider;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Tim tim03we, Ovis Development (2024)
+ * @author  Tim tim03we, Ovis Development (2024)
  */
-public class Language {
+public class MainHandler implements LanguageProvider {
 
     private static String version = "2.0.0";
-    public static HashMap<String, HashMap<String, String>> messages = new HashMap<>();
+    private static HashMap<String, HashMap<String, String>> messages = new HashMap<>();
+    private static final String[] official_langs = new String[]{"en_US", "de_DE"};
 
-    private static String[] official_langs = new String[]{"en_US", "de_DE"};
-
-    public static void init() {
+    @Override
+    public void init() {
         messages.clear();
         new File(FuturePlots.getInstance().getDataFolder() + "/lang/").mkdirs();
         for (String languageKey : official_langs) {
@@ -72,35 +73,9 @@ public class Language {
         FuturePlots.getInstance().getLogger().info("All languages cached...");
     }
 
-    private final String locale;
-
-    public Language(String locale) {
-        this.locale = locale;
-    }
-
-
-    /*
-    public static String translate(boolean prefix, String key, Object... replacements) {
-        String message;
-        if(prefix) {
-            message = get(key);
-        } else {
-            message = getNoPrefix(key);
-        }
-        if(replacements == null) {
-            return message;
-        }
-        int i = 1;
-        for (Object replacement : replacements) {
-            message = message.replace("%" + i, String.valueOf(replacement));
-            i++;
-        }
-        return message;
-    }
-     */
-
-    public String message(String key, Object... replacements) {
-        String message = get(key);
+    @Override
+    public String message(String locale, String key, Object... replacements) {
+        String message = messages.getOrDefault(locale, new HashMap<>()).getOrDefault(key, "null");
         if (replacements == null)
             return message;
         int i = 1;
@@ -110,16 +85,5 @@ public class Language {
         }
         return message;
     }
-
-    public String message(TranslationKey key, Object... replacements) {
-        return message(key.getKey(), replacements);
-    }
-
-    private String getValidLocale() {
-        return Language.messages.get(this.locale) != null ? this.locale : "en_US";
-    }
-
-    private String get(String key) {
-        return (String)((HashMap) Language.messages.get(getValidLocale())).getOrDefault(key, "null");
-    }
 }
+

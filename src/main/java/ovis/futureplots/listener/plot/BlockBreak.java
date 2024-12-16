@@ -24,11 +24,11 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import lombok.RequiredArgsConstructor;
 import ovis.futureplots.FuturePlots;
+import ovis.futureplots.components.util.language.manager.LanguageManager;
 import ovis.futureplots.components.util.language.TranslationKey;
 import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.Plot;
 import ovis.futureplots.components.util.Utils;
-import ovis.futureplots.components.util.language.Language;
 
 /**
  * @modified Tim tim03we, Ovis Development (2024)
@@ -55,7 +55,7 @@ public class BlockBreak implements Listener {
 
                 if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < 5) {
                     event.setCancelled(true);
-                    Language language = new Language(player.getLoginChainData().getLanguageCode());
+                    LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
                     player.sendMessage(language.message(TranslationKey.TOO_CLOSE_TO_HOME));
                 }
             } else {

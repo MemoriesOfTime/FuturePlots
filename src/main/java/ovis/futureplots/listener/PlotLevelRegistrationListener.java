@@ -29,7 +29,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.registry.Registries;
 import lombok.RequiredArgsConstructor;
 import ovis.futureplots.FuturePlots;
-import ovis.futureplots.components.util.language.Language;
+import ovis.futureplots.components.util.language.manager.LanguageManager;
 import ovis.futureplots.components.util.language.TranslationKey;
 import ovis.futureplots.components.util.PlotLevelRegistration;
 
@@ -44,7 +44,7 @@ public class PlotLevelRegistrationListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(PlayerChatEvent event) {
         final Player player = event.getPlayer();
-        Language language = new Language(player.getLoginChainData().getLanguageCode());
+        LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
         if (this.plugin.getLevelRegistrationMap().containsKey(player)) {
             event.setCancelled(true);
 

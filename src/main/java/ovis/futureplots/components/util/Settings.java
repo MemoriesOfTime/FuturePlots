@@ -27,7 +27,8 @@ import ovis.futureplots.FuturePlots;
 @Getter
 public class Settings {
 
-    private String language;
+    private boolean defaultLangEnabled;
+    private String defaultLanguage;
     private String provider;
     private boolean debugEnabled;
     private boolean metricsEnabled;
@@ -45,7 +46,8 @@ public class Settings {
     public void init() {
         Config config = FuturePlots.getInstance().getConfig();
 
-        language = config.getString("default_language");
+        defaultLangEnabled = !config.getBoolean("enable_player_language");
+        defaultLanguage = config.getString("default_language");
         provider = config.getString("provider");
         debugEnabled = config.getBoolean("debug");
         metricsEnabled = config.getBoolean("metrics");

@@ -34,6 +34,8 @@ import ovis.futureplots.commands.PlotCommand;
 import ovis.futureplots.components.bstats.Metrics;
 import ovis.futureplots.components.provider.Provider;
 import ovis.futureplots.components.util.*;
+import ovis.futureplots.components.util.language.manager.LanguageManager;
+import ovis.futureplots.components.util.language.provider.LanguageProvider;
 import ovis.futureplots.listener.plot.*;
 import ovis.futureplots.generator.PlotGenerator;
 import ovis.futureplots.generator.PlotStage;
@@ -42,7 +44,6 @@ import ovis.futureplots.manager.PlayerManager;
 import ovis.futureplots.manager.PlayerNameFunction;
 import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.async.TaskExecutor;
-import ovis.futureplots.components.util.language.Language;
 
 import java.io.File;
 import java.util.*;
@@ -100,6 +101,9 @@ public class FuturePlots extends PluginBase {
     private final List<BlockEntry> wallEntries = new ArrayList<>();
 
     private static FuturePlots instance;
+
+    @Getter
+    private static LanguageProvider languageProvider;
 
 
     public static FuturePlots getInstance() {
@@ -184,7 +188,8 @@ public class FuturePlots extends PluginBase {
             registerListener();
             server.getPluginManager().registerEvents(new PlotLevelRegistrationListener(this), this);
 
-            Language.init();
+            languageProvider = LanguageManager.init();
+            languageProvider.init();
             checkVersion();
             registerCommands();
 
