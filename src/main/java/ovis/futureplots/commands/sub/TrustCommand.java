@@ -47,13 +47,13 @@ public class TrustCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         final String targetName = (args.length > 0 ? args[0] : "").trim();
@@ -61,27 +61,27 @@ public class TrustCommand extends SubCommand {
 
         if(targetName.equalsIgnoreCase(player.getName()) && !player.hasPermission("plot.command.admin.trust")) {
             player.sendMessage(this.translate(player, TranslationKey.PLAYER_SELF));
-            return;
+            return false;
         }
 
         if(targetName.isEmpty() || targetId == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLAYER));
-            return;
+            return false;
         }
 
         if(!player.hasPermission("plot.command.admin.trust") && !plot.isOwner(player.getUniqueId())) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_OWNER));
-            return;
+            return false;
         }
 
         if(!plot.addTrust(targetId)) {
-            player.sendMessage(this.translate(player, TranslationKey.ALREADY_HELPER, this.plugin.getCorrectName(targetId)));
-            return;
+            player.sendMessage(this.translate(player, TranslationKey.ALREADY_TRUSTED, this.plugin.getCorrectName(targetId)));
+            return false;
         }
 
         plotManager.savePlot(plot);
-        player.sendMessage(this.translate(player, TranslationKey.ADDED_HELPER, this.plugin.getCorrectName(targetId)));
-        return;
+        player.sendMessage(this.translate(player, TranslationKey.ADDED_TRUSTED, this.plugin.getCorrectName(targetId)));
+        return true;
     }
 
 }

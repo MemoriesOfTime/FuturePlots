@@ -45,9 +45,10 @@ public class HelpCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
 
+        return true;
     }
 
 }

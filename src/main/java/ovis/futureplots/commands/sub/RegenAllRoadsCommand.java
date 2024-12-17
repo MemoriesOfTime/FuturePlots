@@ -49,12 +49,12 @@ public class RegenAllRoadsCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         if(plotManager == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_WORLD));
-            return;
+            return false;
         }
 
         final int chunkRadius = Utils.parseInteger(args.length > 0 ? args[0] : "32", 32);
@@ -76,7 +76,7 @@ public class RegenAllRoadsCommand extends SubCommand {
         });
 
         player.sendMessage(this.translate(player, TranslationKey.REGENALLROADS_START));
-        return;
+        return true;
     }
 
 }

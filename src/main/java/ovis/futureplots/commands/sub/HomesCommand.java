@@ -52,7 +52,7 @@ public class HomesCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final int page = Utils.parseInteger(args.length == 1 ? args[0] : args.length > 1 ? args[1] : "1") - 1;
 
@@ -62,7 +62,7 @@ public class HomesCommand extends SubCommand {
 
         if(plots.isEmpty()) {
             player.sendMessage(this.translate(player, TranslationKey.HOMES_FAILURE));
-            return;
+            return false;
         }
 
         final List<Plot> allPlots = new ArrayList<>();
@@ -72,7 +72,7 @@ public class HomesCommand extends SubCommand {
 
         if(page < 0 || page >= pages.size()) {
             player.sendMessage(this.translate(player, TranslationKey.HOMES_FAILURE_PAGE_DID_NOT_EXIST, page + 1));
-            return;
+            return false;
         }
 
         player.sendMessage(this.translate(player, TranslationKey.HOMES_TITLE, page + 1, pages.size()));
@@ -85,7 +85,7 @@ public class HomesCommand extends SubCommand {
             ));
 
         player.sendMessage(this.translate(player, TranslationKey.HOMES_END));
-        return;
+        return true;
     }
 
 }

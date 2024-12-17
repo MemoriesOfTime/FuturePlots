@@ -47,7 +47,7 @@ public class UnlinkCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final String type = args.length > 0 ? args[0].toLowerCase(Locale.ROOT) : "neighbors";
 
@@ -55,17 +55,17 @@ public class UnlinkCommand extends SubCommand {
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         if(!player.hasPermission("plot.command.admin.unlink") && !plot.isOwner(player.getUniqueId())) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_OWNER));
-            return;
+            return false;
         }
 
         if(plot.hasNoMerges()) {
             player.sendMessage(this.translate(player, TranslationKey.UNLINK_FAILURE));
-            return;
+            return false;
         }
 
         switch(type) {
@@ -73,13 +73,13 @@ public class UnlinkCommand extends SubCommand {
             case "neighbors" -> plotManager.unlinkPlotFromNeighbors(plot);
             default -> {
                 player.sendMessage(this.translate(player, TranslationKey.UNLINK_FAILURE_UNKNOWN_TYPE));
-                return;
+                return false;
             }
         }
 
         plotManager.savePlot(plot);
         player.sendMessage(this.translate(player, TranslationKey.UNLINK_SUCCESS));
-        return;
+        return true;
     }
 
 }

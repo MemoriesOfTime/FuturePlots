@@ -134,10 +134,10 @@ public class PlotCommand extends Command {
                         }
                     }
                 }
-                return subCommand.execute(sender, s, args);
+                subCommand.execute(sender, s, args);
             }
         }
-        return true;
+        return false;
     }
 
     @Override

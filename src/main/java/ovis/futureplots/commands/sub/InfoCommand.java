@@ -45,18 +45,18 @@ public class InfoCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         if(!plot.hasOwner() && !player.hasPermission("plot.command.admin.info")) {
             player.sendMessage(this.translate(player, TranslationKey.INFO_FAILURE));
-            return;
+            return false;
         }
 
         final String plotOwner = this.plugin.getCorrectName(plot.getOwner());
@@ -99,6 +99,7 @@ public class InfoCommand extends SubCommand {
         player.sendMessage(this.translate(player, TranslationKey.INFO_FLAGS, flagsBuilderString));
 
         player.sendMessage(this.translate(player, TranslationKey.INFO_END));
+        return true;
     }
 
 }

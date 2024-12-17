@@ -39,11 +39,12 @@ public class ReloadCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         FuturePlots.getLanguageProvider().init();
 
         player.sendMessage(this.translate(player, TranslationKey.RELOAD_SUCCESS));
+        return true;
     }
 
 }

@@ -49,12 +49,12 @@ public class HomeCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         if(plotManager == null && this.plugin.getDefaultPlotLevel() == null || plotManager == null && (plotManager = this.plugin.getPlotManager(this.plugin.getDefaultPlotLevel())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_WORLD));
-            return;
+            return false;
         }
 
         if(args.length == 0) {
@@ -62,12 +62,12 @@ public class HomeCommand extends SubCommand {
 
             if(plots.isEmpty()) {
                 player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE_OWN));
-                return;
+                return false;
             }
 
             player.sendMessage(this.translate(player, TranslationKey.HOME_SUCCESS_OWN));
             plotManager.teleportPlayerToPlot(player, plots.get(0));
-            return;
+            return false;
         }
 
         if(args.length == 1) {
@@ -77,25 +77,25 @@ public class HomeCommand extends SubCommand {
 
                 if(plotId < 0 || plotId >= plots.size()) {
                     player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE_OWN_ID, plotId + 1));
-                    return;
+                    return false;
                 }
 
                 player.sendMessage(this.translate(player, TranslationKey.HOME_SUCCESS_OWN));
                 plotManager.teleportPlayerToPlot(player, plots.get(plotId));
-                return;
+                return false;
             } catch (NumberFormatException e) {
                 final String targetName = this.plugin.findPlayerName(args[0]);
                 final UUID targetId = this.plugin.getUniqueIdByName(targetName, false);
 
                 if(targetName.isEmpty() || targetId == null) {
                     player.sendMessage(this.translate(player, TranslationKey.PLAYER_NOT_ONLINE, targetName));
-                    return;
+                    return false;
                 }
 
                 final List<Plot> plots = plotManager.getPlotsByOwner(targetId);
                 if(plots.isEmpty()) {
                     player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE, this.plugin.getCorrectName(targetId)));
-                    return;
+                    return false;
                 }
 
                 final Plot plot = plots.get(0);
@@ -103,11 +103,11 @@ public class HomeCommand extends SubCommand {
                 if(canPerform) {
                     player.sendMessage(this.translate(player, TranslationKey.HOME_SUCCESS, this.plugin.getCorrectName(targetId)));
                     plotManager.teleportPlayerToPlot(player, plots.get(0));
-                    return;
+                    return false;
                 }
 
                 player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE_DENIED));
-                return;
+                return false;
             }
         }
 
@@ -119,7 +119,7 @@ public class HomeCommand extends SubCommand {
 
         if(targetName.isEmpty() || targetId == null) {
             player.sendMessage(this.translate(player, TranslationKey.PLAYER_NOT_ONLINE, targetName));
-            return;
+            return false;
         }
 
         final List<Plot> plots = plotManager.getPlotsByOwner(targetId);
@@ -128,7 +128,7 @@ public class HomeCommand extends SubCommand {
                 player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE_OWN));
             else
                 player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE, this.plugin.getCorrectName(targetId)));
-            return;
+            return false;
         }
 
         if(plotId >= plots.size()) {
@@ -136,7 +136,7 @@ public class HomeCommand extends SubCommand {
                 player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE_OWN_ID, plotId + 1));
             else
                 player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE_ID, this.plugin.getCorrectName(targetId), plotId + 1));
-            return;
+            return false;
         }
 
         final Plot plot = plots.get(plotId);
@@ -149,7 +149,7 @@ public class HomeCommand extends SubCommand {
             plotManager.teleportPlayerToPlot(player, plots.get(plotId));
         } else
             player.sendMessage(this.translate(player, TranslationKey.HOME_FAILURE_DENIED));
-        return;
+        return true;
     }
 
 }

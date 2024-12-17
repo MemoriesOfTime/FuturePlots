@@ -46,12 +46,12 @@ public class WarpCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         if(plotManager == null && this.plugin.getDefaultPlotLevel() == null || plotManager == null && (plotManager = this.plugin.getPlotManager(this.plugin.getDefaultPlotLevel())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_WORLD));
-            return;
+            return false;
         }
 
         final String[] plotIds = args.length > 0 ?
@@ -65,14 +65,14 @@ public class WarpCommand extends SubCommand {
 
         if(plotX == null || plotZ == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_ID));
-            return;
+            return false;
         }
 
         final Plot plot = plotManager.getPlotById(plotX, plotZ);
 
         if(!plot.hasOwner() && !player.hasPermission("plot.command.warp.free")) {
             player.sendMessage(this.translate(player, TranslationKey.WARP_FAILURE_FREE));
-            return;
+            return false;
         }
 
         final boolean isDenied = plot.isDenied(player.getUniqueId()) || plot.isDenied(Utils.UUID_EVERYONE);
@@ -81,12 +81,12 @@ public class WarpCommand extends SubCommand {
 
         if(isDenied && !isOwnerOrHelper && !hasPermission) {
             player.sendMessage(this.translate(player, TranslationKey.WARP_FAILURE));
-            return;
+             return false;
         }
 
         plotManager.teleportPlayerToPlot(player, plot);
         player.sendMessage(this.translate(player, TranslationKey.WARP_SUCCESS, (plotX + ";" + plotZ)));
-        return;
+        return true;
     }
 
 }

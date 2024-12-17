@@ -56,12 +56,12 @@ public class SetRoadsCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         if (plotManager == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_WORLD));
-            return;
+            return false;
         }
 
         TaskExecutor.executeAsync(() -> {
@@ -127,7 +127,7 @@ public class SetRoadsCommand extends SubCommand {
         });
 
         player.sendMessage(this.translate(player, TranslationKey.SETROADS_STARTING));
-        return;
+        return true;
     }
 
 }

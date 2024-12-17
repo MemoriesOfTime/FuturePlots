@@ -46,25 +46,26 @@ public class GenerateCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final String levelName = args.length > 0 ? args[0] : "";
         final boolean defaultLevel = args.length > 1 && Utils.parseBoolean(args[1]);
 
         if(levelName.trim().isEmpty()) {
             player.sendMessage(this.translate(player, TranslationKey.NO_WORLD));
-            return;
+            return false;
         }
 
         if (this.plugin.getServer().isLevelLoaded(levelName)) {
             player.sendMessage(this.translate(player, TranslationKey.GENERATE_FAILURE));
-            return;
+            return false;
         }
 
         final PlotLevelRegistration levelRegistration = new PlotLevelRegistration(levelName, defaultLevel);
         this.plugin.getLevelRegistrationMap().put(player, levelRegistration);
         player.sendMessage(this.translate(player, TranslationKey.GENERATE_START, levelName));
         player.sendMessage(this.translate(player, TranslationKey.GENERATE_DIMENSION, levelRegistration.getLevelSettings().getDimension()));
+        return true;
     }
 
 }

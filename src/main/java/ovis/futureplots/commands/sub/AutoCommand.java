@@ -44,12 +44,12 @@ public class AutoCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         if(plotManager == null && this.plugin.getDefaultPlotLevel() == null || plotManager == null && (plotManager = this.plugin.getPlotManager(this.plugin.getDefaultPlotLevel())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_WORLD));
-            return;
+            return false;
         }
 
         final int ownedPlots = plotManager.getPlotsByOwner(player.getUniqueId()).size();
@@ -70,7 +70,7 @@ public class AutoCommand extends SubCommand {
 
             if(maxLimit > 0 && ownedPlots >= maxLimit) {
                 player.sendMessage(this.translate(player, TranslationKey.AUTO_FAILURE_TOO_MANY, ownedPlots));
-                return;
+                return false;
             }
         }
 
@@ -78,7 +78,7 @@ public class AutoCommand extends SubCommand {
 
         if(plot == null) {
             player.sendMessage(this.translate(player, TranslationKey.AUTO_FAILURE));
-            return;
+            return false;
         }
 
         final PlotPreClaimEvent plotPreClaimEvent = new PlotPreClaimEvent(player, plot, true, true, true);
@@ -87,7 +87,7 @@ public class AutoCommand extends SubCommand {
         if(plotPreClaimEvent.isCancelled()) {
             if(plotPreClaimEvent.isShowCancelMessage())
                 player.sendMessage(this.translate(player, TranslationKey.AUTO_FAILURE));
-            return;
+            return false;
         }
 
         plot.setOwner(player.getUniqueId());
@@ -100,7 +100,7 @@ public class AutoCommand extends SubCommand {
 
         plotManager.teleportPlayerToPlot(player, plot, false);
         player.sendMessage(this.translate(player, TranslationKey.AUTO_SUCCESS));
-        return;
+        return true;
     }
 
 }

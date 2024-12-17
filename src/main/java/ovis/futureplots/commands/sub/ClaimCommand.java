@@ -44,13 +44,13 @@ public class ClaimCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         final int ownedPlots = plotManager.getPlotsByOwner(player.getUniqueId()).size();
@@ -71,13 +71,13 @@ public class ClaimCommand extends SubCommand {
 
             if(maxLimit > 0 && ownedPlots >= maxLimit) {
                 player.sendMessage(this.translate(player, TranslationKey.CLAIM_FAILURE_TOO_MANY, ownedPlots));
-                return;
+                return false;
             }
         }
 
         if(plot.hasOwner()) {
             player.sendMessage(this.translate(player, TranslationKey.CLAIM_FAILURE));
-            return;
+            return false;
         }
 
         final PlotPreClaimEvent plotPreClaimEvent = new PlotPreClaimEvent(player, plot, false, true, true);
@@ -86,7 +86,7 @@ public class ClaimCommand extends SubCommand {
         if(plotPreClaimEvent.isCancelled()) {
             if(plotPreClaimEvent.isShowCancelMessage())
                 player.sendMessage(this.translate(player, TranslationKey.CLAIM_FAILURE));
-            return;
+            return false;
         }
 
         plot.setOwner(player.getUniqueId());
@@ -102,7 +102,7 @@ public class ClaimCommand extends SubCommand {
         }
 
         player.sendMessage(this.translate(player, TranslationKey.CLAIM_SUCCESS));
-        return;
+        return true;
     }
 
 }

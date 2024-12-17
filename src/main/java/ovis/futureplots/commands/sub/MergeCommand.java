@@ -47,13 +47,13 @@ public class MergeCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         final int dir = (NukkitMath.floorDouble((player.getYaw() * 4 / 360) + 0.5) - 2) & 3;
@@ -63,7 +63,7 @@ public class MergeCommand extends SubCommand {
             for(Plot plotToMerge : plotsToMerge) {
                 if(!plotToMerge.isOwner(player.getUniqueId())) {
                     player.sendMessage(this.translate(player, TranslationKey.MERGE_FAILURE_OWNER));
-                    return;
+                    return false;
                 }
             }
         }
@@ -85,29 +85,29 @@ public class MergeCommand extends SubCommand {
 
             if(maxLimit > 0 && plotsToMerge.size() > maxLimit) {
                 player.sendMessage(this.translate(player, TranslationKey.MERGE_FAILURE_TOO_MANY, plotsToMerge.size()));
-                return;
+                return false;
             }
         }
 
         if(plot.isMerged(dir)) {
             player.sendMessage(this.translate(player, TranslationKey.MERGE_FAILURE_ALREADY_MERGED));
-            return;
+            return false;
         }
 
         final PlotPreMergeEvent plotPreMergeEvent = new PlotPreMergeEvent(player, plot, dir, plotsToMerge);
         this.plugin.getServer().getPluginManager().callEvent(plotPreMergeEvent);
-        if(plotPreMergeEvent.isCancelled()) return;
+        if(plotPreMergeEvent.isCancelled()) return false;
 
         if(!plotManager.startMerge(plot, plotsToMerge)) {
             player.sendMessage(this.translate(player, TranslationKey.MERGE_FAILURE_NO_PLOTS_FOUND));
-            return;
+            return false;
         }
 
         final PlotMergeEvent plotMergeEvent = new PlotMergeEvent(player, plot, plotsToMerge);
         this.plugin.getServer().getPluginManager().callEvent(plotMergeEvent);
 
         player.sendMessage(this.translate(player, TranslationKey.MERGE_SUCCESS));
-        return;
+        return true;
     }
 
 }

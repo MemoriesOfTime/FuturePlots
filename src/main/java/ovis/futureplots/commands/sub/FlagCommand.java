@@ -108,13 +108,13 @@ public class FlagCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
         final String parameter = args.length > 0 ? args[0] : "";
         final String flagName = args.length > 1 ? args[1] : null;
@@ -124,11 +124,11 @@ public class FlagCommand extends SubCommand {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
-                    return;
+                    return false;
                 }
                 if(flag.getType() == FlagType.BLOCK_TYPE_LIST) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
-                    return;
+                    return false;
                 }
                 Object set = flag.update(plot, value);
                 player.sendMessage(this.translate(player, TranslationKey.FLAG_SET_CHANGED, flag.getSaveName(), set));
@@ -137,26 +137,26 @@ public class FlagCommand extends SubCommand {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
-                    return;
+                    return false;
                 }
                 if(flag.getType() != FlagType.BLOCK_TYPE_LIST) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
-                    return;
+                    return false;
                 }
                 if(value == null) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_SPECIFY_MATERIAL));
-                    return;
+                    return false;
                 }
                 String blockName = value.toLowerCase();
                 final Block block = Registries.BLOCK.get(blockName);
                 if(block == null) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_MATERIAL_NOT_EXIST));
-                    return;
+                    return false;
                 }
                 List<String> plotFlags = plot.getFlagValue(flagName) == null ? new ArrayList<>() : (List<String>) plot.getFlagValue(flagName);
                 if(plotFlags.contains(blockName)) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_MATERIAL_EXIST));
-                    return;
+                    return false;
                 }
                 plotFlags.add(blockName);
                 plot.setFlagValue(flagName, plotFlags);
@@ -166,26 +166,26 @@ public class FlagCommand extends SubCommand {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
-                    return;
+                    return false;
                 }
                 if(args.length > 2) { // Remove Flag Value
                     if(flag.getType() != FlagType.BLOCK_TYPE_LIST) {
                         player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
-                        return;
+                        return false;
                     }
                     List<String> valueList = (List<String>) plot.getFlagValue(flagName);
                     if(value == null) {
                         player.sendMessage(this.translate(player, TranslationKey.FLAG_VALUE_NULL));
-                        return;
+                        return false;
                     }
                     if(!valueList.contains(value)) {
                         player.sendMessage(this.translate(player, TranslationKey.FLAG_VALUE_NOT_CONTAINS, value));
-                        return;
+                        return false;
                     }
                     boolean removed = valueList.remove(value);
                     if(!removed) {
                         player.sendMessage(this.translate(player, TranslationKey.FLAG_VALUE_NOT_REMOVED));
-                        return;
+                        return false;
                     }
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_REMOVED_VALUE, flagName));
                 } else { // Remove Flag
@@ -229,6 +229,7 @@ public class FlagCommand extends SubCommand {
                 player.sendMessage("§cUngültiger Parameter.");
             }
         }
+        return true;
     }
 
 }

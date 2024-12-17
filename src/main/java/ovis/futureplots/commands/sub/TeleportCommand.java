@@ -46,7 +46,7 @@ public class TeleportCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final Map<String, PlotManager> plotManagers = this.plugin.getPlotManagerMap();
         final FormWindowSimple window = new FormWindowSimple(this.translate(player, TranslationKey.TELEPORT_FORM_TITLE), "");
@@ -65,7 +65,7 @@ public class TeleportCommand extends SubCommand {
         }));
 
         player.showFormWindow(window);
-        return;
+        return true;
     }
 
 }

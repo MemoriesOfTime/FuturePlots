@@ -42,29 +42,29 @@ public class DeleteHomeCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         if(!player.hasPermission("plot.command.admin.deletehome") && !plot.isOwner(player.getUniqueId())) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_OWNER));
-            return;
+            return false;
         }
 
         if(plot.getHomePosition() == null) {
             player.sendMessage(this.translate(player, TranslationKey.DELETEHOME_FAILURE_NO_HOME_SET));
-            return;
+            return false;
         }
 
         for(Plot mergedPlot : plotManager.getConnectedPlots(plot)) mergedPlot.setHomePosition(null);
         plotManager.savePlot(plot);
         player.sendMessage(this.translate(player, TranslationKey.DELETEHOME_SUCCESS));
-        return;
+        return true;
     }
 
 }

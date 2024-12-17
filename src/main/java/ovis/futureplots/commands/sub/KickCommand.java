@@ -47,13 +47,13 @@ public class KickCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         final String targetName = (args.length > 0 ? args[0] : "").trim();
@@ -62,44 +62,44 @@ public class KickCommand extends SubCommand {
 
         if(!player.hasPermission("plot.command.admin.kick") && !plot.isOwner(player.getUniqueId())) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_OWNER));
-            return;
+            return false;
         }
 
         if(targetName.equalsIgnoreCase(player.getName())) {
             player.sendMessage(this.translate(player, TranslationKey.PLAYER_SELF));
-            return;
+            return false;
         }
 
         if(targetName.isEmpty() || targetId == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLAYER));
-            return;
+            return false;
         }
 
         if(target == null) {
             player.sendMessage(this.translate(player, TranslationKey.PLAYER_NOT_ONLINE));
-            return;
+            return false;
         }
 
         if(target.hasPermission("plot.admin.bypass.kick") || plot.isHelper(targetId) || plot.isOwner(targetId)) {
             player.sendMessage(this.translate(player, TranslationKey.KICK_CANNOT_PERFORM));
-            return;
+            return false;
         }
 
         final PlotManager targetPlotManager = this.plugin.getPlotManager(target.getLevel());
         final Plot targetPlot;
         if(targetPlotManager == null || (targetPlot = targetPlotManager.getMergedPlot(target.getFloorX(), target.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.KICK_CANNOT_PERFORM));
-            return;
+            return false;
         }
 
         if(!targetPlot.getOriginId().equals(plot.getOriginId())) {
             player.sendMessage(this.translate(player, TranslationKey.KICK_CANNOT_PERFORM));
-            return;
+            return false;
         }
 
         plotManager.teleportPlayerToPlot(target, plot.getBasePlot(), false);
         player.sendMessage(this.translate(player, TranslationKey.KICK_PLAYER_KICKED, target.getName()));
-        return;
+        return true;
     }
 
 }

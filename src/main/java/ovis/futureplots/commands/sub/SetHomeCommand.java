@@ -43,18 +43,18 @@ public class SetHomeCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         if(!player.hasPermission("plot.command.admin.sethome") && !plot.isOwner(player.getUniqueId())) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_OWNER));
-            return;
+            return false;
         }
 
         final BlockVector3 homePosition = player.add(0, 0.1, 0).floor().asBlockVector3();
@@ -63,7 +63,7 @@ public class SetHomeCommand extends SubCommand {
         plotManager.savePlot(plot);
 
         player.sendMessage(this.translate(player, TranslationKey.SETHOME_SUCCESS));
-        return;
+        return true;
     }
 
 }

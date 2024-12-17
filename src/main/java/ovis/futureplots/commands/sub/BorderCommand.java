@@ -54,18 +54,18 @@ public class BorderCommand extends SubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
         final Plot plot;
         if(plotManager == null || (plot = plotManager.getMergedPlot(player.getFloorX(), player.getFloorZ())) == null) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT));
-            return;
+            return false;
         }
 
         if(!player.hasPermission("plot.command.admin.border") && !plot.isOwner(player.getUniqueId())) {
             player.sendMessage(this.translate(player, TranslationKey.NO_PLOT_OWNER));
-            return;
+            return false;
         }
 
         final FormWindowSimple window = new FormWindowSimple(this.translate(player, TranslationKey.BORDER_FORM_TITLE), "");
@@ -121,6 +121,7 @@ public class BorderCommand extends SubCommand {
         }));
 
         player.showFormWindow(window);
+        return true;
     }
 
 }
