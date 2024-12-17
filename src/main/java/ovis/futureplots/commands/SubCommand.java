@@ -90,7 +90,8 @@ public abstract class SubCommand {
         this.subParameters = new HashMap<>();
     }
 
-    public void execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(CommandSender sender, String command, String[] args) {
+        return true;
     }
 
     public void identify() {
