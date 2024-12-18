@@ -47,8 +47,9 @@ public class PlayerInteractEntity implements Listener {
             final Plot plot = plotManager.getMergedPlot(entity.getFloorX(), entity.getFloorZ());
 
             if(plot != null) {
-                if(!plot.isOwner(player.getUniqueId()) && !plot.isHelper(player.getUniqueId()) && !plot.isHelper(Utils.UUID_EVERYONE))
+                if(!plotManager.hasPermissions(player, plot)) {
                     event.setCancelled(true);
+                }
             } else {
                 event.setCancelled(true);
             }

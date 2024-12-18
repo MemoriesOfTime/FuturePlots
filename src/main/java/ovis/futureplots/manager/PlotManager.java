@@ -19,6 +19,7 @@
 package ovis.futureplots.manager;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
 import cn.nukkit.block.BlockState;
@@ -1267,6 +1268,23 @@ public class PlotManager {
             );
 
         player.teleport(Position.fromObject(plotVec.add(0, 0.1, 0), this.level));
+    }
+
+    public boolean hasPermissions(Player player, Plot plot) {
+        if (!plot.isOwner(player.getUniqueId()) &&
+                !plot.isHelper(player.getUniqueId()) &&
+                !plot.isHelper(Utils.UUID_EVERYONE) &&
+                !plot.isTrusted(player.getUniqueId()) &&
+                !plot.isTrusted(Utils.UUID_EVERYONE)) {
+            return false;
+        }
+
+        if (plot.isHelper(player.getUniqueId()) || plot.isHelper(Utils.UUID_EVERYONE)) {
+            Player plotOwner = Server.getInstance().getPlayer(this.plugin.getCorrectName(plot.getOwner()));
+            return plotOwner != null;
+        }
+
+        return true;
     }
 
 }

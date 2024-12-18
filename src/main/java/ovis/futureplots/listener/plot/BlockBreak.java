@@ -19,6 +19,8 @@
 package ovis.futureplots.listener.plot;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
+import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
@@ -30,6 +32,8 @@ import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.Plot;
 import ovis.futureplots.components.util.Utils;
 
+import java.util.List;
+
 /**
  * @modified Tim tim03we, Ovis Development (2024)
  */
@@ -40,6 +44,7 @@ public class BlockBreak implements Listener {
 
     @EventHandler
     public void on(BlockBreakEvent event) {
+        final Block block = event.getBlock();
         final Player player = event.getPlayer();
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
 
@@ -49,9 +54,9 @@ public class BlockBreak implements Listener {
             final Plot plot = plotManager.getMergedPlot(x, z);
 
             if(plot != null) {
-
-                if(!plot.isOwner(player.getUniqueId()) && !plot.isHelper(player.getUniqueId()) && !plot.isHelper(Utils.UUID_EVERYONE) && !(boolean) plot.getFlagValue("break"))
+                if(!plotManager.hasPermissions(player, plot) && !((List<String>) plot.getFlagValue("break")).contains(block.getId())) {
                     event.setCancelled(true);
+                }
 
                 if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < 5) {
                     event.setCancelled(true);
@@ -63,4 +68,5 @@ public class BlockBreak implements Listener {
             }
         }
     }
+
 }

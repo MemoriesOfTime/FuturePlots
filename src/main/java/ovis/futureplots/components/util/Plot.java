@@ -133,7 +133,7 @@ public class Plot {
     }
 
     private void addTrust0(UUID playerId) {
-        this.helpers.add(playerId);
+        this.trusted.add(playerId);
     }
 
     public boolean isTrusted(UUID playerId) {
@@ -141,7 +141,7 @@ public class Plot {
     }
 
     public boolean removeTrusted(UUID playerId) {
-        final boolean wasHelper = this.isHelper(playerId);
+        final boolean wasHelper = this.isTrusted(playerId);
         this.manager.getConnectedPlots(this).forEach(plot -> plot.removeTrusted0(playerId));
         return wasHelper;
     }

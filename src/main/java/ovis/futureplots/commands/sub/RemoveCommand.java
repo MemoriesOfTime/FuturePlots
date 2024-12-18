@@ -25,6 +25,7 @@ import cn.nukkit.command.data.CommandParameter;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.components.util.Plot;
+import ovis.futureplots.components.util.language.TranslationKey;
 import ovis.futureplots.manager.PlotManager;
 
 import java.util.UUID;
@@ -55,7 +56,7 @@ public class RemoveCommand extends SubCommand {
             return false;
         }
 
-        final String targetName = (args.length > 0 ? args[0] : "").trim();
+        String targetName = (args.length > 0 ? args[0] : "").trim();
         final UUID targetId = this.plugin.getUniqueIdByName(targetName);
 
         if(targetName.equalsIgnoreCase(player.getName()) && !player.hasPermission("plot.command.admin.remove")) {
@@ -73,13 +74,20 @@ public class RemoveCommand extends SubCommand {
             return false;
         }
 
-        if(!plot.removeHelper(targetId) && !plot.removeTrusted(targetId)) {
-            player.sendMessage(this.translate(player, "no.helper.trusted", this.plugin.getCorrectName(targetId)));
+        targetName = this.plugin.getCorrectName(targetId);
+        if(!plot.isHelper(targetId) && !plot.isTrusted(targetId)) {
+            player.sendMessage(this.translate(player, TranslationKey.NO_HELPER_TRUSTED, targetName));
             return false;
         }
 
+        if(plot.removeHelper(targetId)) {
+            player.sendMessage(this.translate(player, TranslationKey.REMOVED_HELPER, targetName));
+        }
+
+        if(plot.removeTrusted(targetId)) {
+            player.sendMessage(this.translate(player, TranslationKey.REMOVED_TRUSTED, targetName));
+        }
         plotManager.savePlot(plot);
-        player.sendMessage(this.translate(player, "removed.helper.trusted", this.plugin.getCorrectName(targetId)));
         return true;
     }
 

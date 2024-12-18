@@ -49,8 +49,9 @@ public class PlayerBucketFill implements Listener {
             final Plot plot = plotManager.getMergedPlot(x, z);
 
             if(plot != null) {
-                if(!plot.isOwner(player.getUniqueId()) && !plot.isHelper(player.getUniqueId()) && !plot.isHelper(Utils.UUID_EVERYONE))
+                if(!plotManager.hasPermissions(player, plot)) {
                     event.setCancelled(true);
+                }
 
                 if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlockClicked()) < 5) {
                     event.setCancelled(true);

@@ -74,6 +74,11 @@ public class AddCommand extends SubCommand {
             return false;
         }
 
+        if(plot.isTrusted(targetId)) {
+            player.sendMessage(this.translate(player, TranslationKey.ALREADY_TRUSTED, this.plugin.getCorrectName(targetId)));
+            return false;
+        }
+
         if(!plot.addHelper(targetId)) {
             player.sendMessage(this.translate(player, TranslationKey.ALREADY_HELPER, this.plugin.getCorrectName(targetId)));
             return false;
