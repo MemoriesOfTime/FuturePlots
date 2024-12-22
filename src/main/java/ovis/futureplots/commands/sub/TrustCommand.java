@@ -31,7 +31,7 @@ import ovis.futureplots.manager.PlotManager;
 import java.util.UUID;
 
 /**
- * @modified Tim tim03we, Ovis Development (2024)
+ * @author Tim tim03we, Ovis Development (2024)
  */
 public class TrustCommand extends SubCommand {
 
