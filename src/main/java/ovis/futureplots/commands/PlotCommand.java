@@ -23,6 +23,8 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.*;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.sub.*;
+import ovis.futureplots.components.util.language.TranslationKey;
+import ovis.futureplots.components.util.language.manager.LanguageManager;
 
 import java.util.*;
 
@@ -74,13 +76,6 @@ public class PlotCommand extends Command {
         this.commandParameters.clear();
 
         for (SubCommand subCommand : subCommands) {
-            String name = subCommand.getName();
-            if(name.equalsIgnoreCase("setting")) {
-
-            }
-        }
-
-        for (SubCommand subCommand : subCommands) {
             final Set<CommandParameter> parameterSet = subCommand.getParameters();
             final HashMap<String, CommandParameter[]> subMap = subCommand.getSubParameters();
 
@@ -123,12 +118,13 @@ public class PlotCommand extends Command {
         for(SubCommand subCommand : this.subCommands) {
             if(subCommand.getAliases().contains(subName)) {
                 if(subCommand.isPlayerOnly()) {
-                    if(!(sender instanceof Player)) {
+                    if(!(sender instanceof Player player)) {
                         sender.sendMessage("§cCommand available only for players!");
                         return true;
                     } else {
-                        if(!subCommand.hasPermission((Player) sender)) {
-                            sender.sendMessage("§cYou do not have the necessary rights for this command! (§6" + subCommand.getPermissions().toArray()[0] + "§c)");
+                        if(!subCommand.hasPermission(player)) {
+                            LanguageManager languageManager = new LanguageManager(player.getLoginChainData().getLanguageCode());
+                            sender.sendMessage(languageManager.message(player.getUniqueId(), TranslationKey.NO_PERMS, subCommand.getPermissions().toArray()[0]));
                             return true;
                         }
                     }
