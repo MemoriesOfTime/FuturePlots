@@ -62,11 +62,13 @@ public class PlayerMove implements Listener {
                         event.setCancelled(true);
                         return;
                     }
-                    LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
-                    if(!plotTo.hasOwner())
-                        player.sendActionBar(language.message(TranslationKey.PLOT_POPUP_NO_OWNER, plotTo.getId().toString()));
-                    else
-                        player.sendActionBar(language.message(TranslationKey.PLOT_POPUP_OWNER, this.plugin.getCorrectName(plotTo.getOwner())));
+                    if(!(boolean) plotTo.getFlagValue("hide-actionbar") || !(boolean) plotTo.getFlagValue("server-plot")) {
+                        LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
+                        if(!plotTo.hasOwner())
+                            player.sendActionBar(language.message(TranslationKey.PLOT_POPUP_NO_OWNER, plotTo.getId().toString()));
+                        else
+                            player.sendActionBar(language.message(TranslationKey.PLOT_POPUP_OWNER, this.plugin.getCorrectName(plotTo.getOwner())));
+                    }
                 }
             } else if(plotFrom != null) {
                 final PlotLeaveEvent plotLeaveEvent = new PlotLeaveEvent(player, plotFrom);
