@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @modified Tim tim03we, Ovis Development (2024)
+ * @author Tim tim03we, Ovis Development (2024)
  */
 public class FlagCommand extends SubCommand {
 
@@ -126,6 +126,10 @@ public class FlagCommand extends SubCommand {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
                     return false;
                 }
+                if(!player.hasPermission("plot.flag." + flag.getSaveName()) && (flag.isBasicFlag() && !player.hasPermission("plots.permpack.basicflags"))) {
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NO_PERMISSION, "plot.flag." + flag.getSaveName()));
+                    return false;
+                }
                 if(flag.getType() == FlagType.BLOCK_TYPE_LIST) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
                     return false;
@@ -137,6 +141,10 @@ public class FlagCommand extends SubCommand {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
+                    return false;
+                }
+                if(!player.hasPermission("plot.flag." + flag.getSaveName()) && (flag.isBasicFlag() && !player.hasPermission("plots.permpack.basicflags"))) {
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NO_PERMISSION, "plot.flag." + flag.getSaveName()));
                     return false;
                 }
                 if(flag.getType() != FlagType.BLOCK_TYPE_LIST) {
@@ -166,6 +174,10 @@ public class FlagCommand extends SubCommand {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
                 if(flag == null) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_EXIST));
+                    return false;
+                }
+                if(!player.hasPermission("plot.flag." + flag.getSaveName()) && (flag.isBasicFlag() && !player.hasPermission("plots.permpack.basicflags"))) {
+                    player.sendMessage(this.translate(player, TranslationKey.FLAG_NO_PERMISSION, "plot.flag." + flag.getSaveName()));
                     return false;
                 }
                 if(args.length > 2) { // Remove Flag Value
