@@ -29,11 +29,20 @@ public class Flag {
     private final String saveName;
     private final Object defaultValue;
     private final FlagType type;
+    private final boolean basicFlag;
 
     Flag(String saveName, Object defaultValue, FlagType type) {
         this.saveName = saveName;
         this.defaultValue = defaultValue;
         this.type = type;
+        this.basicFlag = true;
+    }
+
+    Flag(String saveName, Object defaultValue, FlagType type, boolean basicFlag) {
+        this.saveName = saveName;
+        this.defaultValue = defaultValue;
+        this.type = type;
+        this.basicFlag = basicFlag;
     }
 
     public Object update(Plot plot, String value) {

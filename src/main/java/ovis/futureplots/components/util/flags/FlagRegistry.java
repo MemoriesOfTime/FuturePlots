@@ -28,13 +28,15 @@ public class FlagRegistry {
     private static final Map<String, Flag> REGISTERED_FLAGS = new HashMap<>();
 
     static {
-        registerFlag(new Flag("break", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST));
-        registerFlag(new Flag("place", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST));
+        registerFlag(new Flag("break", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST, true));
+        registerFlag(new Flag("place", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST, true));
         // TODO: registerFlag(new Flag("use", new ArrayList<>(), FlagType.BLOCK_TYPE_LIST));
 
-        registerFlag(new Flag("pvp", false, FlagType.BOOLEAN));
-        registerFlag(new Flag("pve", false, FlagType.BOOLEAN));
-        registerFlag(new Flag("damage", false, FlagType.BOOLEAN));
+        registerFlag(new Flag("pvp", false, FlagType.BOOLEAN, true));
+        registerFlag(new Flag("pve", false, FlagType.BOOLEAN, true));
+        registerFlag(new Flag("damage", false, FlagType.BOOLEAN, true));
+        registerFlag(new Flag("hide-actionbar", false, FlagType.BOOLEAN, true));
+        registerFlag(new Flag("server-plot", false, FlagType.BOOLEAN, false));
     }
 
     public static Set<Flag> getFlags() {
