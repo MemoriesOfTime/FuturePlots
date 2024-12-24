@@ -214,6 +214,7 @@ public enum TranslationKey {
     FLAG_LIST_TYPE_DOUBLE,
     FLAG_LIST_TYPE_INTEGER,
     FLAG_LIST_TYPE_STRING,
+    FLAG_NO_PERMISSION,
 
     ;
 
