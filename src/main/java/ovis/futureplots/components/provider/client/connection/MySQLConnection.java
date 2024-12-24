@@ -93,6 +93,9 @@ public class MySQLConnection extends Connection {
 
     @Override
     public void disconnect() throws Exception {
+        if(this.connection == null) {
+            return;
+        }
         this.connection.close();
     }
 

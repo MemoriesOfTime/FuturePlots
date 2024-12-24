@@ -98,6 +98,9 @@ public class MongoDBConnection extends Connection {
 
     @Override
     public void disconnect() {
+        if(this.client == null) {
+            return;
+        }
         this.client.close();
     }
 
