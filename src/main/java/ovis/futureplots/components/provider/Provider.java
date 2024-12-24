@@ -87,6 +87,8 @@ public final class Provider {
                     this.plugin.getServer().getPluginManager().disablePlugin(FuturePlots.getInstance());
                     return false;
             }
+        } else {
+            this.plugin.getServer().getLogger().warning("A data provider was set by another plugin. The configured data provider in the config.yml has been disabled.");
         }
         if(dataClient.isErrored()) {
             this.plugin.getLogger().error("§4An error occurred when trying to establish a connection with the selected provider " + settings.getProvider() + ".");
