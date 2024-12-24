@@ -62,7 +62,7 @@ public class PlayerMove implements Listener {
                         event.setCancelled(true);
                         return;
                     }
-                    if(!(boolean) plotTo.getFlagValue("hide-actionbar") || !(boolean) plotTo.getFlagValue("server-plot")) {
+                    if(!(boolean) plotTo.getFlagValue("hide-actionbar") && !(boolean) plotTo.getFlagValue("server-plot")) {
                         LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
                         if(!plotTo.hasOwner())
                             player.sendActionBar(language.message(TranslationKey.PLOT_POPUP_NO_OWNER, plotTo.getId().toString()));
