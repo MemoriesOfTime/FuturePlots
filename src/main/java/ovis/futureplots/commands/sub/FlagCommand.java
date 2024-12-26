@@ -59,7 +59,6 @@ public class FlagCommand extends SubCommand {
                         CommandParameter.newType("value", CommandParamType.STRING)
                 }
         );
-        System.out.println(Arrays.toString(getAsArray(FlagType.BLOCK_TYPE_LIST)));
         this.addSubParameter("_add",
                 new CommandParameter[]{
                         CommandParameter.newEnum("add", new String[]{"add"}),
