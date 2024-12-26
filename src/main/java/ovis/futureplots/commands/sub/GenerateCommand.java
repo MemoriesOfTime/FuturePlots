@@ -40,6 +40,7 @@ public class GenerateCommand extends SubCommand {
         super(plugin, "generate");
         this.plugin = plugin;
         this.identify();
+        this.playerOnly();
         this.setPermissions("plots.generate", "plots.perm.admin");
         this.addParameter(CommandParameter.newType("level", CommandParamType.STRING));
         this.addParameter(CommandParameter.newEnum("default", new CommandEnum("should be default level?", "true", "false")));
