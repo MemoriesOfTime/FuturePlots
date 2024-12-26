@@ -51,7 +51,6 @@ public class SQLClient {
             String columnsString = columnsStringBuilder.toString();
             columnsString = columnsString.substring(0, columnsString.length() - 2);
             String statement = "CREATE TABLE IF NOT EXISTS `" + name + "`(" + columnsString + ");";
-            System.out.println(statement);
 
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.executeUpdate();
