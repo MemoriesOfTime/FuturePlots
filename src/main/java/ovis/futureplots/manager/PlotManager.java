@@ -795,13 +795,13 @@ public class PlotManager {
         asyncLevelWorker.runQueue(whenDone);
     }
 
-    public BlockVector3 getMiddle(Plot plot) {
-        final BlockVector3 pos1 = this.getExtendedBottomPlotPos(plot);
-        final BlockVector3 pos2 = this.getExtendedTopPlotPos(plot);
-        return new BlockVector3(
-                (pos1.getX() + pos2.getX()) / 2,
-                0, // Y-Koordinate bleibt 0, da sie nicht relevant ist
-                (pos1.getZ() + pos2.getZ()) / 2
+    public Vector3 getMiddle(Plot plot) {
+        final BlockVector3 pos1 = this.getBottomPlotPos(plot);
+        final BlockVector3 pos2 = this.getTopPlotPos(plot);
+        return new Vector3(
+                (double) (pos1.getX() + pos2.getX() + 2) / 2,
+                1,
+                (double) (pos1.getZ() + pos2.getZ() + 2) / 2
         );
     }
 

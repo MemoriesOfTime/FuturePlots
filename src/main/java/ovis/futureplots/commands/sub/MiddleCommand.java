@@ -19,9 +19,12 @@
 package ovis.futureplots.commands.sub;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
+import cn.nukkit.math.BlockVector3;
+import cn.nukkit.math.Vector3;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.components.util.Plot;
@@ -59,7 +62,7 @@ public class MiddleCommand extends SubCommand {
             return false;
         }
 
-        player.teleport(plotManager.getMiddle(plot).asVector3());
+        player.teleport(plotManager.getMiddle(plot));
         return true;
     }
 
