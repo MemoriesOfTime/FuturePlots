@@ -87,7 +87,7 @@ public class SQLClient {
 
 
             String statementString = "INSERT INTO `" + collection + "` " + valueNames + " VALUES " + valueData + ";";
-            System.out.println("Statement: " + statementString);
+
             PreparedStatement statement = connection.prepareStatement(statementString);
             statement.executeUpdate();
             statement.close();
