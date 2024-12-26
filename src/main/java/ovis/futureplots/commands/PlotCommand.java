@@ -117,16 +117,16 @@ public class PlotCommand extends Command {
 
         for(SubCommand subCommand : this.subCommands) {
             if(subCommand.getAliases().contains(subName)) {
-                if(subCommand.isPlayerOnly()) {
-                    if(!(sender instanceof Player player)) {
+                if(!(sender instanceof Player player)) {
+                    if(subCommand.isPlayerOnly()) {
                         sender.sendMessage("§cCommand available only for players!");
                         return true;
-                    } else {
-                        if(!subCommand.hasPermission(player)) {
-                            LanguageManager languageManager = new LanguageManager(player.getLoginChainData().getLanguageCode());
-                            sender.sendMessage(languageManager.message(player.getUniqueId(), TranslationKey.NO_PERMS, subCommand.getPermissions().toArray()[0]));
-                            return true;
-                        }
+                    }
+                } else {
+                    if(!subCommand.hasPermission(player)) {
+                        LanguageManager languageManager = new LanguageManager(player.getLoginChainData().getLanguageCode());
+                        sender.sendMessage(languageManager.message(player.getUniqueId(), TranslationKey.NO_PERMS, subCommand.getPermissions().toArray()[0]));
+                        return true;
                     }
                 }
                 subCommand.execute(sender, s, args);
