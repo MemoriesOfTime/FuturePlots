@@ -54,6 +54,7 @@ generate.wall.unowned: "§8[§6F§eP§8] §r§aChoose a block for the plot WITHO
 generate.wall.claimed: "§8[§6F§eP§8] §r§aChoose a block for the plot WITH a owner §r§7(§r§aStandard§7: §r§6%1§r§7)"
 generate.wall.filling: "§8[§6F§eP§8] §r§aSelect block for the layers under the edge of the plot §r§7(§r§aStandard§7: §r§6%1§r§7)"
 generate.ground.height: "§8[§6F§eP§8] §r§aSelect the height of the plot world §r§7(§r§aStandard§7: §r§6%1§r§7)"
+generate.wall.height: "§8[§6F§eP§8] §r§aSelect the height of the plot wall §r§7(§r§aStandard§7: §r§6%1§r§7)"
 generate.plot.size: "§8[§6F§eP§8] §r§aSelect the size of a plot §r§7(§r§aStandard§7: §r§6%1§r§7)"
 generate.road.size: "§8[§6F§eP§8] §r§aSelect the size of the roads §r§7(§r§aStandard§7: §r§6%1§r§7)"
 generate.success.default: "§8[§6F§eP§8] §r§aCreate the world with the name §6%1§r§a and register it as the default plot world!"
