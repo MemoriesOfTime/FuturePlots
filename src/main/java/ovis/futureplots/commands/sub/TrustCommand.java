@@ -75,8 +75,7 @@ public class TrustCommand extends SubCommand {
         }
 
         if(plot.isHelper(targetId)) {
-            player.sendMessage(this.translate(player, TranslationKey.ALREADY_HELPER, this.plugin.getCorrectName(targetId)));
-            return false;
+            plot.removeHelper(targetId);
         }
 
         if(!plot.addTrust(targetId)) {
