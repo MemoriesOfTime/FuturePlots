@@ -50,7 +50,7 @@ public class PlayerMove implements Listener {
             final Plot plotTo = plotManager.getMergedPlot(event.getTo().getFloorX(), event.getTo().getFloorZ());
 
             if(plotTo != null) {
-                if((plotTo.isDenied(player.getUniqueId()) || plotTo.isDenied(Utils.UUID_EVERYONE)) && !player.hasPermission("plot.admin.bypass.deny")) {
+                if(!plotTo.isOwner(player.getUniqueId()) && (plotTo.isDenied(player.getUniqueId()) || plotTo.isDenied(Utils.UUID_EVERYONE)) && !player.hasPermission("plot.admin.bypass.deny")) {
                     event.setCancelled(true);
                     return;
                 }
