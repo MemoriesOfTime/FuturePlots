@@ -188,4 +188,5 @@ flag.list.type.integer: "§6Integer Flags: §7%1"
 flag.list.type.string: "§6String Flags: §7%1"
 
 flag.no.permissions: "§8[§6F§eP§8] §cDu hast nicht die erforderlichen Berechtigungen für die Flag §6%1 §7(§c%2§7)§c."
+plot.not.claimable: "§8[§6F§eP§8] §cDu hast nicht die erforderlichen Berechtigungen, um dieses Grundstück zu beanspruchen."
 ...

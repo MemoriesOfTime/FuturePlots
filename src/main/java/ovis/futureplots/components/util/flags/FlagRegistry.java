@@ -37,6 +37,7 @@ public class FlagRegistry {
         registerFlag(new Flag("damage", false, FlagType.BOOLEAN, true));
         registerFlag(new Flag("hide-actionbar", false, FlagType.BOOLEAN, true));
         registerFlag(new Flag("server-plot", false, FlagType.BOOLEAN, false));
+        registerFlag(new Flag("claimable", true, FlagType.BOOLEAN, false));
     }
 
     public static Set<Flag> getFlags() {

@@ -215,6 +215,7 @@ public enum TranslationKey {
     FLAG_LIST_TYPE_INTEGER,
     FLAG_LIST_TYPE_STRING,
     FLAG_NO_PERMISSION,
+    PLOT_NOT_CLAIMABLE
 
     ;
 
