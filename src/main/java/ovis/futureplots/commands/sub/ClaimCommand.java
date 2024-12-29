@@ -53,6 +53,11 @@ public class ClaimCommand extends SubCommand {
             return false;
         }
 
+        if(!(boolean) plot.getFlagValue("claimable") && !player.hasPermission("plot.flags.bypass")) {
+            player.sendMessage(this.translate(player, TranslationKey.PLOT_NOT_CLAIMABLE));
+            return false;
+        }
+
         final int ownedPlots = plotManager.getPlotsByOwner(player.getUniqueId()).size();
         if(!player.hasPermission("plot.limit.unlimited")) {
             int maxLimit = -1;
