@@ -218,6 +218,7 @@ public class FuturePlots extends PluginBase {
         getServer().getPluginManager().registerEvents(new EntityDamage(this), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntity(this), this);
         getServer().getPluginManager().registerEvents(new EntityExplode(this), this);
+        getServer().getPluginManager().registerEvents(new ItemFrameUse(this), this);
         getServer().getPluginManager().registerEvents(new LeavesDecay(this), this);
         getServer().getPluginManager().registerEvents(new LiquidFlow(this), this);
         getServer().getPluginManager().registerEvents(new PlayerBucketEmpty(this), this);
