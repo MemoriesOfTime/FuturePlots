@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Modified 2024 by tim03we, Ovis Development
  */
 
 package ovis.futureplots.listener.plot;
