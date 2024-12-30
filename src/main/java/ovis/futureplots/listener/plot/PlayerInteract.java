@@ -63,24 +63,22 @@ public class PlayerInteract implements Listener {
                 return;
             }
 
-            if((block != null && ((!player.isSneaking() || item == null || item.isNull()) && block.canBeActivated())) || (item != null && item.canBeActivated())) {
-                final int x = (block == null || block.isAir() ? player : block).getFloorX();
-                final int z = (block == null || block.isAir() ? player : block).getFloorZ();
-                final Plot plot = plotManager.getMergedPlot(x, z);
+            final int x = (block == null || block.isAir() ? player : block).getFloorX();
+            final int z = (block == null || block.isAir() ? player : block).getFloorZ();
+            final Plot plot = plotManager.getMergedPlot(x, z);
 
-                if(plot != null) {
-                    if(!plotManager.hasPermissions(player, plot)) {
-                        event.setCancelled(true);
-                    }
-
-                    if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < 5) {
-                        event.setCancelled(true);
-                        LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
-                        player.sendMessage(language.message(TranslationKey.TOO_CLOSE_TO_HOME));
-                    }
-                } else {
+            if(plot != null) {
+                if(!plotManager.hasPermissions(player, plot)) {
                     event.setCancelled(true);
                 }
+
+                if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < 5) {
+                    event.setCancelled(true);
+                    LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
+                    player.sendMessage(language.message(TranslationKey.TOO_CLOSE_TO_HOME));
+                }
+            } else {
+                event.setCancelled(true);
             }
         }
     }
