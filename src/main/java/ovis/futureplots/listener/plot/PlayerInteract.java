@@ -48,37 +48,35 @@ public class PlayerInteract implements Listener {
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());
 
         if(plotManager != null && !player.hasPermission("plot.admin.interact")) {
+
             final Block block = event.getBlock();
             final Item item = event.getItem();
-
-            if(event.getAction() == PlayerInteractEvent.Action.PHYSICAL && block != null) {
-                final Plot plot = plotManager.getMergedPlot(block.getFloorX(), block.getFloorZ());
-
-                if(plot != null) {
-                    if(!plotManager.hasPermissions(player, plot)) {
-                        event.setCancelled(true);
-                    }
-                }
-
-                return;
-            }
 
             final int x = (block == null || block.isAir() ? player : block).getFloorX();
             final int z = (block == null || block.isAir() ? player : block).getFloorZ();
             final Plot plot = plotManager.getMergedPlot(x, z);
 
-            if(plot != null) {
-                if(!plotManager.hasPermissions(player, plot)) {
-                    event.setCancelled(true);
-                }
 
-                if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < 5) {
-                    event.setCancelled(true);
-                    LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
-                    player.sendMessage(language.message(TranslationKey.TOO_CLOSE_TO_HOME));
+            switch(event.getAction()) {
+                case RIGHT_CLICK_BLOCK:
+                case LEFT_CLICK_BLOCK:
+                case PHYSICAL: {
+                    if(plot == null) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    if(!plotManager.hasPermissions(player, plot)) {
+                        event.setCancelled(true);
+                    }
+
+                    if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < 5) {
+                        event.setCancelled(true);
+                        LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
+                        player.sendMessage(language.message(TranslationKey.TOO_CLOSE_TO_HOME));
+                    }
+                    return;
                 }
-            } else {
-                event.setCancelled(true);
             }
         }
     }
