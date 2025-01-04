@@ -70,6 +70,7 @@ public class PlotCommand extends Command {
         this.subCommands.add(new TrustCommand(this.plugin));
         this.subCommands.add(new UndenyCommand(this.plugin));
         this.subCommands.add(new UnlinkCommand(this.plugin));
+        this.subCommands.add(new VersionCommand(this.plugin));
         this.subCommands.add(new WallCommand(this.plugin));
         this.subCommands.add(new WarpCommand(this.plugin));
 
