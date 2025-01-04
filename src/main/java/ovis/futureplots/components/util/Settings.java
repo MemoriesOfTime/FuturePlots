@@ -42,6 +42,10 @@ public class Settings {
     private String mySqlPassword;
 
     private boolean teleportOnClaim;
+    private boolean homeProtectEnabled;
+    private int homeProtectDistance;
+    private boolean updateCheckerEnabled;
+    private boolean checkForStableUpdates;
 
     public void init() {
         Config config = FuturePlots.getInstance().getConfig();
@@ -62,5 +66,9 @@ public class Settings {
         mySqlPassword = config.getString("mysql.password");
 
         teleportOnClaim = config.getBoolean("teleport-on-claim");
+        homeProtectEnabled = config.getBoolean("home-protection.enabled");
+        homeProtectDistance = config.getInt("home-protection.distance");
+        updateCheckerEnabled = config.getBoolean("update-checker.enabled", true);
+        checkForStableUpdates = !config.getString("update-checker.mode", "release").equals("release");
     }
 }

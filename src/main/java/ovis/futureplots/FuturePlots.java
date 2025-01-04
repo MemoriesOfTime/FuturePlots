@@ -105,6 +105,9 @@ public class FuturePlots extends PluginBase {
     @Getter
     private static LanguageProvider languageProvider;
 
+    @Getter
+    private static UpdateChecker updateChecker;
+
 
     public static FuturePlots getInstance() {
         return instance;
@@ -205,6 +208,11 @@ public class FuturePlots extends PluginBase {
                 if(metrics.isEnabled()) {
                     getLogger().info("Metrics are enabled. Anonymous usage data about the plugin is being sent to bStats. If you'd like to opt-out, you can disable this in the config.yml file.");
                 }
+            }
+
+            if(FuturePlots.getSettings().isUpdateCheckerEnabled()) {
+                updateChecker = new UpdateChecker(FuturePlots.getSettings().isCheckForStableUpdates());
+                updateChecker.check();
             }
         }
     }
