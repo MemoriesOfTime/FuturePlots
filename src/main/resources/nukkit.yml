@@ -6,3 +6,4 @@ authors:
   - tim03we
 version: ${pom.version}
 description: A Nukkit based plot plugin
+website: ovis.dev
