@@ -43,7 +43,7 @@ public class LeavesDecay implements Listener {
 
         final Plot plot = plotManager.getMergedPlot(block.getFloorX(), block.getFloorZ());
         if(plot == null) event.setCancelled(true);
-        else if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < 5)
+        else if(FuturePlots.getSettings().isHomeProtectEnabled() && plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlock()) < FuturePlots.getSettings().getHomeProtectDistance())
             event.setCancelled(true);
     }
 }

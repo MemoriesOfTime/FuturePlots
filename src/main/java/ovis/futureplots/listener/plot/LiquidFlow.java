@@ -47,9 +47,9 @@ public class LiquidFlow implements Listener {
             if(plotFrom != null && plotTo == null) event.setCancelled(true);
             if(plotTo != null && plotFrom == null) event.setCancelled(true);
 
-            if(plotFrom != null && plotFrom.getHomePosition() != null && plotFrom.getHomePosition().distance(event.getBlock()) < 5)
+            if(plotFrom != null && FuturePlots.getSettings().isHomeProtectEnabled() && plotFrom.getHomePosition() != null && plotFrom.getHomePosition().distance(event.getBlock()) < FuturePlots.getSettings().getHomeProtectDistance())
                 event.setCancelled(true);
-            if(plotTo != null && plotTo.getHomePosition() != null && plotTo.getHomePosition().distance(event.getBlock()) < 5)
+            if(plotTo != null && FuturePlots.getSettings().isHomeProtectEnabled() && plotTo.getHomePosition() != null && plotTo.getHomePosition().distance(event.getBlock()) < FuturePlots.getSettings().getHomeProtectDistance())
                 event.setCancelled(true);
         }
     }

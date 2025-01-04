@@ -53,7 +53,7 @@ public class PlayerBucketFill implements Listener {
                     event.setCancelled(true);
                 }
 
-                if(plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlockClicked()) < 5) {
+                if(FuturePlots.getSettings().isHomeProtectEnabled() && plot.getHomePosition() != null && plot.getHomePosition().distance(event.getBlockClicked()) < FuturePlots.getSettings().getHomeProtectDistance()) {
                     event.setCancelled(true);
                     LanguageManager language = new LanguageManager(player.getLoginChainData().getLanguageCode());
                     player.sendMessage(language.message(TranslationKey.TOO_CLOSE_TO_HOME));
