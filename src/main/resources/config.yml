@@ -3,6 +3,13 @@
 # Do not modify! Changing the version will cause your configurations to be lost.
 version: "2.0.0"
 
+# Enable (true) or disable (false) the update checker
+# "release" checks for stable versions, "dev" checks for the latest commit
+# A message will appear at server startup indicating if an update is available or if you're up to date
+update-checker:
+  enabled: true
+  mode: "release"
+
 # Default language of the plugin.
 # Available languages: en_US, de_DE
 default_language: "en_US"
@@ -39,6 +46,13 @@ teleport-on-claim: true
 
 # How many plots a default player without permissions can own
 max-plots: 2
+
+# This section configures home protection, specifying whether it
+# is enabled and the radius of protection around the home.
+home-protection:
+  enabled: true
+  distance: 5
+
 
 # This is used for troubleshooting.
 # Enable it when contacting the developer to receive more detailed error messages and debug information.
