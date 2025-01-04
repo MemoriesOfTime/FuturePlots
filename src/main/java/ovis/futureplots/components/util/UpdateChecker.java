@@ -82,12 +82,7 @@ public class UpdateChecker {
                         FuturePlots.getInstance().getLogger().warning("----------");
                     }
                 } else {
-                    this.updateAvailable = true;
-                    FuturePlots.getInstance().getLogger().warning("----------");
-                    FuturePlots.getInstance().getLogger().warning("The release tag could not be retrieved. Is an unofficial version possibly being used?");
-                    FuturePlots.getInstance().getLogger().warning("Newest version: " + latestReleaseTag);
-                    FuturePlots.getInstance().getLogger().warning("Download: " + latestReleaseUrl);
-                    FuturePlots.getInstance().getLogger().warning("----------");
+                    FuturePlots.getInstance().getLogger().error("The release tag could not be retrieved. Is an unofficial version possibly being used?");
                 }
             }
         } catch (Exception e) {
@@ -95,77 +90,90 @@ public class UpdateChecker {
         }
     }
 
-    private String getGitTagFromCommitHash(String commitHash) throws Exception {
-        String urlString = String.format(GITHUB_API_URL_TAGS);
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+    private String getGitTagFromCommitHash(String commitHash) {
+        try {
+            String urlString = String.format(GITHUB_API_URL_TAGS);
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        JsonArray tags = JsonParser.parseString(response.toString()).getAsJsonArray();
-
-        for (JsonElement element : tags) {
-            JsonObject tag = element.getAsJsonObject();
-            String sha = tag.getAsJsonObject("commit").get("sha").getAsString();
-
-            if (sha.equals(commitHash)) {
-                return tag.get("name").getAsString();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
             }
-        }
+            in.close();
 
+            JsonArray tags = JsonParser.parseString(response.toString()).getAsJsonArray();
+
+            for (JsonElement element : tags) {
+                JsonObject tag = element.getAsJsonObject();
+                String sha = tag.getAsJsonObject("commit").get("sha").getAsString();
+
+                if (sha.equals(commitHash)) {
+                    return tag.get("name").getAsString();
+                }
+            }
+        } catch (Exception e) {
+            // nothing
+        }
         return null;
     }
 
-    private String[] getLatestRelease() throws Exception {
-        String urlString = String.format(GITHUB_API_URL_LATEST_RELEASE);
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+    private String[] getLatestRelease() {
+        try {
+            String urlString = String.format(GITHUB_API_URL_LATEST_RELEASE);
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            JsonObject release = JsonParser.parseString(response.toString()).getAsJsonObject();
+            String tag = release.get("tag_name").getAsString();
+            String urlRelease = release.get("html_url").getAsString();
+
+            return new String[]{tag, urlRelease};
+        } catch (Exception e) {
+            // nothing
         }
-        in.close();
-
-        JsonObject release = JsonParser.parseString(response.toString()).getAsJsonObject();
-        String tag = release.get("tag_name").getAsString();
-        String urlRelease = release.get("html_url").getAsString();
-
-        return new String[]{tag, urlRelease};
+        return new String[]{"", ""};
     }
 
 
-    private String getLatestCommitHash() throws Exception {
-        String urlString = String.format(GITHUB_API_URL_COMMITS);
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+    private String getLatestCommitHash() {
+        try {
+            String urlString = String.format(GITHUB_API_URL_COMMITS);
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            JsonArray commits = JsonParser.parseString(response.toString()).getAsJsonArray();
+            JsonObject latestCommit = commits.get(0).getAsJsonObject();
+            String latestCommitHash = latestCommit.get("sha").getAsString();
+
+            return latestCommitHash;
+        } catch (Exception e) {
+            // nothing
         }
-        in.close();
-
-        JsonArray commits = JsonParser.parseString(response.toString()).getAsJsonArray();
-        JsonObject latestCommit = commits.get(0).getAsJsonObject();
-        String latestCommitHash = latestCommit.get("sha").getAsString();
-
-        return latestCommitHash;
+        return null;
     }
 }
