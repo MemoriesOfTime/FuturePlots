@@ -17,9 +17,10 @@
 
 package ovis.futureplots.components.provider.client.connection;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
+
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import ovis.futureplots.components.provider.client.clientdetails.ClientDetails;
@@ -41,8 +42,7 @@ public class MongoDBConnection extends Connection {
     public void connect(ClientDetails clientDetails) {
         MongoDBDetails details = (MongoDBDetails) clientDetails;
 
-        MongoClientURI mongoClientURI = new MongoClientURI(details.getUri());
-        client = new MongoClient(mongoClientURI);
+        client = MongoClients.create(details.getUri());
         database = client.getDatabase(details.getDatabase());
     }
 
