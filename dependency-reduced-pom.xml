@@ -4,6 +4,11 @@
   <groupId>ovis.futureplots</groupId>
   <artifactId>FuturePlots</artifactId>
   <version>4.0.0-SNAPSHOT</version>
+  <scm>
+    <connection>scm:git:git://github.com/ovisdevelopment/FuturePlots.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:ovisdevelopment/FuturePlots.git</developerConnection>
+    <url>https://github.com/ovisdevelopment/FuturePlots</url>
+  </scm>
   <build>
     <resources>
       <resource>
@@ -15,16 +20,16 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.13.0</version>
         <configuration>
-          <release>17</release>
-          <source>17</source>
-          <target>17</target>
+          <release>21</release>
+          <source>21</source>
+          <target>21</target>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -35,12 +40,29 @@
               <artifactSet>
                 <includes>
                   <include>com.github.luben:zstd-jni</include>
-                  <include>org.mongodb:mongo-java-driver</include>
+                  <include>org.mongodb:*</include>
                 </includes>
               </artifactSet>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -87,6 +109,12 @@
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
       <version>8.3.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20240303</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
