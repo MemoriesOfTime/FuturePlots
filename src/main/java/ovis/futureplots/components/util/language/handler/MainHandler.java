@@ -52,7 +52,6 @@ public class MainHandler implements LanguageProvider {
                     file.renameTo(oldFile);
                     FuturePlots.getInstance().saveResource("lang/" + languageKey + ".yml");
                     messageConfig = new Config(FuturePlots.getInstance().getDataFolder() + "/lang/" + languageKey + ".yml", Config.YAML);
-                    System.out.println("New File");
                 }
             } else {
                 System.out.println("File " + languageKey + ".yml" + " not found...");

@@ -285,8 +285,6 @@ public class FuturePlots extends PluginBase {
 
         TaskExecutor.executeAsync(() -> this.provider.createPlotsTable(levelName));
 
-        System.out.println("Road Block: " + Block.get(Registries.BLOCKSTATE.get(levelSettings.getRoadBlockHash())).getName());
-
         final PlotManager plotManager = new PlotManager(this, levelName, levelSettings, false);
         this.plotManagerMap.put(levelName, plotManager);
 
