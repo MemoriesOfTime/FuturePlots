@@ -100,10 +100,14 @@ public class PlotGenerator extends Generator {
 
     @Override
     public void generateChunk(int chunkX, int chunkZ) {
+        if (this.level == null) {
+            this.level = this.chunkManager.getChunk(chunkX, chunkZ).getProvider().getLevel();
+        }
+
         final PlotManager plotManager = FuturePlots.INSTANCE.getPlotManager(this.level);
         if (plotManager == null) return;
 
-        BaseFullChunk chunk = level.getChunk(chunkX, chunkZ);
+        BaseFullChunk chunk = this.chunkManager.getChunk(chunkX, chunkZ);
 
         final ShapeType[] shapes = plotManager.getShapes(chunk.getX() << 4, chunk.getZ() << 4);
 
