@@ -34,7 +34,8 @@
 
 # FuturePlots
 
-FuturePlots is an innovative and versatile plugin specifically designed for Minecraft servers to provide advanced plot management capabilities. Whether you're running a small private server or a large multiplayer community, FuturePlots offers all the tools you need to create an organized and user-friendly world.
+FuturePlots is an innovative and versatile plugin specifically designed for Minecraft servers to provide advanced plot management capabilities. Whether you're running a small private server or a large multiplayer community, FuturePlots offers all the tools you need to create an organized and user-friendly world.  
+This repository is a modified version compatible with [Nukkit-MOT](https://github.com/MemoriesOfTime/Nukkit-MOT)
 
 
 ----------------
