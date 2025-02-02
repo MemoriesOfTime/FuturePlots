@@ -352,12 +352,7 @@ public class FuturePlots extends PluginBase {
     public String findPlayerName(String playerName) {
         final Collection<String> playerNames = this.playerManager.getPlayerNames();
         for (String name : playerNames) {
-            if (name.equalsIgnoreCase(playerName))
-                return name;
-        }
-
-        for (String name : playerNames) {
-            if (name.toLowerCase().startsWith(playerName.toLowerCase()))
+            if (name.equalsIgnoreCase(playerName) || name.toLowerCase().startsWith(playerName.toLowerCase()))
                 return name;
         }
 
