@@ -266,20 +266,6 @@ public class PlotGenerator extends Generator {
                             for (int yBlock = levelSettings.getGroundHeight() + 1; yBlock <= chunkMaxY; ++yBlock)
                                 IChunk.setBlockState(xBlock, yBlock, zBlock, BlockAir.STATE);
                     }
-                    /* Old way without wallheight
-                    if (shapeType == ShapeType.WALL) {
-                        IChunk.setBlockState(xBlock, levelSettings.getGroundHeight() + 1 + chunkMinY, zBlock, wallPlotState);
-                        IChunk.setBlockState(xBlock, levelSettings.getGroundHeight() + chunkMinY, zBlock, wallFillingState);
-                        if (!ignoreAir)
-                            for (int yBlock = levelSettings.getGroundHeight() + 2; yBlock <= chunkMaxY; ++yBlock)
-                                IChunk.setBlockState(xBlock, yBlock, zBlock, BlockAir.STATE);
-                    } else {
-                        IChunk.setBlockState(xBlock, levelSettings.getGroundHeight() + chunkMinY, zBlock, roadState);
-                        if (!ignoreAir)
-                            for (int yBlock = levelSettings.getGroundHeight() + 1; yBlock <= chunkMaxY; ++yBlock)
-                                IChunk.setBlockState(xBlock, yBlock, zBlock, BlockAir.STATE);
-                    }
-                     */
                 }
             }
         }
