@@ -11,7 +11,7 @@ update-checker:
   mode: "release"
 
 # Default language of the plugin.
-# Available languages: en_US, de_DE
+# Available languages: en_US, de_DE, zh_CN
 default_language: "en_US"
 
 # Should we apply the client's language from the player, if available?
