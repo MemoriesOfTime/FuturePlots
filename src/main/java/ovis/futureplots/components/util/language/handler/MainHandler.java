@@ -54,7 +54,7 @@ public class MainHandler implements LanguageProvider {
                     messageConfig = new Config(FuturePlots.getInstance().getDataFolder() + "/lang/" + languageKey + ".yml", Config.YAML);
                 }
             } else {
-                System.out.println("File " + languageKey + ".yml" + " not found...");
+                FuturePlots.getInstance().getLogger().warning("File " + languageKey + ".yml" + " not found...");
                 break;
             }
             HashMap<String, String> messageMap = new HashMap<>();
