@@ -34,7 +34,7 @@ public class MainHandler implements LanguageProvider {
 
     private static String version = "2.0.0";
     private static HashMap<String, HashMap<String, String>> messages = new HashMap<>();
-    private static final String[] official_langs = new String[]{"en_US", "de_DE"};
+    private static final String[] official_langs = new String[]{"en_US", "de_DE", "zh_CN"};
 
     @Override
     public void init() {
