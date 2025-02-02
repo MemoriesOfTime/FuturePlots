@@ -1,6 +1,6 @@
 name: FuturePlots
 main: ovis.futureplots.FuturePlots
-api: 2.0.0
+api: "Nukkit-MOT"
 authors:
   - OvisDevelopment
   - tim03we

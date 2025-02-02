@@ -19,11 +19,10 @@
 package ovis.futureplots.components.util;
 
 import cn.nukkit.block.*;
-import cn.nukkit.block.property.CommonBlockProperties;
-import cn.nukkit.block.property.enums.MinecraftVerticalHalf;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.biome.BiomeID;
-import cn.nukkit.registry.Registries;
+import cn.nukkit.level.biome.Biome;
+import cn.nukkit.level.biome.EnumBiome;
+import cn.nukkit.level.generator.block.state.BlockState;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,52 +38,52 @@ import java.util.Map;
 public class PlotLevelSettings {
 
     private int dimension = Level.DIMENSION_OVERWORLD;
-    private int plotBiome = BiomeID.PLAINS;
-    private int roadBiome = BiomeID.PLAINS;
+    private int plotBiome = EnumBiome.PLAINS.id;
+    private int roadBiome = EnumBiome.PLAINS.id;
     private int groundHeight = 64;
     private int wallHeight = 64;
     private int plotSize = 35;
     private int roadSize = 7;
 
-    private int firstLayerBlockHash = BlockBedrock.PROPERTIES.getDefaultState().blockStateHash();
-    private int middleLayerBlockHash = BlockDirt.PROPERTIES.getDefaultState().blockStateHash();
-    private int lastLayerBlockHash = BlockGrassBlock.PROPERTIES.getDefaultState().blockStateHash();
-    private int wallFillingBlockHash = BlockStone.PROPERTIES.getDefaultState().blockStateHash();
-    private int wallPlotBlockHash = BlockNormalStoneSlab.PROPERTIES.getBlockState(CommonBlockProperties.MINECRAFT_VERTICAL_HALF.createValue(MinecraftVerticalHalf.BOTTOM)).blockStateHash();
-    private int claimPlotBlockHash = BlockStoneBrickSlab.PROPERTIES.getBlockState(CommonBlockProperties.MINECRAFT_VERTICAL_HALF.createValue(MinecraftVerticalHalf.BOTTOM)).blockStateHash();
-    private int roadBlockHash = BlockOakPlanks.PROPERTIES.getDefaultState().blockStateHash();
-    private int roadFillingBlockHash = BlockDirt.PROPERTIES.getDefaultState().blockStateHash();
+    private int firstLayerBlockHash = new BlockState(Block.BEDROCK, 0).getFullId();
+    private int middleLayerBlockHash = new BlockState(Block.DIRT, 0).getFullId();
+    private int lastLayerBlockHash = new BlockState(Block.GRASS, 0).getFullId();
+    private int wallFillingBlockHash = new BlockState(Block.STONE, 0).getFullId();
+    private int wallPlotBlockHash = new BlockState(Block.STONE_SLAB, 0).getFullId();
+    private int claimPlotBlockHash = new BlockState(Block.STONE_SLAB, BlockSlabStone.BRICK).getFullId();
+    private int roadBlockHash = new BlockState(Block.PLANKS, BlockPlanks.OAK).getFullId();
+    private int roadFillingBlockHash = new BlockState(Block.DIRT, 0).getFullId();
 
     public BlockState getFirstLayerState() {
-        return Registries.BLOCKSTATE.get(firstLayerBlockHash);
+        return BlockState.fromFullId(this.firstLayerBlockHash);
     }
 
     public BlockState getMiddleLayerState() {
-        return Registries.BLOCKSTATE.get(middleLayerBlockHash);
+        return BlockState.fromFullId(middleLayerBlockHash);
     }
 
     public BlockState getLastLayerState() {
-        return Registries.BLOCKSTATE.get(lastLayerBlockHash);
+        return BlockState.fromFullId(lastLayerBlockHash);
     }
 
     public BlockState getWallFillingState() {
-        return Registries.BLOCKSTATE.get(wallFillingBlockHash);
+        return BlockState.fromFullId(wallFillingBlockHash);
     }
 
     public BlockState getWallPlotState() {
-        return Registries.BLOCKSTATE.get(wallPlotBlockHash);
+        return BlockState.fromFullId(wallPlotBlockHash);
     }
 
     public BlockState getClaimPlotState() {
-        return Registries.BLOCKSTATE.get(claimPlotBlockHash);
+        return BlockState.fromFullId(claimPlotBlockHash);
     }
 
     public BlockState getRoadState() {
-        return Registries.BLOCKSTATE.get(roadBlockHash);
+        return BlockState.fromFullId(roadBlockHash);
     }
 
     public BlockState getRoadFillingState() {
-        return Registries.BLOCKSTATE.get(roadFillingBlockHash);
+        return BlockState.fromFullId(roadFillingBlockHash);
     }
 
     public int getTotalSize() {

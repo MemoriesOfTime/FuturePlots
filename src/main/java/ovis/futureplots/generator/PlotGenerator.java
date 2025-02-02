@@ -19,20 +19,18 @@
 package ovis.futureplots.generator;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.BlockAir;
-import cn.nukkit.block.BlockState;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.level.ChunkManager;
 import cn.nukkit.level.DimensionData;
 import cn.nukkit.level.DimensionEnum;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.format.IChunk;
-import cn.nukkit.level.generator.GenerateStage;
+import cn.nukkit.level.format.generic.BaseFullChunk;
 import cn.nukkit.level.generator.Generator;
-import cn.nukkit.level.generator.stages.FinishedStage;
-import cn.nukkit.level.generator.stages.LightPopulationStage;
+import cn.nukkit.level.generator.block.state.BlockState;
+import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector3;
-import cn.nukkit.registry.Registries;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.schematic.Schematic;
@@ -48,21 +46,27 @@ import java.util.*;
  * @modified Tim tim03we, Ovis Development (2024)
  */
 public class PlotGenerator extends Generator {
+
+    private ChunkManager chunkManager;
+
+    private NukkitRandom random;
+
     public static final Allowed<ShapeType> GENERATE_ALLOWED = new Allowed<>(ShapeType.values());
     public static final Allowed<ShapeType> REGENERATE_ALLOWED = new Allowed<>(ShapeType.WALL, ShapeType.ROAD);
     private final FuturePlots plugin;
     private Level level;
 
-    public PlotGenerator(DimensionData dimensionData, Map<String, Object> options) {
-        super(DimensionEnum.OVERWORLD.getDimensionData(), options);
+    public PlotGenerator() {
+        this(Collections.emptyMap());
+    }
+
+    public PlotGenerator(Map<String, Object> options) {
         this.plugin = FuturePlots.INSTANCE;
     }
 
     @Override
-    public void stages(GenerateStage.Builder builder) {
-        builder.start(Registries.GENERATE_STAGE.get(PlotStage.NAME))
-                .next(Registries.GENERATE_STAGE.get(LightPopulationStage.NAME))
-                .next(Registries.GENERATE_STAGE.get(FinishedStage.NAME));
+    public int getId() {
+        return 101;
     }
 
     @Override
@@ -73,7 +77,48 @@ public class PlotGenerator extends Generator {
         return DimensionEnum.OVERWORLD.getDimensionData();
     }
 
-    public void regenerateChunk(PlotManager plotManager, IChunk IChunk) {
+    @Override
+    public void init(ChunkManager level, NukkitRandom random) {
+        this.chunkManager = level;
+        this.random = random;
+    }
+
+    @Override
+    public Vector3 getSpawn() {
+        return new Vector3(-3, 65, -3);
+    }
+
+    @Override
+    public ChunkManager getChunkManager() {
+        return this.chunkManager;
+    }
+
+    @Override
+    public void populateStructure(int chunkX, int chunkZ) {
+
+    }
+
+    @Override
+    public void generateChunk(int chunkX, int chunkZ) {
+        final PlotManager plotManager = FuturePlots.INSTANCE.getPlotManager(this.level);
+        if (plotManager == null) return;
+
+        BaseFullChunk chunk = level.getChunk(chunkX, chunkZ);
+
+        final ShapeType[] shapes = plotManager.getShapes(chunk.getX() << 4, chunk.getZ() << 4);
+
+        preGenerateChunk(plotManager, chunk, shapes, GENERATE_ALLOWED, true, null, null, null, null);
+        final Schematic schematic = plotManager.getPlotSchematic().getSchematic();
+        if (schematic != null)
+            placeChunkSchematic(plotManager, schematic, chunk, shapes, GENERATE_ALLOWED, null, null, null, null);
+    }
+
+    @Override
+    public void populateChunk(int chunkX, int chunkZ) {
+
+    }
+
+    public void regenerateChunk(PlotManager plotManager, BaseFullChunk IChunk) {
         final ShapeType[] shapes = plotManager.getShapes(IChunk.getX() << 4, IChunk.getZ() << 4);
 
         final List<Entity> toClose0 = new ArrayList<>();
@@ -110,7 +155,7 @@ public class PlotGenerator extends Generator {
         level.getChunkPlayers(IChunk.getX(), IChunk.getZ()).values().forEach(player -> level.requestChunk(IChunk.getX(), IChunk.getZ(), player));
     }
 
-    public void regenerateChunkWithin(PlotManager plotManager, IChunk IChunk, int minX, int minZ, int maxX, int maxZ) {
+    public void regenerateChunkWithin(PlotManager plotManager, BaseFullChunk IChunk, int minX, int minZ, int maxX, int maxZ) {
         final ShapeType[] shapes = plotManager.getShapes(IChunk.getX() << 4, IChunk.getZ() << 4);
 
         final List<Entity> toClose0 = new ArrayList<>();
@@ -176,10 +221,10 @@ public class PlotGenerator extends Generator {
             if (shapeType == ShapeType.WALL)
                 return levelSettings.getWallPlotState().equals(blockState) || levelSettings.getClaimPlotState().equals(blockState);
 
-        return BlockAir.STATE.equals(blockState);
+        return BlockState.AIR.equals(blockState);
     }
 
-    public static void placeChunkSchematic(PlotManager plotManager, Schematic schematic, IChunk IChunk,
+    public static void placeChunkSchematic(PlotManager plotManager, Schematic schematic, BaseFullChunk IChunk,
                                            ShapeType[] shapes, Allowed<ShapeType> allowedShapes, Integer minX, Integer minZ, Integer maxX, Integer maxZ) {
         final Set<Vector3> handledVectors = new HashSet<>();
         final int fullX = IChunk.getX() << 4;
@@ -199,7 +244,7 @@ public class PlotGenerator extends Generator {
         }
     }
 
-    public static void preGenerateChunk(PlotManager plotManager, IChunk IChunk, ShapeType[] shapes,
+    public static void preGenerateChunk(PlotManager plotManager, BaseFullChunk IChunk, ShapeType[] shapes,
                                         Allowed<ShapeType> allowedShapes, boolean ignoreAir, Integer minX, Integer minZ, Integer maxX, Integer maxZ) {
         final PlotLevelSettings levelSettings = plotManager.getLevelSettings();
 
@@ -236,9 +281,9 @@ public class PlotGenerator extends Generator {
                 }
 
                 if (!ignoreAir) for (int yBlock = chunkMinY; yBlock <= chunkMaxY; ++yBlock)
-                    IChunk.setBlockState(xBlock, yBlock, zBlock, BlockAir.STATE, 1);
+                    IChunk.setBlockIdAt(xBlock, yBlock, zBlock, 1, BlockID.AIR);
 
-                IChunk.setBlockState(xBlock, chunkMinY, zBlock, firstLayerState);
+                IChunk.setBlockFullIdAt(xBlock, chunkMinY, zBlock, firstLayerState.getFullId());
 
                 final BlockState currentState;
                 if (shapeType == ShapeType.PLOT) currentState = middleLayerState;
@@ -246,25 +291,25 @@ public class PlotGenerator extends Generator {
                 else currentState = roadFillingState;
 
                 for (int yBlock = 1; yBlock < levelSettings.getGroundHeight(); ++yBlock)
-                    IChunk.setBlockState(xBlock, yBlock + chunkMinY, zBlock, currentState);
+                    IChunk.setBlockFullIdAt(xBlock, yBlock + chunkMinY, zBlock, currentState.getFullId());
 
                 if (shapeType == ShapeType.PLOT) {
-                    IChunk.setBlockState(xBlock, levelSettings.getGroundHeight() + chunkMinY, zBlock, lastLayerState);
+                    IChunk.setBlockFullIdAt(xBlock, levelSettings.getGroundHeight() + chunkMinY, zBlock, lastLayerState.getFullId());
                     if (!ignoreAir)
                         for (int yBlock = levelSettings.getGroundHeight() + 1; yBlock <= chunkMaxY; ++yBlock)
-                            IChunk.setBlockState(xBlock, yBlock, zBlock, BlockAir.STATE);
+                            IChunk.setBlockFullIdAt(xBlock, yBlock, zBlock, BlockState.AIR.getFullId());
                 } else {
                     if (shapeType == ShapeType.WALL) {
-                        IChunk.setBlockState(xBlock, levelSettings.getWallHeight() + 1 + chunkMinY, zBlock, wallPlotState);
-                        IChunk.setBlockState(xBlock, levelSettings.getWallHeight() + chunkMinY, zBlock, wallFillingState);
+                        IChunk.setBlockFullIdAt(xBlock, levelSettings.getWallHeight() + 1 + chunkMinY, zBlock, wallPlotState.getFullId());
+                        IChunk.setBlockFullIdAt(xBlock, levelSettings.getWallHeight() + chunkMinY, zBlock, wallFillingState.getFullId());
                         if (!ignoreAir)
                             for (int yBlock = levelSettings.getWallHeight() + 2; yBlock <= chunkMaxY; ++yBlock)
-                                IChunk.setBlockState(xBlock, yBlock, zBlock, BlockAir.STATE);
+                                IChunk.setBlockFullIdAt(xBlock, yBlock, zBlock, BlockState.AIR.getFullId());
                     } else {
-                        IChunk.setBlockState(xBlock, levelSettings.getGroundHeight() + chunkMinY, zBlock, roadState);
+                        IChunk.setBlockFullIdAt(xBlock, levelSettings.getGroundHeight() + chunkMinY, zBlock, roadState.getFullId());
                         if (!ignoreAir)
                             for (int yBlock = levelSettings.getGroundHeight() + 1; yBlock <= chunkMaxY; ++yBlock)
-                                IChunk.setBlockState(xBlock, yBlock, zBlock, BlockAir.STATE);
+                                IChunk.setBlockFullIdAt(xBlock, yBlock, zBlock, BlockState.AIR.getFullId());
                     }
                     /* Old way without wallheight
                     if (shapeType == ShapeType.WALL) {

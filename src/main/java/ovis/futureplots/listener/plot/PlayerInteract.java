@@ -23,7 +23,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemFood;
+import cn.nukkit.item.ItemEdible;
 import lombok.RequiredArgsConstructor;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.components.util.language.manager.LanguageManager;
@@ -109,7 +109,7 @@ public class PlayerInteract implements Listener {
                             } else {
                                 event.setCancelled(true);
                             }
-                        } else if (item instanceof ItemFood) {
+                        } else if (item instanceof ItemEdible) {
                             break;
                         }
                     }

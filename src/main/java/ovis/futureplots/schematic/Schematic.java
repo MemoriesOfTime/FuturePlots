@@ -18,7 +18,7 @@ package ovis.futureplots.schematic;
 
 import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
-import cn.nukkit.level.format.IChunk;
+import cn.nukkit.level.format.generic.BaseFullChunk;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -80,7 +80,7 @@ public class Schematic {
         this.blockEntities.put(blockVector3, new SchematicBlockEntity(type, compoundTag));
     }
 
-    public void buildInChunk(Vector3 start, IChunk IChunk, ShapeType[] shapes, Allowed<ShapeType> allowedShapes, Integer minX, Integer minZ, Integer maxX, Integer maxZ) {
+    public void buildInChunk(Vector3 start, BaseFullChunk IChunk, ShapeType[] shapes, Allowed<ShapeType> allowedShapes, Integer minX, Integer minZ, Integer maxX, Integer maxZ) {
         final int startX = start.getFloorX();
         final int startY = start.getFloorY();
         final int startZ = start.getFloorZ();
@@ -102,8 +102,8 @@ public class Schematic {
                 final ShapeType shapeType = shapes[(bZ << 4) | bX];
                 if (allowedShapes.isDisallowed(shapeType)) continue;
 
-                IChunk.setBlockState(bX, y, bZ, schematicBlock.getLayer0(), 0);
-                IChunk.setBlockState(bX, y, bZ, schematicBlock.getLayer1(), 1);
+                IChunk.setBlockFullIdAt(bX, y, bZ, 0, schematicBlock.getLayer0().getFullId());
+                IChunk.setBlockFullIdAt(bX, y, bZ, 1, schematicBlock.getLayer1().getFullId());
             }
         }
 
@@ -146,7 +146,7 @@ public class Schematic {
                 binaryStream.setOffset(0);
 
                 SchematicSerializers.get(1).deserialize(this, binaryStream);
-                Server.getInstance().getScheduler().scheduleDelayedTask(null, () -> this.save(file), 1);
+                Server.getInstance().getScheduler().scheduleDelayedTask(FuturePlots.getInstance(), () -> this.save(file), 1);
                 return;
             }
 

@@ -21,7 +21,7 @@ package ovis.futureplots.commands.sub;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.format.IChunk;
+import cn.nukkit.level.format.generic.BaseFullChunk;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.generator.PlotGenerator;
@@ -60,7 +60,7 @@ public class RegenRoadCommand extends SubCommand {
         final int pChunkZ = player.getChunkZ();
 
         TaskExecutor.executeAsync(() -> {
-            final IChunk IChunk = level.getChunk(pChunkX, pChunkZ, false);
+            final BaseFullChunk IChunk = level.getChunk(pChunkX, pChunkZ, false);
             if (IChunk != null) plotGenerator.regenerateChunk(plotManager, IChunk);
             player.sendMessage(this.translate(player, TranslationKey.REGENROAD_FINISHED));
         });

@@ -19,14 +19,14 @@
 package ovis.futureplots.listener;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.BlockAir;
-import cn.nukkit.block.BlockState;
+import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerChatEvent;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
-import cn.nukkit.registry.Registries;
+import cn.nukkit.level.generator.block.state.BlockState;
 import lombok.RequiredArgsConstructor;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.components.util.language.manager.LanguageManager;
@@ -82,81 +82,82 @@ public class PlotLevelRegistrationListener implements Listener {
                 }
                 case FIRST_LAYER -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setFirstLayerBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setFirstLayerBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
                 case MIDDLE_LAYER -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setMiddleLayerBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setMiddleLayerBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
                 case LAST_LAYER -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setLastLayerBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setLastLayerBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
                 case ROAD -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setRoadBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setRoadBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
                 case ROAD_FILLING -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setRoadFillingBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setRoadFillingBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
                 case WALL_UNOWNED -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setWallPlotBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setWallPlotBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
                 case WALL_CLAIMED -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setClaimPlotBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setClaimPlotBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
                 case WALL_FILLING -> {
                     try {
-                        final BlockState blockState = Registries.BLOCK.get("minecraft:" + event.getMessage()).getBlockState();
-                        if (blockState == BlockAir.STATE) {
+                        final BlockState blockState = this.getBlockState(event.getMessage());
+                        if (blockState.getId() == Block.AIR) {
                             break;
                         }
-                        registration.getLevelSettings().setWallFillingBlockHash(blockState.blockStateHash());
+                        registration.getLevelSettings().setWallFillingBlockHash(blockState.getFullId());
                     } catch (NumberFormatException ignore) {
                     }
                 }
@@ -280,8 +281,14 @@ public class PlotLevelRegistrationListener implements Listener {
         }
     }
 
+    private BlockState getBlockState(String str) {
+        Block block = Item.fromString(("minecraft:" + str)).getBlock();
+        return new BlockState(block.getId(), block.getDamage());
+    }
+
     private String getIdentifier(BlockState blockState) {
-        return blockState.getIdentifier().replace("minecraft:", "");
+        return blockState.getBlock().getName();
+        //return blockState.getIdentifier().replace("minecraft:", "");
     }
 
     private boolean validNumber(String str) {

@@ -24,7 +24,6 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandEnum;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.registry.Registries;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.components.util.flags.Flag;
@@ -35,7 +34,6 @@ import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.Plot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,21 +54,24 @@ public class FlagCommand extends SubCommand {
                 new CommandParameter[]{
                         CommandParameter.newEnum("set", new String[]{"set"}),
                         CommandParameter.newEnum("flag", false, new CommandEnum("set", getAsArray(FlagType.STRING, FlagType.BOOLEAN, FlagType.INTEGER, FlagType.DOUBLE))),
-                        CommandParameter.newType("value", CommandParamType.STRING)
+                        CommandParameter.newType("id", CommandParamType.INT),
+                        CommandParameter.newType("damage", CommandParamType.INT)
                 }
         );
         this.addSubParameter("_add",
                 new CommandParameter[]{
                         CommandParameter.newEnum("add", new String[]{"add"}),
                         CommandParameter.newEnum("flag", false, new CommandEnum("add", getAsArray(FlagType.BLOCK_TYPE_LIST))),
-                        CommandParameter.newType("value", CommandParamType.STRING)
+                        CommandParameter.newType("id", CommandParamType.INT),
+                        CommandParameter.newType("damage", CommandParamType.INT)
                 }
         );
         this.addSubParameter("_remove",
                 new CommandParameter[]{
                         CommandParameter.newEnum("remove", new String[]{"remove"}),
                         CommandParameter.newEnum("flag", false, new CommandEnum("remove", getAsArray(null))),
-                        CommandParameter.newType("value", true, CommandParamType.STRING)
+                        CommandParameter.newType("id", CommandParamType.INT),
+                        CommandParameter.newType("damage", CommandParamType.INT)
                 }
         );
         this.addSubParameter("_list",
@@ -117,7 +118,9 @@ public class FlagCommand extends SubCommand {
         }
         final String parameter = args.length > 0 ? args[0] : "";
         final String flagName = args.length > 1 ? args[1] : null;
-        final String value = args.length > 2 ? args[2] : null;
+        final int id = args.length > 2 ? Integer.parseInt(args[2]) : 0;
+        final int damage = args.length > 3 ? Integer.parseInt(args[3]) : 0;
+        final String value = id + ":" + damage;
         switch (parameter) {
             case "set" -> {
                 Flag flag = FlagRegistry.getFlagByName(flagName);
@@ -150,16 +153,16 @@ public class FlagCommand extends SubCommand {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_NOT_SUPPORT_PARAMETER));
                     return false;
                 }
-                if(value == null) {
+                if(id == 0) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_SPECIFY_MATERIAL));
                     return false;
                 }
-                String blockName = value.toLowerCase();
-                final Block block = Registries.BLOCK.get(blockName);
-                if(block == null) {
+                final Block block = Block.get(id, damage);
+                if(block == null || block.isAir()) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_MATERIAL_NOT_EXIST));
                     return false;
                 }
+                final String blockName = block.getId() + ":" + damage;
                 List<String> plotFlags = plot.getFlagValue(flagName) == null ? new ArrayList<>() : (List<String>) plot.getFlagValue(flagName);
                 if(plotFlags.contains(blockName)) {
                     player.sendMessage(this.translate(player, TranslationKey.FLAG_MATERIAL_EXIST));

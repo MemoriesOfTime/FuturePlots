@@ -20,10 +20,11 @@ package ovis.futureplots.commands.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockState;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Level;
+import cn.nukkit.level.format.generic.BaseFullChunk;
+import cn.nukkit.level.generator.block.state.BlockState;
 import cn.nukkit.math.Vector3;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
@@ -85,10 +86,10 @@ public class SetRoadsCommand extends SubCommand {
                         final Vector3 defaultBlockVector = new Vector3(x, y, z);
                         final Vector3 blockVector = new Vector3(x - startPos.getFloorX(), y - startPos.getFloorY(), z - startPos.getFloorZ());
 
-                        final BlockState blockState0 = level.getBlockStateAt(x, y, z, 0);
-                        final BlockState blockState1 = level.getBlockStateAt(x, y, z, 1);
+                        final BlockState blockState0 = BlockState.fromFullId(level.getFullBlock(x, y, z, 0));
+                        final BlockState blockState1 = BlockState.fromFullId(level.getFullBlock(x, y, z, 1));
 
-                        if (Objects.equals(blockState1.getIdentifier(), Block.AIR)) {
+                        if (blockState1.getId() == Block.AIR) {
                             final ShapeType[] shapes;
                             if (!chunkShapes.containsKey(chunkVector))
                                 chunkShapes.put(chunkVector, shapes = plotManager.getShapes(chunkVector.getX() << 4, chunkVector.getZ() << 4));

@@ -23,10 +23,8 @@ import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.DimensionEnum;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.format.LevelConfig;
+import cn.nukkit.level.generator.Generator;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.registry.RegisterException;
-import cn.nukkit.registry.Registries;
 import cn.nukkit.utils.Config;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +36,6 @@ import ovis.futureplots.components.util.language.manager.LanguageManager;
 import ovis.futureplots.components.util.language.provider.LanguageProvider;
 import ovis.futureplots.listener.plot.*;
 import ovis.futureplots.generator.PlotGenerator;
-import ovis.futureplots.generator.PlotStage;
 import ovis.futureplots.listener.PlotLevelRegistrationListener;
 import ovis.futureplots.manager.PlayerManager;
 import ovis.futureplots.manager.PlayerNameFunction;
@@ -118,12 +115,8 @@ public class FuturePlots extends PluginBase {
         instance = this;
         this.plotManagerMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         INSTANCE = this;
-        try {
-            Registries.GENERATE_STAGE.register(PlotStage.NAME, PlotStage.class);
-            Registries.GENERATOR.register("plot", PlotGenerator.class);
-        } catch (RegisterException e) {
-            throw new RuntimeException(e);
-        }
+
+        Generator.addGenerator(PlotGenerator.class, "plot", 101);
 
         this.provider = new Provider(this);
     }
@@ -159,11 +152,8 @@ public class FuturePlots extends PluginBase {
                     this.plotManagerMap.put(levelName, plotManager);
 
                     if (!server.isLevelLoaded(levelName)) {
-                        LevelConfig.GeneratorConfig plot = new LevelConfig.GeneratorConfig("plot", ThreadLocalRandom.current().nextLong(), false, LevelConfig.AntiXrayMode.LOW, false,
-                                DimensionEnum.OVERWORLD.getDimensionData(), Collections.emptyMap());
-                        LevelConfig levelConfig = new LevelConfig("leveldb", false, Map.of(0, plot));
-                        levelConfig = levelConfig.generators(Map.of(0, plot));
-                        server.generateLevel(levelName, levelConfig);
+                        //TODO dimension??
+                        server.generateLevel(levelName, ThreadLocalRandom.current().nextLong(), PlotGenerator.class);
                     }
 
                     Level level;
@@ -273,7 +263,7 @@ public class FuturePlots extends PluginBase {
 
     public PlotManager getPlotManager(Level level) {
         if (level == null) return null;
-        return this.getPlotManager(new File(level.getFolderPath()).getName());
+        return this.getPlotManager(new File(level.getProvider().getPath()).getName());
     }
 
     public PlotManager getPlotManager(String levelName) {
@@ -285,17 +275,16 @@ public class FuturePlots extends PluginBase {
 
         TaskExecutor.executeAsync(() -> this.provider.createPlotsTable(levelName));
 
-        System.out.println("Road Block: " + Block.get(Registries.BLOCKSTATE.get(levelSettings.getRoadBlockHash())).getName());
+        System.out.println("Road Block: " + Block.fromFullId(levelSettings.getRoadState().getFullId()).getName());
 
         final PlotManager plotManager = new PlotManager(this, levelName, levelSettings, false);
         this.plotManagerMap.put(levelName, plotManager);
 
         int dimension = levelSettings.getDimension();
-        LevelConfig.GeneratorConfig plot = new LevelConfig.GeneratorConfig("plot", ThreadLocalRandom.current().nextLong(), false, LevelConfig.AntiXrayMode.LOW, false,
-                DimensionEnum.getDataFromId(dimension), Collections.emptyMap());
-        LevelConfig levelConfig = new LevelConfig("leveldb", false, Map.of(dimension, plot));
-        levelConfig = levelConfig.generators(Map.of(dimension, plot));
-        this.getServer().generateLevel(levelName, levelConfig);
+        //TODO dimension??
+        DimensionEnum.getDataFromId(dimension);
+        Map<String, Object> levelConfig = new HashMap<>();
+        this.getServer().generateLevel(levelName, ThreadLocalRandom.current().nextLong(), PlotGenerator.class, levelConfig);
         final Level level = this.getServer().getLevelByName(levelName);
 
         if (level == null) return null;

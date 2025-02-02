@@ -21,13 +21,12 @@ package ovis.futureplots.manager;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockAir;
-import cn.nukkit.block.BlockState;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
-import cn.nukkit.level.format.IChunk;
+import cn.nukkit.level.format.generic.BaseFullChunk;
+import cn.nukkit.level.generator.block.state.BlockState;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.SimpleAxisAlignedBB;
@@ -481,16 +480,16 @@ public class PlotManager {
         }
     }
 
-    private Set<IChunk> pasteRoadSchematic(int minX, int minZ, int maxX, int maxZ) {
-        final Set<IChunk> visited = new HashSet<>();
+    private Set<BaseFullChunk> pasteRoadSchematic(int minX, int minZ, int maxX, int maxZ) {
+        final Set<BaseFullChunk> visited = new HashSet<>();
 
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
-                final IChunk IChunk = this.level.getChunk(x >> 4, z >> 4);
-                if (visited.contains(IChunk)) continue;
+                final BaseFullChunk BaseFullChunk = this.level.getChunk(x >> 4, z >> 4);
+                if (visited.contains(BaseFullChunk)) continue;
 
-                visited.add(IChunk);
-                this.plotGenerator.regenerateChunkWithin(this, IChunk, minX, minZ, maxX, maxZ);
+                visited.add(BaseFullChunk);
+                this.plotGenerator.regenerateChunkWithin(this, BaseFullChunk, minX, minZ, maxX, maxZ);
             }
         }
 
@@ -535,7 +534,7 @@ public class PlotManager {
         asyncLevelWorker.queueFill(
                 new BlockVector3(minX, minY + groundHeight + 1, minZ),
                 new BlockVector3(maxX, maxY, maxZ),
-                BlockAir.STATE
+                BlockState.AIR
         );
         asyncLevelWorker.runQueue(whenDone);
     }
@@ -578,7 +577,7 @@ public class PlotManager {
         asyncLevelWorker.queueFill(
                 new BlockVector3(minX, minY + groundHeight + 1, minZ),
                 new BlockVector3(maxX, maxY, maxZ),
-                BlockAir.STATE
+                BlockState.AIR
         );
         asyncLevelWorker.runQueue(whenDone);
     }
@@ -620,7 +619,7 @@ public class PlotManager {
         asyncLevelWorker.queueFill(
                 new BlockVector3(minX, minY + groundHeight + 1, minZ),
                 new BlockVector3(maxX, maxY, maxZ),
-                BlockAir.STATE
+                BlockState.AIR
         );
         asyncLevelWorker.runQueue(whenDone);
     }
@@ -673,7 +672,7 @@ public class PlotManager {
         asyncLevelWorker.queueFill(
                 new BlockVector3(minX, minY + groundHeight + 1, minZ),
                 new BlockVector3(maxX, maxY, maxZ),
-                BlockAir.STATE
+                BlockState.AIR
         );
 
         if (this.plotSchematic.getSchematic() != null) {
@@ -732,7 +731,7 @@ public class PlotManager {
         asyncLevelWorker.queueFill(
                 new BlockVector3(minX, minY + groundHeight + 1, minZ),
                 new BlockVector3(maxX, maxY, maxZ),
-                BlockAir.STATE
+                BlockState.AIR
         );
 
         if (this.plotSchematic.getSchematic() != null) {
@@ -785,7 +784,7 @@ public class PlotManager {
         asyncLevelWorker.queueFill(
                 new BlockVector3(minX, minY + groundHeight + 1, minZ),
                 new BlockVector3(maxX, maxY, maxZ),
-                BlockAir.STATE
+                BlockState.AIR
         );
 
         if (this.plotSchematic.getSchematic() != null){
@@ -929,7 +928,7 @@ public class PlotManager {
     public void clearWallAbove(Plot plot) {
         if (plot.isFullyMerged()) return;
 
-        final BlockState blockState = BlockAir.STATE;
+        final BlockState blockState = BlockState.AIR;
         final BlockVector3 bottom = this.getExtendedBottomPlotPos(plot).subtract(plot.isMerged(Plot.DIRECTION_WEST) ? 1 : 0, 0, plot.isMerged(Plot.DIRECTION_NORTH) ? 1 : 0);
         final BlockVector3 top = this.getExtendedTopPlotPos(plot).add(1, 0, 1);
         final AsyncLevelWorker asyncLevelWorker = new AsyncLevelWorker(this.level);
@@ -1166,7 +1165,7 @@ public class PlotManager {
             asyncLevelWorker.queueFill(
                     new BlockVector3(minX, minY + groundHeight + 1, minZ),
                     new BlockVector3(maxX, maxY, maxZ),
-                    BlockAir.STATE
+                    BlockState.AIR
             );
         }
 

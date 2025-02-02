@@ -18,10 +18,10 @@
 
 package ovis.futureplots.schematic.format;
 
+import cn.nukkit.level.generator.block.state.BlockState;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.registry.Registries;
 import cn.nukkit.utils.BinaryStream;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import lombok.AccessLevel;
@@ -44,8 +44,8 @@ public class SchematicSerializerV3 implements SchematicSerializer {
         binaryStream.putLInt(schematic.getBlockPalette().size());
 
         for(SchematicBlock block : schematic.getBlockPalette()) {
-            binaryStream.putLInt(block.getLayer0().blockStateHash());
-            binaryStream.putLInt(block.getLayer1().blockStateHash());
+            binaryStream.putLInt(block.getLayer0().getFullId());
+            binaryStream.putLInt(block.getLayer1().getFullId());
         }
 
         binaryStream.putLInt(schematic.getBlocks().size());
@@ -70,7 +70,7 @@ public class SchematicSerializerV3 implements SchematicSerializer {
             binaryStream.putLInt(blockVector.getZ());
 
             binaryStream.putString(blockEntity.getType());
-            binaryStream.putTag(blockEntity.getCompoundTag());
+            binaryStream.putNbtTag(blockEntity.getCompoundTag());
         }
     }
 
@@ -80,7 +80,7 @@ public class SchematicSerializerV3 implements SchematicSerializer {
         for(int i = 0; i < blockPaletteCount; i++) {
             final int blockLayer0Id = binaryStream.getLInt();
             final int blockLayer1Id = binaryStream.getLInt();
-            schematic.getBlockPalette().add(new SchematicBlock(Registries.BLOCKSTATE.get(blockLayer0Id), Registries.BLOCKSTATE.get(blockLayer1Id)));
+            schematic.getBlockPalette().add(new SchematicBlock(BlockState.fromFullId(blockLayer0Id), BlockState.fromFullId(blockLayer1Id)));
         }
 
         final int blockCount = binaryStream.getLInt();

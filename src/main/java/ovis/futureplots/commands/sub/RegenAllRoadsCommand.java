@@ -23,7 +23,7 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.format.IChunk;
+import cn.nukkit.level.format.generic.BaseFullChunk;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.generator.PlotGenerator;
@@ -67,7 +67,7 @@ public class RegenAllRoadsCommand extends SubCommand {
         TaskExecutor.executeAsync(() -> {
             for(int chunkX = -chunkRadius; chunkX <= chunkRadius; chunkX++) {
                 for(int chunkZ = -chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
-                    final IChunk IChunk = level.getChunk(pChunkX + chunkX, pChunkZ + chunkZ, false);
+                    final BaseFullChunk IChunk = level.getChunk(pChunkX + chunkX, pChunkZ + chunkZ, false);
                     if (IChunk != null) plotGenerator.regenerateChunk(plotManager, IChunk);
                 }
             }

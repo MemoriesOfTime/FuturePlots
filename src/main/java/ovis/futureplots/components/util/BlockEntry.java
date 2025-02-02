@@ -19,7 +19,7 @@
 package ovis.futureplots.components.util;
 
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockState;
+import cn.nukkit.level.generator.block.state.BlockState;
 import lombok.Builder;
 import lombok.Value;
 
@@ -34,6 +34,8 @@ public class BlockEntry {
 
     boolean isDefault;
     String name;
+    int id;
+    int damage;
     BlockState blockState;
     String imageType;
     String imageData;
@@ -43,14 +45,16 @@ public class BlockEntry {
         BlockEntryBuilder builder = BlockEntry.builder().
                 isDefault(map.get("name").equals("reset_to_default")).
                 name((String) map.get("name")).
+                id(((Number) map.get("block_id")).intValue()).
+                damage(((Number) map.get("block_data")).intValue()).
                 imageType((String) map.get("image_type")).
                 imageData((String) map.get("image_data")).
                 permission((String) map.get("permission"));
 
         if (!builder.isDefault) {
-            Block block = Block.get(builder.name);
-            Number data = (Number) map.get("block_data");
-            builder.blockState(block.getProperties().getBlockState(data.shortValue()));
+            //TODO
+            Block block = Block.get(builder.id, builder.damage);
+            builder.blockState(new BlockState(block.getId(), builder.damage));
         }
 
         return builder.build();

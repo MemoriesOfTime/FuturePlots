@@ -60,7 +60,7 @@ public class TeleportCommand extends SubCommand {
                 if(plotManager == null) return;
 
                 player.teleport(plotManager.getLevel().getSpawnLocation());
-                player.sendMessage(this.translate(player, TranslationKey.TELEPORT_SUCCESS, plotManager.getLevel().getFolderPath()));
+                player.sendMessage(this.translate(player, TranslationKey.TELEPORT_SUCCESS, plotManager.getLevel().getProvider().getPath()));
             }
         }));
 
