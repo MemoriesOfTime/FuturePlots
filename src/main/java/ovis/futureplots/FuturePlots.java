@@ -20,7 +20,6 @@ package ovis.futureplots;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.block.Block;
 import cn.nukkit.level.DimensionEnum;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.generator.Generator;
@@ -275,8 +274,6 @@ public class FuturePlots extends PluginBase {
 
         TaskExecutor.executeAsync(() -> this.provider.createPlotsTable(levelName));
 
-        System.out.println("Road Block: " + Block.fromFullId(levelSettings.getRoadState().getFullId()).getName());
-
         final PlotManager plotManager = new PlotManager(this, levelName, levelSettings, false);
         this.plotManagerMap.put(levelName, plotManager);
 
@@ -343,12 +340,7 @@ public class FuturePlots extends PluginBase {
     public String findPlayerName(String playerName) {
         final Collection<String> playerNames = this.playerManager.getPlayerNames();
         for (String name : playerNames) {
-            if (name.equalsIgnoreCase(playerName))
-                return name;
-        }
-
-        for (String name : playerNames) {
-            if (name.toLowerCase().startsWith(playerName.toLowerCase()))
+            if (name.equalsIgnoreCase(playerName) || name.toLowerCase().startsWith(playerName.toLowerCase()))
                 return name;
         }
 
