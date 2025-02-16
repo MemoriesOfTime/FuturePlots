@@ -31,14 +31,14 @@ public class Flag {
     private final FlagType type;
     private final boolean basicFlag;
 
-    Flag(String saveName, Object defaultValue, FlagType type) {
+    public Flag(String saveName, Object defaultValue, FlagType type) {
         this.saveName = saveName;
         this.defaultValue = defaultValue;
         this.type = type;
         this.basicFlag = true;
     }
 
-    Flag(String saveName, Object defaultValue, FlagType type, boolean basicFlag) {
+    public Flag(String saveName, Object defaultValue, FlagType type, boolean basicFlag) {
         this.saveName = saveName;
         this.defaultValue = defaultValue;
         this.type = type;
