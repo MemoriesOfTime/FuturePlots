@@ -70,7 +70,7 @@ public class DDocument {
     }
 
     public long getLong(String key) {
-        return (long) this.data.get(key);
+        return ((Number) this.data.get(key)).longValue();
     }
 
     public List<String> getStringList(String key) {
