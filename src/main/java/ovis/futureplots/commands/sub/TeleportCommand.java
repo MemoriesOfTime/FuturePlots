@@ -20,9 +20,8 @@ package ovis.futureplots.commands.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.form.element.ElementButton;
-import cn.nukkit.form.handler.FormResponseHandler;
-import cn.nukkit.form.window.FormWindowSimple;
+import cn.nukkit.form.element.simple.ElementButton;
+import cn.nukkit.form.window.SimpleForm;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.components.util.language.TranslationKey;
@@ -49,22 +48,19 @@ public class TeleportCommand extends SubCommand {
     public boolean execute(CommandSender sender, String command, String[] args) {
         Player player = (Player) sender;
         final Map<String, PlotManager> plotManagers = this.plugin.getPlotManagerMap();
-        final FormWindowSimple window = new FormWindowSimple(this.translate(player, TranslationKey.TELEPORT_FORM_TITLE), "");
+        final SimpleForm window = new SimpleForm(this.translate(player, TranslationKey.TELEPORT_FORM_TITLE), "");
 
-        for(String levelName : plotManagers.keySet())
-            window.addButton(new ElementButton(levelName));
-
-        window.addHandler(FormResponseHandler.withoutPlayer(ignored -> {
-            if(!window.wasClosed()) {
-                final PlotManager plotManager = plotManagers.get(window.getResponse().getClickedButton().getText());
+        for(String levelName : plotManagers.keySet()) {
+            window.addButton(new ElementButton(levelName), p -> {
+                final PlotManager plotManager = plotManagers.get(levelName);
                 if(plotManager == null) return;
 
                 player.teleport(plotManager.getLevel().getSpawnLocation());
                 player.sendMessage(this.translate(player, TranslationKey.TELEPORT_SUCCESS, plotManager.getLevel().getFolderPath()));
-            }
-        }));
+            });
+        }
 
-        player.showFormWindow(window);
+        window.send(player);
         return true;
     }
 

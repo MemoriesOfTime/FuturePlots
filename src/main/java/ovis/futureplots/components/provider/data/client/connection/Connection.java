@@ -15,12 +15,12 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.connection;
+package ovis.futureplots.components.provider.data.client.connection;
 
-import ovis.futureplots.components.provider.client.clientdetails.ClientDetails;
-import ovis.futureplots.components.provider.client.components.DCollection;
-import ovis.futureplots.components.provider.client.components.DDocument;
-import ovis.futureplots.components.provider.client.components.sql.SQLColumn;
+import ovis.futureplots.components.provider.data.client.clientdetails.ClientDetails;
+import ovis.futureplots.components.provider.data.client.components.DCollection;
+import ovis.futureplots.components.provider.data.client.components.DDocument;
+import ovis.futureplots.components.provider.data.client.components.sql.SQLColumn;
 
 import java.util.Set;
 

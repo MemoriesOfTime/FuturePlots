@@ -23,6 +23,7 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.math.NukkitMath;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
+import ovis.futureplots.components.provider.economy.client.EconomyClient;
 import ovis.futureplots.event.PlotMergeEvent;
 import ovis.futureplots.event.PlotPreMergeEvent;
 import ovis.futureplots.components.util.language.TranslationKey;
@@ -92,6 +93,20 @@ public class MergeCommand extends SubCommand {
         if(plot.isMerged(dir)) {
             player.sendMessage(this.translate(player, TranslationKey.MERGE_FAILURE_ALREADY_MERGED));
             return false;
+        }
+
+        if(FuturePlots.getSettings().isEconomyEnabled() && FuturePlots.getSettings().getEconomyWorlds().contains(plotManager.getLevelName())) {
+            EconomyClient economyClient = this.plugin.getEconomyProvider().getEconomyClient();
+            double price = plotManager.getLevelSettings().getMergePrice();
+            if(price > 0) {
+                double playerMoney = economyClient.getAPI().getMoney(player.getName());
+                if(economyClient.getAPI().getMoney(player.getName()) < price) {
+                    player.sendMessage(this.translate(player, TranslationKey.ECONOMY_NOT_ENOUGH, (price - playerMoney)));
+                    return true;
+                } else {
+                    economyClient.getAPI().reduceMoney(player.getName(), price);
+                }
+            }
         }
 
         final PlotPreMergeEvent plotPreMergeEvent = new PlotPreMergeEvent(player, plot, dir, plotsToMerge);

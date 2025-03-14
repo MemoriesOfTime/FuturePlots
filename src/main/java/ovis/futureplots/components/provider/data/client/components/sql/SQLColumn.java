@@ -15,7 +15,7 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.components.sql;
+package ovis.futureplots.components.provider.data.client.components.sql;
 
 import lombok.Getter;
 

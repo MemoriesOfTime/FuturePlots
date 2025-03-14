@@ -38,7 +38,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
 import ovis.futureplots.FuturePlots;
-import ovis.futureplots.components.provider.Provider;
+import ovis.futureplots.components.provider.data.DataProvider;
 import ovis.futureplots.components.util.*;
 import ovis.futureplots.event.PlotClearEvent;
 import ovis.futureplots.generator.PlotGenerator;
@@ -91,7 +91,7 @@ public class PlotManager {
         this.plots = new ConcurrentHashMap<>();
 
         if (loadPlots) {
-            for (Plot plot : this.plugin.getProvider().getPlots(this))
+            for (Plot plot : this.plugin.getDataProvider().getPlots(this))
                 this.plots.put(plot.getId(), plot);
 
             for (Plot plot : this.plots.values())
@@ -115,8 +115,8 @@ public class PlotManager {
     }
 
     public void savePlots(Collection<Plot> plots) {
-        final List<Provider.DatabaseAction> databaseActions = new ArrayList<>();
-        final Provider database = this.plugin.getProvider();
+        final List<DataProvider.DatabaseAction> databaseActions = new ArrayList<>();
+        final DataProvider database = this.plugin.getDataProvider();
 
         final Collection<Plot> plotsToSave = plots.isEmpty() ? this.plots.values() : plots;
         for (Plot plot : plotsToSave)
@@ -129,8 +129,8 @@ public class PlotManager {
         this.plots.remove(plot.getId());
 
         TaskExecutor.executeAsync(() -> {
-            final Provider provider = this.plugin.getProvider();
-            provider.executeActions(Collections.singletonList(provider.deletePlot(plot)));
+            final DataProvider dataProvider = this.plugin.getDataProvider();
+            dataProvider.executeActions(Collections.singletonList(dataProvider.deletePlot(plot)));
         });
     }
 

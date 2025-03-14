@@ -46,6 +46,11 @@ public class PlotLevelSettings {
     private int plotSize = 35;
     private int roadSize = 7;
 
+    private int claimPrice = 100;
+    private int clearPrice = 100;
+    private int resetPrice = 100;
+    private int mergePrice = 100;
+
     private int firstLayerBlockHash = BlockBedrock.PROPERTIES.getDefaultState().blockStateHash();
     private int middleLayerBlockHash = BlockDirt.PROPERTIES.getDefaultState().blockStateHash();
     private int lastLayerBlockHash = BlockGrassBlock.PROPERTIES.getDefaultState().blockStateHash();

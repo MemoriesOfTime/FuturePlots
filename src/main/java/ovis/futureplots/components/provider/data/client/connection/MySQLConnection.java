@@ -15,13 +15,13 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.connection;
+package ovis.futureplots.components.provider.data.client.connection;
 
-import ovis.futureplots.components.provider.client.clientdetails.ClientDetails;
-import ovis.futureplots.components.provider.client.clientdetails.SQLiteDetails;
-import ovis.futureplots.components.provider.client.components.DDocument;
-import ovis.futureplots.components.provider.client.components.sql.SQLClient;
-import ovis.futureplots.components.provider.client.components.sql.SQLColumn;
+import ovis.futureplots.components.provider.data.client.clientdetails.ClientDetails;
+import ovis.futureplots.components.provider.data.client.clientdetails.MySQLDetails;
+import ovis.futureplots.components.provider.data.client.components.DDocument;
+import ovis.futureplots.components.provider.data.client.components.sql.SQLClient;
+import ovis.futureplots.components.provider.data.client.components.sql.SQLColumn;
 
 import java.sql.DriverManager;
 import java.util.*;
@@ -29,15 +29,15 @@ import java.util.*;
 /**
  * @author  Tim tim03we, Ovis Development (2024)
  */
-public class SQLiteConnection extends Connection {
+public class MySQLConnection extends Connection {
 
     private java.sql.Connection connection;
     private SQLClient sqlClient;
 
     @Override
     public void connect(ClientDetails clientDetails) throws Exception {
-        SQLiteDetails details = (SQLiteDetails) clientDetails;
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + details.getDatabase());
+        MySQLDetails details = (MySQLDetails) clientDetails;
+        this.connection = DriverManager.getConnection("jdbc:mysql://" + details.getHost() + ":" + details.getPort() + "/" + details.getDatabase() + "?autoReconnect=true&useGmtMillisForDatetimes=true&serverTimezone=GMT", details.getUser(), details.getPassword());
         this.sqlClient = new SQLClient(this.connection);
     }
 
@@ -98,4 +98,5 @@ public class SQLiteConnection extends Connection {
         }
         this.connection.close();
     }
+
 }

@@ -15,7 +15,7 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.components;
+package ovis.futureplots.components.provider.data.client.components;
 
 import java.util.HashMap;
 import java.util.List;

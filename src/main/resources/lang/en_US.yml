@@ -1,5 +1,5 @@
 ---
-version: "2.0.0"
+version: "2.0.1"
 
 activated: "§aactivated"
 deactivated: "§cdeactivated"
@@ -189,4 +189,6 @@ flag.list.type.string: "§6String Flags: §7%1"
 
 flag.no.permissions: "§8[§6F§eP§8] §cYou do not have the necessary permissions for the §6%1 §cflag §7(§c%2§7)§c."
 plot.not.claimable: "§8[§6F§eP§8] §cDu hast nicht die erforderlichen Berechtigungen, um dieses Grundstück zu beanspruchen."
+
+economy.not.enough: "§8[§6F§eP§8] §cYou still need §6$%1 §cto perform this action."
 ...

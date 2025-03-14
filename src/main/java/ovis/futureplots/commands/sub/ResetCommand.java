@@ -22,6 +22,7 @@ import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
+import ovis.futureplots.components.provider.economy.client.EconomyClient;
 import ovis.futureplots.components.util.language.TranslationKey;
 import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.Plot;
@@ -54,6 +55,20 @@ public class ResetCommand extends SubCommand {
         if(!plot.isOwner(player.getUniqueId()) && !player.hasPermission("plot.command.admin.dispose")) {
             player.sendMessage(this.translate(player, TranslationKey.DISPOSE_FAILURE));
             return false;
+        }
+
+        if(FuturePlots.getSettings().isEconomyEnabled() && FuturePlots.getSettings().getEconomyWorlds().contains(plotManager.getLevelName())) {
+            EconomyClient economyClient = this.plugin.getEconomyProvider().getEconomyClient();
+            double price = plotManager.getLevelSettings().getResetPrice();
+            if(price > 0) {
+                double playerMoney = economyClient.getAPI().getMoney(player.getName());
+                if(economyClient.getAPI().getMoney(player.getName()) < price) {
+                    player.sendMessage(this.translate(player, TranslationKey.ECONOMY_NOT_ENOUGH, (price - playerMoney)));
+                    return true;
+                } else {
+                    economyClient.getAPI().reduceMoney(player.getName(), price);
+                }
+            }
         }
 
         if(!plotManager.disposePlot(plot)) {

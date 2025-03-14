@@ -15,17 +15,10 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.clientdetails;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+package ovis.futureplots.components.provider.data.client.clientdetails;
 
 /**
  * @author  Tim tim03we, Ovis Development (2024)
  */
-@Getter
-@RequiredArgsConstructor
-public class SQLiteDetails extends ClientDetails {
-
-    private final String database;
+public class ClientDetails {
 }

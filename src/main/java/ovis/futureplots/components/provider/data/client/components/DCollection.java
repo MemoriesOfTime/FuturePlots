@@ -15,10 +15,10 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.components;
+package ovis.futureplots.components.provider.data.client.components;
 
 import lombok.Getter;
-import ovis.futureplots.components.provider.client.connection.Connection;
+import ovis.futureplots.components.provider.data.client.connection.Connection;
 
 import java.util.Set;
 

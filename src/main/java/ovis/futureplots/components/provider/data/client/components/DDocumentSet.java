@@ -15,17 +15,26 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.clientdetails;
+package ovis.futureplots.components.provider.data.client.components;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.util.Set;
 
 /**
  * @author  Tim tim03we, Ovis Development (2024)
  */
-@Getter
-@RequiredArgsConstructor
-public class MySQLDetails extends ClientDetails {
+public class DDocumentSet {
 
-    private final String host, port, user, password, database;
+    private final Set<DDocument> documents;
+
+    public DDocumentSet(Set<DDocument> documents) {
+        this.documents = documents;
+    }
+
+    public Set<DDocument> getDocuments() {
+        return this.documents;
+    }
+
+    public DDocument first() {
+        return this.documents.iterator().hasNext() ? this.documents.iterator().next() : null;
+    }
 }

@@ -1,7 +1,7 @@
 ---
 # Version of the config.yml.
 # Do not modify! Changing the version will cause your configurations to be lost.
-version: "2.0.0"
+version: "2.0.1"
 
 # Enable (true) or disable (false) the update checker
 # "release" checks for stable versions, "dev" checks for the latest commit
@@ -26,7 +26,7 @@ metrics: true
 
 # Please select your preferred provider where we should store the data.
 # We offer the following providers: sqlite, mysql, mongodb
-provider: "sqlite"
+data-provider: "sqlite"
 
 # MySQL connection data
 mysql:
@@ -40,6 +40,18 @@ mysql:
 mongodb:
   uri: ""
   database: ""
+
+# Please select your preferred economy provider
+# We offer the following providers: LlamaEconomy
+# Example:
+# economy-provider:
+#  provider: "llamaeconomy"
+#  worlds:
+#    - "plotworld"
+economy:
+  enable: false
+  provider: ""
+  worlds: []
 
 # Determine if you should be teleported to the plot border when the plot is claimed
 teleport-on-claim: true
