@@ -139,6 +139,8 @@ public class FuturePlots extends PluginBase {
 
         saveResource("config.yml");
 
+        checkVersion();
+
         settings = new Settings();
         settings.init();
 
@@ -198,7 +200,6 @@ public class FuturePlots extends PluginBase {
 
             languageProvider = LanguageManager.init();
             languageProvider.init();
-            checkVersion();
             registerCommands();
 
             server.getScheduler().scheduleDelayedTask(this, () -> {
