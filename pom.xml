@@ -84,7 +84,7 @@
             <artifactId>LlamaEconomy</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/LlamaEconomy-1.0.0.1-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/libs/LlamaEconomy-Modified.jar</systemPath>
         </dependency>
 
 
