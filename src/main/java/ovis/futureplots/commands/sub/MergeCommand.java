@@ -95,7 +95,7 @@ public class MergeCommand extends SubCommand {
             return false;
         }
 
-        if(FuturePlots.getSettings().isEconomyEnabled() && FuturePlots.getSettings().getEconomyWorlds().contains(plotManager.getLevelName())) {
+        if(FuturePlots.getSettings().isEconomyEnabled() && FuturePlots.getSettings().getEconomyWorlds().contains(plotManager.getLevelName()) && !player.hasPermission("plot.economy.bypass")) {
             EconomyClient economyClient = this.plugin.getEconomyProvider().getEconomyClient();
             double price = plotManager.getLevelSettings().getMergePrice();
             if(price > 0) {
