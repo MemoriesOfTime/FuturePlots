@@ -13,7 +13,7 @@
 <p align="center">
    <img alt="Version" src="https://img.shields.io/badge/version-4.0.0-blue.svg?cacheSeconds=2592000" />
    <a href="https://feedback.minecraft.net/hc/en-us/articles/26247797084173--Minecraft-1-21-1-Bedrock">
-      <img alt="Minecraft" src="https://img.shields.io/badge/minecraft-v1.21.50%20(Bedrock)-56383E" />
+      <img alt="Minecraft" src="https://img.shields.io/badge/minecraft-v1.21.60%20(Bedrock)-56383E" />
    </a>
     <a href="https://github.com/ovisdevelopment/FuturePlots/actions?query=branch%3Amaster+is%3Asuccess" target="_blank">
       <img alt="Action" src="https://github.com/ovisdevelopment/FuturePlots/actions/workflows/build.yml/badge.svg" />
