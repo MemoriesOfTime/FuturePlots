@@ -21,6 +21,7 @@ package ovis.futureplots.listener.plot;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerInteractEntityEvent;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class PlayerInteractEntity implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(PlayerInteractEntityEvent event) {
         final Player player = event.getPlayer();
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());

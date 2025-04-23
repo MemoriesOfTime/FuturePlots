@@ -21,6 +21,7 @@ package ovis.futureplots.listener.plot;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class BlockPlace implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(BlockPlaceEvent event) {
         final Block block = event.getBlock();
         final Player player = event.getPlayer();

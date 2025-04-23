@@ -19,6 +19,7 @@
 package ovis.futureplots.listener.plot;
 
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class PlayerJoin implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(PlayerJoinEvent event) {
         this.plugin.registerPlayer(event.getPlayer());
     }
