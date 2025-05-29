@@ -17,7 +17,7 @@
 
 package ovis.futureplots.components.provider.data.client.components;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class DDocument {
 
-    private final Map<String, Object> data = new HashMap<>();
+    private final Map<String, Object> data = new LinkedHashMap<>();
 
     public DDocument() {
 
