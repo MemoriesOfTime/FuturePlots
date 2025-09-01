@@ -6,7 +6,7 @@
 
     <groupId>ovis.futureplots</groupId>
     <artifactId>FuturePlots</artifactId>
-    <version>4.0.0-NKMOT-SNAPSHOT</version>
+    <version>4.0.2-NKMOT-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -80,6 +80,14 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20240303</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.lldv.llamaeconomy</groupId>
+            <artifactId>LlamaEconomy</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/LlamaEconomy-Modified.jar</systemPath>
         </dependency>
 
 

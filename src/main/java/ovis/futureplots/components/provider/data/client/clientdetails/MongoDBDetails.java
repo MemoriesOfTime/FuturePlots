@@ -15,22 +15,18 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.components.enums;
+package ovis.futureplots.components.provider.data.client.clientdetails;
 
-import java.util.Locale;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author  Tim tim03we, Ovis Development (2024)
  */
-public enum ClientType {
+@Getter
+@RequiredArgsConstructor
+public class MongoDBDetails extends ClientDetails {
 
-    YAML,
-    MONGODB,
-    MYSQL,
-    SQLITE;
-
-    @Override
-    public String toString() {
-        return super.toString().toLowerCase(Locale.ROOT);
-    }
+    private final String uri;
+    private final String database;
 }

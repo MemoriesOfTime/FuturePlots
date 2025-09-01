@@ -15,13 +15,13 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.components.sql;
+package ovis.futureplots.components.provider.data.client.components.sql;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import ovis.futureplots.components.provider.client.components.DDocument;
+import ovis.futureplots.components.provider.data.client.components.DDocument;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

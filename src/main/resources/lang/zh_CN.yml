@@ -1,5 +1,5 @@
 ---
-version: "2.0.0"
+version: "2.0.1"
 
 activated: "§a已激活"
 deactivated: "§c已停用"
@@ -189,4 +189,6 @@ flag.list.type.string: "§6字符串类标志: §7%1"
 
 flag.no.permissions: "§8[§6F§eP§8] §c你无权使用 §6%1 §c标志 §7(§c%2§7)§c。"
 plot.not.claimable: "§8[§6F§eP§8] §c你没有权限认领此地皮。"
+
+economy.not.enough: "§8[§6F§eP§8] §c您仍需要 §6$%1 §c來完成此動作。"
 ...

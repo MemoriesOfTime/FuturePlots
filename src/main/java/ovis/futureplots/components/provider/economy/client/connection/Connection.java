@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 tim03we, Ovis Development
+ * Copyright 2025 tim03we, Ovis Development
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,15 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.clientdetails;
+package ovis.futureplots.components.provider.economy.client.connection;
+
 
 /**
- * @author  Tim tim03we, Ovis Development (2024)
+ * @author  Tim tim03we, Ovis Development (2025)
  */
-public class ClientDetails {
+public interface Connection {
+
+    void reduceMoney(String playerName, double amount);
+
+    double getMoney(String playerName);
 }

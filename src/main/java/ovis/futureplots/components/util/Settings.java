@@ -21,6 +21,8 @@ import cn.nukkit.utils.Config;
 import lombok.Getter;
 import ovis.futureplots.FuturePlots;
 
+import java.util.List;
+
 /**
  * @author Tim tim03we, Ovis Development (2024)
  */
@@ -29,7 +31,10 @@ public class Settings {
 
     private boolean defaultLangEnabled;
     private String defaultLanguage;
-    private String provider;
+    private String dataProvider;
+    private String economyProvider;
+    private boolean economyEnabled;
+    private List<String> economyWorlds;
     private boolean debugEnabled;
     private boolean metricsEnabled;
     private String sqliteDatabase;
@@ -52,9 +57,12 @@ public class Settings {
 
         defaultLangEnabled = !config.getBoolean("enable_player_language");
         defaultLanguage = config.getString("default_language");
-        provider = config.getString("provider");
+        dataProvider = config.getString("data-provider");
         debugEnabled = config.getBoolean("debug");
         metricsEnabled = config.getBoolean("metrics");
+        economyProvider = config.getString("economy.provider");
+        economyEnabled = config.getBoolean("economy.enable");
+        economyWorlds = config.getStringList("economy.worlds");
 
         sqliteDatabase = config.getString("sqlite.database");
         mongodbUri = config.getString("mongodb.uri");

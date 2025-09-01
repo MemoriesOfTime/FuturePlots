@@ -19,6 +19,7 @@
 package ovis.futureplots.listener.plot;
 
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityExplodeEvent;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class EntityExplode implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(EntityExplodeEvent event) {
         event.setBlockList(new ArrayList<>());
     }

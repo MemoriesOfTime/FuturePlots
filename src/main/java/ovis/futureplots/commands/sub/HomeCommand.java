@@ -140,7 +140,7 @@ public class HomeCommand extends SubCommand {
         }
 
         final Plot plot = plots.get(plotId);
-        final boolean canPerform = (!plot.isDenied(player.getUniqueId()) && !plot.isDenied(Utils.UUID_EVERYONE)) || player.hasPermission("plot.admin.bypass.deny");
+        final boolean canPerform = (!plot.isDenied(player.getUniqueId()) && !plot.isDenied(Utils.UUID_EVERYONE)) || player.hasPermission("plot.admin.bypass.deny") || plot.isTrusted(player.getUniqueId()) || (plot.isHelper(player.getUniqueId()) && this.plugin.getServer().getPlayer(targetName) != null);
         if(targetId.equals(player.getUniqueId())) {
             player.sendMessage(this.translate(player, TranslationKey.HOME_SUCCESS_OWN));
             plotManager.teleportPlayerToPlot(player, plots.get(plotId));

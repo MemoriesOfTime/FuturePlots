@@ -15,7 +15,7 @@
  *
  */
 
-package ovis.futureplots.components.provider;
+package ovis.futureplots.components.provider.data;
 
 import cn.nukkit.math.BlockVector3;
 
@@ -23,14 +23,14 @@ import lombok.Getter;
 import lombok.Setter;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.manager.PlotManager;
-import ovis.futureplots.components.provider.client.DataClient;
-import ovis.futureplots.components.provider.client.clientdetails.MongoDBDetails;
-import ovis.futureplots.components.provider.client.clientdetails.MySQLDetails;
-import ovis.futureplots.components.provider.client.clientdetails.SQLiteDetails;
-import ovis.futureplots.components.provider.client.components.DCollection;
-import ovis.futureplots.components.provider.client.components.DDocument;
-import ovis.futureplots.components.provider.client.components.enums.ClientType;
-import ovis.futureplots.components.provider.client.components.sql.SQLColumn;
+import ovis.futureplots.components.provider.data.client.DataClient;
+import ovis.futureplots.components.provider.data.client.clientdetails.MongoDBDetails;
+import ovis.futureplots.components.provider.data.client.clientdetails.MySQLDetails;
+import ovis.futureplots.components.provider.data.client.clientdetails.SQLiteDetails;
+import ovis.futureplots.components.provider.data.client.components.DCollection;
+import ovis.futureplots.components.provider.data.client.components.DDocument;
+import ovis.futureplots.components.provider.data.client.components.enums.ClientType;
+import ovis.futureplots.components.provider.data.client.components.sql.SQLColumn;
 import ovis.futureplots.components.util.Plot;
 import ovis.futureplots.components.util.PlotId;
 import ovis.futureplots.components.util.Settings;
@@ -41,7 +41,7 @@ import java.util.*;
 /**
  * @author  Tim tim03we, Ovis Development (2024)
  */
-public final class Provider {
+public final class DataProvider {
 
     @Setter
     @Getter
@@ -49,15 +49,15 @@ public final class Provider {
 
     private final FuturePlots plugin;
 
-    public Provider(FuturePlots plugin) {
+    public DataProvider(FuturePlots plugin) {
         this.plugin = plugin;
     }
 
     public boolean init() {
         Settings settings = FuturePlots.getSettings();
-        this.plugin.getLogger().info("Try to establish a connection with the provider " + settings.getProvider() + ".");
+        this.plugin.getLogger().info("Try to establish a connection with the provider " + settings.getDataProvider() + ".");
         if(dataClient == null) {
-            switch (settings.getProvider().toLowerCase(Locale.ROOT)) {
+            switch (settings.getDataProvider().toLowerCase(Locale.ROOT)) {
                 case "mysql":
                     dataClient = new DataClient(ClientType.MYSQL, new MySQLDetails(
                             settings.getMySqlHost(),
@@ -91,14 +91,14 @@ public final class Provider {
             this.plugin.getServer().getLogger().warning("A data provider was set by another plugin. The configured data provider in the config.yml has been disabled.");
         }
         if(dataClient.isErrored()) {
-            this.plugin.getLogger().error("§4An error occurred when trying to establish a connection with the selected provider " + settings.getProvider() + ".");
+            this.plugin.getLogger().error("§4An error occurred when trying to establish a connection with the selected provider " + settings.getDataProvider() + ".");
             if(settings.isDebugEnabled()) {
                 dataClient.getException().printStackTrace();
             }
             this.plugin.getServer().getPluginManager().disablePlugin(FuturePlots.getInstance());
             return false;
         }
-        this.plugin.getLogger().info("Connection to the provider " + settings.getProvider() + " has been established.");
+        this.plugin.getLogger().info("Connection to the provider " + settings.getDataProvider() + " has been established.");
         return true;
     }
 

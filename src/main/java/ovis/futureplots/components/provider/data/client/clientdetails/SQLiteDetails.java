@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 KCodeYT
+ * Copyright 2024 tim03we, Ovis Development
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Modified 2024 by tim03we, Ovis Development
  */
 
-package ovis.futureplots.listener.plot;
+package ovis.futureplots.components.provider.data.client.clientdetails;
 
-import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.EventPriority;
-import cn.nukkit.event.Listener;
-import cn.nukkit.event.player.PlayerJoinEvent;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ovis.futureplots.FuturePlots;
 
 /**
- * @modified Tim tim03we, Ovis Development (2024)
+ * @author  Tim tim03we, Ovis Development (2024)
  */
+@Getter
 @RequiredArgsConstructor
-public class PlayerJoin implements Listener {
+public class SQLiteDetails extends ClientDetails {
 
-    private final FuturePlots plugin;
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void on(PlayerJoinEvent event) {
-        this.plugin.registerPlayer(event.getPlayer());
-    }
+    private final String database;
 }

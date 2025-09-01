@@ -15,17 +15,17 @@
  *
  */
 
-package ovis.futureplots.components.provider.client;
+package ovis.futureplots.components.provider.data.client;
 
 import lombok.Getter;
-import ovis.futureplots.components.provider.client.clientdetails.ClientDetails;
-import ovis.futureplots.components.provider.client.components.DCollection;
-import ovis.futureplots.components.provider.client.components.enums.ClientType;
-import ovis.futureplots.components.provider.client.components.sql.SQLColumn;
-import ovis.futureplots.components.provider.client.connection.Connection;
-import ovis.futureplots.components.provider.client.connection.MongoDBConnection;
-import ovis.futureplots.components.provider.client.connection.MySQLConnection;
-import ovis.futureplots.components.provider.client.connection.SQLiteConnection;
+import ovis.futureplots.components.provider.data.client.clientdetails.ClientDetails;
+import ovis.futureplots.components.provider.data.client.components.DCollection;
+import ovis.futureplots.components.provider.data.client.components.enums.ClientType;
+import ovis.futureplots.components.provider.data.client.components.sql.SQLColumn;
+import ovis.futureplots.components.provider.data.client.connection.Connection;
+import ovis.futureplots.components.provider.data.client.connection.MongoDBConnection;
+import ovis.futureplots.components.provider.data.client.connection.MySQLConnection;
+import ovis.futureplots.components.provider.data.client.connection.SQLiteConnection;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -20,6 +20,7 @@ package ovis.futureplots.listener.plot;
 
 import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockUpdateEvent;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class BlockUpdate implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(BlockUpdateEvent event) {
         final Block block = event.getBlock();
         final PlotManager plotManager = this.plugin.getPlotManager(block.getLevel());

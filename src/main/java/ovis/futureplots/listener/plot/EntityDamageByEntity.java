@@ -22,6 +22,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class EntityDamageByEntity implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(EntityDamageByEntityEvent event) {
         final Entity entity = event.getEntity();
         Entity damager = event.getDamager();

@@ -29,7 +29,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ovis.futureplots.commands.PlotCommand;
 import ovis.futureplots.components.bstats.Metrics;
-import ovis.futureplots.components.provider.Provider;
+import ovis.futureplots.components.provider.data.DataProvider;
+import ovis.futureplots.components.provider.economy.EconomyProvider;
 import ovis.futureplots.components.util.*;
 import ovis.futureplots.components.util.language.manager.LanguageManager;
 import ovis.futureplots.components.util.language.provider.LanguageProvider;
@@ -61,7 +62,10 @@ public class FuturePlots extends PluginBase {
     private static Settings settings;
 
     @Getter
-    private Provider provider;
+    private DataProvider dataProvider;
+
+    @Getter
+    private EconomyProvider economyProvider;
 
     @Getter
     private Map<String, PlotManager> plotManagerMap;
@@ -117,7 +121,8 @@ public class FuturePlots extends PluginBase {
 
         Generator.addGenerator(PlotGenerator.class, "plot", 101);
 
-        this.provider = new Provider(this);
+        this.dataProvider = new DataProvider(this);
+        this.economyProvider = new EconomyProvider(this);
     }
 
     @Override
@@ -127,11 +132,14 @@ public class FuturePlots extends PluginBase {
 
         saveResource("config.yml");
 
+        checkVersion();
+
         settings = new Settings();
         settings.init();
 
         final Config config = this.getConfig();
-        boolean providerLoaded = this.provider.init();
+        boolean providerLoaded = this.dataProvider.init();
+        boolean economyProviderLoaded = getSettings().isEconomyEnabled() ? this.economyProvider.init() : false;
 
         if(providerLoaded) {
             this.plotsPerPage = 5;
@@ -145,7 +153,7 @@ public class FuturePlots extends PluginBase {
 
             for (Object o : this.worldsConfig.getList("levels", new ArrayList<>())) {
                 if (o instanceof final String levelName) {
-                    this.provider.createPlotsTable(levelName);
+                    this.dataProvider.createPlotsTable(levelName);
 
                     final PlotManager plotManager = new PlotManager(this, levelName, true);
                     this.plotManagerMap.put(levelName, plotManager);
@@ -182,7 +190,6 @@ public class FuturePlots extends PluginBase {
 
             languageProvider = LanguageManager.init();
             languageProvider.init();
-            checkVersion();
             registerCommands();
 
             server.getScheduler().scheduleDelayedTask(this, () -> {
@@ -242,6 +249,17 @@ public class FuturePlots extends PluginBase {
                 cmdConfig = new Config(getDataFolder() + "/commands.yml", Config.YAML);
             }
         }
+
+        getLogger().info("Check config.yml version..");
+        Config config = new Config(getDataFolder() + "/config.yml", Config.YAML);
+        if(!config.getString("version").equals("2.0.1")) {
+            new File(getDataFolder() + "/config_old_" + config.getString("version") + ".yml").delete();
+            if(new File(getDataFolder() + "/config.yml").renameTo(new File(getDataFolder() + "/config_old_" + config.getString("version") + ".yml"))) {
+                getLogger().critical("The version of the config file does not match. You will find the old file marked \"" + "config_old_" + config.getString("version") + ".yml" + "\" in the same directory.");
+                saveResource("config.yml");
+                getSettings().init();
+            }
+        }
     }
 
     private void loadPlayerNames() {
@@ -254,7 +272,7 @@ public class FuturePlots extends PluginBase {
     @Override
     public void onDisable() {
         try {
-            this.provider.getDataClient().disconnect();
+            this.dataProvider.getDataClient().disconnect();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -272,7 +290,7 @@ public class FuturePlots extends PluginBase {
     public Level createLevel(String levelName, boolean defaultLevel, PlotLevelSettings levelSettings) {
         if (this.getServer().isLevelLoaded(levelName)) this.getServer().getLevelByName(levelName);
 
-        TaskExecutor.executeAsync(() -> this.provider.createPlotsTable(levelName));
+        TaskExecutor.executeAsync(() -> this.dataProvider.createPlotsTable(levelName));
 
         final PlotManager plotManager = new PlotManager(this, levelName, levelSettings, false);
         this.plotManagerMap.put(levelName, plotManager);
@@ -306,8 +324,8 @@ public class FuturePlots extends PluginBase {
 
         TaskExecutor.executeAsync(() -> {
             if (!this.playerManager.has(player.getUniqueId())) {
-                this.provider.executeActions(Collections.singletonList(
-                        this.provider.addPlayer(player.getUniqueId(), playerName)
+                this.dataProvider.executeActions(Collections.singletonList(
+                        this.dataProvider.addPlayer(player.getUniqueId(), playerName)
                 ));
             }
 

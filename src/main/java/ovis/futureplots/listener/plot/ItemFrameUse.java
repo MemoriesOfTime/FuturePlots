@@ -20,6 +20,7 @@ package ovis.futureplots.listener.plot;
 import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntityItemFrame;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.ItemFrameUseEvent;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class ItemFrameUse implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(ItemFrameUseEvent event) {
         final Player player = event.getPlayer();
         final PlotManager plotManager = this.plugin.getPlotManager(player.getLevel());

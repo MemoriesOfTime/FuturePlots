@@ -32,7 +32,7 @@ import java.util.UUID;
  */
 public class MainHandler implements LanguageProvider {
 
-    private static String version = "2.0.0";
+    private static String version = "2.0.1";
     private static HashMap<String, HashMap<String, String>> messages = new HashMap<>();
     private static final String[] official_langs = new String[]{"en_US", "de_DE", "zh_CN"};
 

@@ -15,7 +15,7 @@
  *
  */
 
-package ovis.futureplots.components.provider.client.connection;
+package ovis.futureplots.components.provider.data.client.connection;
 
 
 import com.mongodb.client.FindIterable;
@@ -23,9 +23,9 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import ovis.futureplots.components.provider.client.clientdetails.ClientDetails;
-import ovis.futureplots.components.provider.client.clientdetails.MongoDBDetails;
-import ovis.futureplots.components.provider.client.components.DDocument;
+import ovis.futureplots.components.provider.data.client.clientdetails.ClientDetails;
+import ovis.futureplots.components.provider.data.client.clientdetails.MongoDBDetails;
+import ovis.futureplots.components.provider.data.client.components.DDocument;
 
 import java.util.HashSet;
 import java.util.Set;

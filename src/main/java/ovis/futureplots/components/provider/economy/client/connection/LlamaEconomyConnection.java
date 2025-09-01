@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 tim03we, Ovis Development
+ * Copyright 2025 tim03we, Ovis Development
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,22 @@
  * limitations under the License.
  *
  */
+package ovis.futureplots.components.provider.economy.client.connection;
 
-package ovis.futureplots.components.provider.client.clientdetails;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import net.lldv.llamaeconomy.LlamaEconomy;
 
 /**
- * @author  Tim tim03we, Ovis Development (2024)
+ * @author  Tim tim03we, Ovis Development (2025)
  */
-@Getter
-@RequiredArgsConstructor
-public class MongoDBDetails extends ClientDetails {
+public class LlamaEconomyConnection implements Connection {
 
-    private final String uri;
-    private final String database;
+    @Override
+    public void reduceMoney(String playerName, double amount) {
+        LlamaEconomy.getAPI().reduceMoney(playerName, amount);
+    }
+
+    @Override
+    public double getMoney(String playerName) {
+        return LlamaEconomy.getAPI().getMoney(playerName);
+    }
 }

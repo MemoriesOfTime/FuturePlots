@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ovis.futureplots</groupId>
   <artifactId>FuturePlots</artifactId>
-  <version>4.0.0-SNAPSHOT</version>
+  <version>4.0.2-SNAPSHOT</version>
   <scm>
     <connection>scm:git:git://github.com/ovisdevelopment/FuturePlots.git</connection>
     <developerConnection>scm:git:ssh://git@github.com:ovisdevelopment/FuturePlots.git</developerConnection>
@@ -126,6 +126,13 @@
       <artifactId>DbLib</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.lldv.llamaeconomy</groupId>
+      <artifactId>LlamaEconomy</artifactId>
+      <version>1.0.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/LlamaEconomy-Modified.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

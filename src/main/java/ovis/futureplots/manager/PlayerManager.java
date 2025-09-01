@@ -31,8 +31,8 @@ public class PlayerManager {
     private final Map<String, String> nameMap;
 
     public PlayerManager(FuturePlots plugin) {
-        plugin.getProvider().createPlayersTable();
-        this.players = plugin.getProvider().getPlayers();
+        plugin.getDataProvider().createPlayersTable();
+        this.players = plugin.getDataProvider().getPlayers();
         this.nameMap = new HashMap<>();
     }
 

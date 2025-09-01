@@ -20,10 +20,9 @@ package ovis.futureplots.commands.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.form.element.ElementButton;
-import cn.nukkit.form.element.ElementButtonImageData;
-import cn.nukkit.form.handler.FormResponseHandler;
-import cn.nukkit.form.window.FormWindowSimple;
+import cn.nukkit.form.element.simple.ButtonImage;
+import cn.nukkit.form.element.simple.ElementButton;
+import cn.nukkit.form.window.SimpleForm;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.components.util.language.TranslationKey;
@@ -31,12 +30,8 @@ import ovis.futureplots.manager.PlotManager;
 import ovis.futureplots.components.util.BlockEntry;
 import ovis.futureplots.components.util.Plot;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
-import static cn.nukkit.form.element.ElementButtonImageData.IMAGE_DATA_TYPE_PATH;
-import static cn.nukkit.form.element.ElementButtonImageData.IMAGE_DATA_TYPE_URL;
 
 /**
  * @modified Tim tim03we, Ovis Development (2024)
@@ -68,9 +63,8 @@ public class BorderCommand extends SubCommand {
             return false;
         }
 
-        final FormWindowSimple window = new FormWindowSimple(this.translate(player, TranslationKey.BORDER_FORM_TITLE), "");
+        final SimpleForm window = new SimpleForm(this.translate(player, TranslationKey.BORDER_FORM_TITLE), "");
 
-        final Map<ElementButton, BlockEntry> buttons = new HashMap<>();
         for(BlockEntry entry : this.plugin.getBorderEntries()) {
             final String text;
             if(entry.isDefault()) {
@@ -83,26 +77,17 @@ public class BorderCommand extends SubCommand {
             }
 
             final String imageType = entry.getImageType();
-            final ElementButtonImageData imageData;
+            final ButtonImage imageData;
             switch(imageType == null ? "" : imageType.toLowerCase(Locale.ROOT)) {
-                case "url" -> imageData = new ElementButtonImageData(IMAGE_DATA_TYPE_URL, entry.getImageData());
-                case "path" -> imageData = new ElementButtonImageData(IMAGE_DATA_TYPE_PATH, entry.getImageData());
+                case "url" -> imageData = new ButtonImage(ButtonImage.Type.URL, entry.getImageData());
+                case "path" -> imageData = new ButtonImage(ButtonImage.Type.PATH, entry.getImageData());
                 default -> imageData = null;
             }
 
-            final ElementButton button = new ElementButton(text);
-            if(imageData != null) button.addImage(imageData);
+            ElementButton button = new ElementButton(text);
+            if(imageData != null) button = button.image(imageData);
 
-            window.addButton(button);
-            buttons.put(button, entry);
-        }
-
-        window.addHandler(FormResponseHandler.withoutPlayer(ignored -> {
-            if(!window.wasClosed()) {
-                final ElementButton button = window.getResponse().getClickedButton();
-                final BlockEntry entry;
-                if(button == null || (entry = buttons.get(button)) == null) return;
-
+            window.addButton(button, p -> {
                 if(entry.getPermission() != null && !player.hasPermission(entry.getPermission())) {
                     player.sendMessage(this.translate(player, TranslationKey.BORDER_NO_PERMS, entry.getName()));
                     return;
@@ -117,10 +102,10 @@ public class BorderCommand extends SubCommand {
                         plotManager.changeBorder(mergedPlot, entry.getBlockState());
                     player.sendMessage(this.translate(player, TranslationKey.BORDER_SUCCESS, entry.getName()));
                 }
-            }
-        }));
+            });
+        }
 
-        player.showFormWindow(window);
+        window.send(player);
         return true;
     }
 

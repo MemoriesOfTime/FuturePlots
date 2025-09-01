@@ -20,6 +20,7 @@ package ovis.futureplots.listener.plot;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -36,7 +37,7 @@ public class EntityDamage implements Listener {
 
     private final FuturePlots plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void on(EntityDamageEvent event) {
         final Entity entity = event.getEntity();
         final PlotManager plotManager = this.plugin.getPlotManager(entity.getLevel());

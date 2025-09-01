@@ -4,12 +4,12 @@
 
 The following versions of the FuturePlots plugin are currently supported with security updates:
 
-| Version | Supported          |
-|---------|--------------------|
-| 4.0.0   | ✅ Fully supported |
-| 3.x.x   | ❌ No longer supported |
-| 2.x.x   | ❌ No longer supported |
-| 1.x.x   | ❌ No longer supported |
+| Version  | Supported          |
+|----------|--------------------|
+| \>=4.0.1 | ✅ Fully supported |
+| 3.x.x    | ❌ No longer supported |
+| 2.x.x    | ❌ No longer supported |
+| 1.x.x    | ❌ No longer supported |
 
 Please ensure you are using the latest version to receive important updates and fixes.
 
