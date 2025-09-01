@@ -20,9 +20,10 @@ package ovis.futureplots.commands.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.form.element.simple.ButtonImage;
-import cn.nukkit.form.element.simple.ElementButton;
-import cn.nukkit.form.window.SimpleForm;
+import cn.nukkit.form.element.ElementButton;
+import cn.nukkit.form.element.ElementButtonImageData;
+import cn.nukkit.form.handler.FormResponseHandler;
+import cn.nukkit.form.window.FormWindowSimple;
 import ovis.futureplots.FuturePlots;
 import ovis.futureplots.commands.SubCommand;
 import ovis.futureplots.components.util.language.TranslationKey;
@@ -63,7 +64,7 @@ public class BorderCommand extends SubCommand {
             return false;
         }
 
-        final SimpleForm window = new SimpleForm(this.translate(player, TranslationKey.BORDER_FORM_TITLE), "");
+        final FormWindowSimple window = new FormWindowSimple(this.translate(player, TranslationKey.BORDER_FORM_TITLE), "");
 
         for(BlockEntry entry : this.plugin.getBorderEntries()) {
             final String text;
@@ -77,35 +78,41 @@ public class BorderCommand extends SubCommand {
             }
 
             final String imageType = entry.getImageType();
-            final ButtonImage imageData;
+            final ElementButtonImageData imageData;
             switch(imageType == null ? "" : imageType.toLowerCase(Locale.ROOT)) {
-                case "url" -> imageData = new ButtonImage(ButtonImage.Type.URL, entry.getImageData());
-                case "path" -> imageData = new ButtonImage(ButtonImage.Type.PATH, entry.getImageData());
+                case "url" -> imageData = new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_URL, entry.getImageData());
+                case "path" -> imageData = new ElementButtonImageData(ElementButtonImageData.IMAGE_DATA_TYPE_PATH, entry.getImageData());
                 default -> imageData = null;
             }
 
             ElementButton button = new ElementButton(text);
-            if(imageData != null) button = button.image(imageData);
+            if(imageData != null) button.addImage(imageData);
 
-            window.addButton(button, p -> {
-                if(entry.getPermission() != null && !player.hasPermission(entry.getPermission())) {
-                    player.sendMessage(this.translate(player, TranslationKey.BORDER_NO_PERMS, entry.getName()));
-                    return;
-                }
-
-                if(entry.isDefault()) {
-                    for(Plot mergedPlot : plotManager.getConnectedPlots(plot))
-                        plotManager.changeBorder(mergedPlot, (plot.hasOwner() ? plotManager.getLevelSettings().getClaimPlotState() : plotManager.getLevelSettings().getWallPlotState()));
-                    player.sendMessage(this.translate(player, TranslationKey.BORDER_RESET_TO_DEFAULT_SUCCESS));
-                } else {
-                    for(Plot mergedPlot : plotManager.getConnectedPlots(plot))
-                        plotManager.changeBorder(mergedPlot, entry.getBlockState());
-                    player.sendMessage(this.translate(player, TranslationKey.BORDER_SUCCESS, entry.getName()));
-                }
-            });
+            window.addButton(button);
         }
 
-        window.send(player);
+        window.addHandler(FormResponseHandler.withoutPlayer(ignored -> {
+            int clickedButtonId = window.getResponse().getClickedButtonId();
+            if(clickedButtonId < 0) return;
+            final BlockEntry entry = this.plugin.getBorderEntries().get(clickedButtonId);
+
+            if(entry.getPermission() != null && !player.hasPermission(entry.getPermission())) {
+                player.sendMessage(this.translate(player, TranslationKey.BORDER_NO_PERMS, entry.getName()));
+                return;
+            }
+
+            if(entry.isDefault()) {
+                for(Plot mergedPlot : plotManager.getConnectedPlots(plot))
+                    plotManager.changeBorder(mergedPlot, (plot.hasOwner() ? plotManager.getLevelSettings().getClaimPlotState() : plotManager.getLevelSettings().getWallPlotState()));
+                player.sendMessage(this.translate(player, TranslationKey.BORDER_RESET_TO_DEFAULT_SUCCESS));
+            } else {
+                for(Plot mergedPlot : plotManager.getConnectedPlots(plot))
+                    plotManager.changeBorder(mergedPlot, entry.getBlockState());
+                player.sendMessage(this.translate(player, TranslationKey.BORDER_SUCCESS, entry.getName()));
+            }
+        }));
+
+        player.showFormWindow(window);
         return true;
     }
 
